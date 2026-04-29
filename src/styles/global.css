@@ -1,1 +1,84 @@
 @import "tailwindcss";
+
+@theme {
+  /* Colors */
+  --color-brand: #004ac6;
+  --color-brand-hover: #314ee4;
+  --color-brand-soft: #d9e3f6;
+  --color-brand-tint: #eff4ff;
+  --color-brand-faint: #e6eeff;
+
+  --color-accent: #00614c;
+  --color-accent-dark: #005140;
+  --color-accent-soft: #9bf4d6;
+
+  --color-ink: #121c2a;
+  --color-ink-strong: #14212a;
+  --color-text: #434655;
+  --color-text-muted: #6b7280;
+  --color-text-subtle: #737686;
+  --color-text-slate: #64748b;
+
+  --color-surface: #ffffff;
+  --color-surface-tint: #f8f9ff;
+  --color-surface-alt: #eff4ff;
+  --color-surface-glass: #ffffffcc;
+
+  --color-border: #c3c6d7;
+  --color-border-soft: #c3c6d74d;
+  --color-border-softer: #c3c6d733;
+  --color-border-faint: #c3c6d71a;
+
+  --color-warn: #fea619;
+  --color-warn-text: #855300;
+  --color-error: #ba1a1a;
+  --color-error-soft: #ffdad6;
+
+  /* Typography */
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+
+  --text-2xs: 0.625rem;
+  --text-2xs--line-height: 1.5;
+  --text-xs: 0.6875rem;
+  --text-xs--line-height: 1.25;
+  --text-sm: 0.75rem;
+  --text-sm--line-height: 1.333;
+  --text-base: 0.875rem;
+  --text-base--line-height: 1.4286;
+  --text-md: 1rem;
+  --text-md--line-height: 1.5;
+  --text-lg: 1.125rem;
+  --text-lg--line-height: 1.5556;
+  --text-xl: 1.25rem;
+  --text-xl--line-height: 1.4;
+  --text-2xl: 1.5rem;
+  --text-2xl--line-height: 1.333;
+  --text-3xl: 1.875rem;
+  --text-3xl--line-height: 1.2;
+  --text-4xl: 2.25rem;
+  --text-4xl--line-height: 1;
+  --text-5xl: 3rem;
+  --text-5xl--line-height: 1.1;
+  --text-6xl: 4rem;
+  --text-6xl--line-height: 1;
+
+  /* Radius */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-pill: 100px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-nav: 0 1px 1.75px #0000000d;
+  --shadow-sm: 0 4px 5.25px -4px #0000001a;
+  --shadow-md: 0 10px 13.125px -3px #0000001a;
+  --shadow-hero: 0 32px 56px -12px #121c2a0f;
+  --shadow-brand: 0 2.88px 20.16px #1b3fd81a;
+  --shadow-focus: 0 0 0 2px #004ac6;
+
+  /* Layout */
+  --container-site: 1280px;
+  --breakpoint-mobile: 390px;
+}
