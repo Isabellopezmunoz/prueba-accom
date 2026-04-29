@@ -35,7 +35,8 @@
   --color-error-soft: #ffdad6;
 
   /* Typography */
-  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-sans:
+    "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-display: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
 
   --text-2xs: 0.625rem;
@@ -71,7 +72,7 @@
   --radius-full: 9999px;
 
   /* Shadows */
-  --shadow-nav: 0 1px 1.75px #0000000d;
+  --shadow-nav: 0 1px 2px #0000000d;
   --shadow-sm: 0 4px 5.25px -4px #0000001a;
   --shadow-md: 0 10px 13.125px -3px #0000001a;
   --shadow-hero: 0 32px 56px -12px #121c2a0f;

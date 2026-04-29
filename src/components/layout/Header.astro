@@ -1,0 +1,41 @@
+---
+import Logo from "../ui/Logo.astro"
+import Button from "../ui/Button.astro"
+---
+
+<header
+  class="sticky top-0 z-50 w-full bg-surface-glass shadow-nav backdrop-blur-[20px]"
+>
+  <nav class="flex items-center justify-between p-4 md:px-8">
+    <Logo />
+
+    <button type="button" class="-m-3 p-3 md:hidden" aria-label="Abrir menú">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <line x1="4" y1="7" x2="20" y2="7"></line>
+        <line x1="4" y1="12" x2="20" y2="12"></line>
+        <line x1="4" y1="17" x2="20" y2="17"></line>
+      </svg>
+    </button>
+
+    <div class="hidden items-center gap-8 md:flex">
+      <a href="#calcula" class="text-md font-medium leading-tight text-text">
+        Calcula tu tarifa
+      </a>
+      <a href="#ofertas" class="text-md font-medium leading-tight text-text">
+        Ofertas
+      </a>
+      <Button href="#contactar">Contactar</Button>
+    </div>
+  </nav>
+</header>

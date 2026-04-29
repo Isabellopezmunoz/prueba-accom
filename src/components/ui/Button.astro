@@ -1,0 +1,34 @@
+---
+interface Props {
+  href?: string
+  variant?: "brand"
+  type?: "button" | "submit" | "reset"
+  class?: string
+}
+
+const {
+  href,
+  variant = "brand",
+  type = "button",
+  class: className = "",
+} = Astro.props
+
+const base =
+  "inline-flex items-center justify-center rounded-sm px-6 py-2 text-md font-semibold leading-tight transition-colors"
+const variants = {
+  brand: "bg-brand text-surface hover:bg-brand-hover",
+}
+const classes = [base, variants[variant], className]
+---
+
+{
+  href ? (
+    <a href={href} class:list={classes}>
+      <slot />
+    </a>
+  ) : (
+    <button type={type} class:list={classes}>
+      <slot />
+    </button>
+  )
+}
