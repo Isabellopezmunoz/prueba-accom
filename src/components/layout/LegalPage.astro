@@ -1,0 +1,58 @@
+---
+import Layout from "../../layouts/Layout.astro"
+import Header from "./Header.astro"
+import Footer from "./Footer.astro"
+import ContactModal from "./ContactModal.astro"
+
+interface Section {
+  heading: string
+  paragraphs: string[]
+}
+
+interface Props {
+  title: string
+  intro: string
+  updatedAt: string
+  sections: Section[]
+}
+
+const { title, intro, updatedAt, sections } = Astro.props
+---
+
+<Layout title={`${title} · Ahorrar Energía`}>
+  <Header />
+  <main class="min-h-screen bg-surface-tint px-4 py-15 md:px-8 md:py-24">
+    <article class="mx-auto flex max-w-3xl flex-col gap-10">
+      <header class="flex flex-col gap-4">
+        <p class="text-sm font-semibold uppercase tracking-wide text-brand">
+          Aviso · Última actualización {updatedAt}
+        </p>
+        <h1
+          class="text-3xl font-bold leading-tight text-ink md:text-5xl md:leading-none"
+        >
+          {title}
+        </h1>
+        <p class="text-md font-medium text-text md:text-lg">{intro}</p>
+      </header>
+
+      <div class="flex flex-col gap-8">
+        {
+          sections.map((section) => (
+            <section class="flex flex-col gap-3">
+              <h2 class="text-xl font-bold text-ink md:text-2xl">
+                {section.heading}
+              </h2>
+              {section.paragraphs.map((paragraph) => (
+                <p class="text-md font-normal leading-relaxed text-text">
+                  {paragraph}
+                </p>
+              ))}
+            </section>
+          ))
+        }
+      </div>
+    </article>
+  </main>
+  <Footer />
+  <ContactModal />
+</Layout>

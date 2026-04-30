@@ -1,0 +1,46 @@
+---
+import LegalPage from "../components/layout/LegalPage.astro"
+
+const sections = [
+  {
+    heading: "Qué son las cookies",
+    paragraphs: [
+      "Las cookies son pequeños archivos que un sitio guarda en tu dispositivo para reconocerte en futuras visitas, recordar tus preferencias o medir cómo se usa la página. Funcionan en cualquier navegador moderno.",
+    ],
+  },
+  {
+    heading: "Qué cookies usamos",
+    paragraphs: [
+      "Usamos cookies técnicas, imprescindibles para que la calculadora y el formulario funcionen correctamente. Estas no se pueden desactivar.",
+      "También utilizamos cookies analíticas anónimas para entender qué partes de la landing funcionan mejor y detectar errores. Solo las activamos si nos das tu consentimiento desde el banner.",
+      "No utilizamos cookies publicitarias propias ni vendemos datos de navegación a terceros.",
+    ],
+  },
+  {
+    heading: "Cookies de terceros",
+    paragraphs: [
+      "Para medir la audiencia de forma agregada usamos un proveedor de analítica que respeta el RGPD y anonimiza la dirección IP. Si embebemos contenido externo (mapas, vídeos) puede instalarse alguna cookie adicional, siempre previa aceptación.",
+    ],
+  },
+  {
+    heading: "Cómo gestionar tus cookies",
+    paragraphs: [
+      "Puedes aceptar o rechazar las cookies no esenciales desde el banner que aparece la primera vez que entras al sitio. Si cambias de opinión, abre la configuración de cookies desde el pie de página y modifica tus preferencias en cualquier momento.",
+      "También puedes borrar las cookies ya guardadas desde la configuración de tu navegador. Ten en cuenta que desactivar las cookies técnicas puede afectar al funcionamiento de la calculadora.",
+    ],
+  },
+  {
+    heading: "Más información",
+    paragraphs: [
+      "Si tienes dudas sobre cómo tratamos tu información, puedes consultar nuestra Política de Privacidad o escribirnos a privacidad@ahorrar-energia.example.",
+    ],
+  },
+]
+---
+
+<LegalPage
+  title="Política de Cookies"
+  updatedAt="abril de 2026"
+  intro="Te explicamos qué cookies utilizamos en Ahorrar Energía y cómo puedes decidir cuáles aceptar. Sin trucos, igual que con tus tarifas."
+  sections={sections}
+/>

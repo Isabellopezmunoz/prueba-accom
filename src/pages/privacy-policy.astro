@@ -1,0 +1,57 @@
+---
+import LegalPage from "../components/layout/LegalPage.astro"
+
+const sections = [
+  {
+    heading: "Quién trata tus datos",
+    paragraphs: [
+      "El responsable del tratamiento es Ahorrar Energía S.L., con domicilio en calle Inventada 123, 28001 Madrid. Puedes contactar con nuestro equipo de privacidad escribiendo a privacidad@ahorrar-energia.example.",
+    ],
+  },
+  {
+    heading: "Qué datos recogemos",
+    paragraphs: [
+      "Cuando usas la calculadora pedimos los datos imprescindibles para encontrarte la mejor tarifa: nombre, código postal, tipo de suministro y un consumo aproximado. Si decides contratar, también recopilamos los datos necesarios para activar el cambio (titular, CUPS y datos de pago).",
+      "No vendemos tus datos a terceros ni los usamos para fines distintos de los que aceptas. Si recibimos alguna información extra de tu factura, es solo para calcular el ahorro real.",
+    ],
+  },
+  {
+    heading: "Para qué los usamos",
+    paragraphs: [
+      "Usamos tus datos para analizar tu factura y proponerte una tarifa con la que pagues menos, gestionar el cambio de comercializador si lo aceptas, y mantenerte informado sobre el estado de tu solicitud.",
+      "Solo te enviaremos comunicaciones comerciales si nos das tu consentimiento expreso. Puedes retirarlo cuando quieras desde cualquier email que recibas o escribiéndonos.",
+    ],
+  },
+  {
+    heading: "Cuánto tiempo los conservamos",
+    paragraphs: [
+      "Si finalmente no contratas, conservamos los datos durante un máximo de 12 meses para poder responder a posibles consultas. Si contratas, los mantenemos mientras dure la relación contractual y, después, durante los plazos legales obligatorios.",
+    ],
+  },
+  {
+    heading: "Con quién los compartimos",
+    paragraphs: [
+      "Para gestionar el cambio de tarifa compartimos los datos imprescindibles con el comercializador que elijas. También trabajamos con proveedores tecnológicos (hosting, comunicaciones, analítica), siempre dentro del Espacio Económico Europeo o con garantías equivalentes.",
+    ],
+  },
+  {
+    heading: "Tus derechos",
+    paragraphs: [
+      "Puedes acceder, rectificar, suprimir, oponerte, limitar el tratamiento o portar tus datos enviándonos un email a privacidad@ahorrar-energia.example. Si crees que no hemos atendido bien tu petición, puedes reclamar ante la Agencia Española de Protección de Datos (www.aepd.es).",
+    ],
+  },
+  {
+    heading: "Seguridad",
+    paragraphs: [
+      "Aplicamos medidas técnicas y organizativas razonables para proteger tu información: cifrado en tránsito, control de accesos y revisión periódica de proveedores.",
+    ],
+  },
+]
+---
+
+<LegalPage
+  title="Política de Privacidad"
+  updatedAt="abril de 2026"
+  intro="Te contamos qué datos recogemos cuando usas el comparador, para qué los usamos y cómo puedes ejercer tus derechos. Tan transparente como nuestras tarifas."
+  sections={sections}
+/>

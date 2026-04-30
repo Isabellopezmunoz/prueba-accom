@@ -1,0 +1,52 @@
+---
+import LegalPage from "../components/layout/LegalPage.astro"
+
+const sections = [
+  {
+    heading: "Datos del titular",
+    paragraphs: [
+      "El presente sitio web es titularidad de Ahorrar Energía S.L. (en adelante, “Ahorrar Energía”), con domicilio social en calle Inventada 123, 28001 Madrid, y CIF B-00000000.",
+      "Para cualquier consulta puedes escribirnos a hola@ahorrar-energia.example o llamarnos al 900 000 000 en horario de oficina.",
+    ],
+  },
+  {
+    heading: "Objeto del sitio",
+    paragraphs: [
+      "Ahorrar Energía es un comparador de tarifas de luz y gas pensado para que pagues menos en tu factura. Analizamos tu consumo y te proponemos una tarifa con la que ahorrarás, sin trucos y sin permanencia.",
+      "El uso del sitio es gratuito. Si decides contratar a través nuestro, gestionamos el cambio sin coste para ti.",
+    ],
+  },
+  {
+    heading: "Condiciones de uso",
+    paragraphs: [
+      "Al navegar por este sitio aceptas usarlo de buena fe, sin alterar su funcionamiento ni los contenidos que publicamos. Toda la información se ofrece a título orientativo y puede actualizarse para reflejar cambios regulatorios o de mercado.",
+      "Las tarifas mostradas se basan en precios actualizados para el mercado peninsular. La oferta final que recibas dependerá de tu consumo y del comercializador.",
+    ],
+  },
+  {
+    heading: "Propiedad intelectual",
+    paragraphs: [
+      "Los textos, imágenes, marcas y resto de elementos de este sitio son propiedad de Ahorrar Energía o de los comercializadores con los que colaboramos. Queda prohibida su reproducción sin autorización expresa.",
+    ],
+  },
+  {
+    heading: "Responsabilidad",
+    paragraphs: [
+      "Hacemos todo lo posible para que la información sea correcta y esté al día. Aun así, Ahorrar Energía no se hace responsable de los daños derivados de un uso indebido del sitio o de decisiones tomadas únicamente en base a la información aquí mostrada.",
+    ],
+  },
+  {
+    heading: "Legislación aplicable",
+    paragraphs: [
+      "Este aviso legal se rige por la legislación española. Para cualquier controversia, las partes se someten a los juzgados y tribunales del domicilio del usuario cuando sea consumidor.",
+    ],
+  },
+]
+---
+
+<LegalPage
+  title="Aviso Legal"
+  updatedAt="abril de 2026"
+  intro="Información básica sobre quiénes somos y en qué condiciones usas este sitio. Sin letra pequeña: lo contamos igual que en la landing."
+  sections={sections}
+/>
