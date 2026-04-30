@@ -1,0 +1,82 @@
+---
+import { Image } from "astro:assets"
+import checkCircle from "../../assets/icons/check-circle.svg"
+
+interface PricingItem {
+  text: string
+  bold?: boolean
+}
+
+interface Props {
+  kicker: string
+  title: string
+  items: PricingItem[]
+  featured?: boolean
+}
+
+const { kicker, title, items, featured = false } = Astro.props
+
+const cardBase =
+  "relative flex w-full flex-col justify-between overflow-hidden rounded-md border bg-surface p-6 transition-colors"
+const cardVariant = featured
+  ? "border-2 border-warn md:shadow-md"
+  : "border-border-softer md:hover:border-brand"
+const kickerColor = featured ? "text-warn-text" : "text-brand"
+---
+
+<article class:list={[cardBase, cardVariant]}>
+  {
+    featured && (
+      <span class="absolute right-0 top-0 rounded-bl-sm bg-warn px-3 py-1 text-2xs font-semibold leading-normal text-ink">
+        TOP VENTAS
+      </span>
+    )
+  }
+
+  <div>
+    <header class="flex flex-col gap-1 pb-4">
+      <span
+        class:list={["text-2xs font-semibold uppercase tracking-wider", kickerColor]}
+      >
+        {kicker}
+      </span>
+      <h3 class="text-xl font-bold leading-snug text-ink">{title}</h3>
+    </header>
+
+    <div class="pb-8">
+      <ul class="flex flex-col gap-3 pb-0.5">
+        {
+          items.map((item) => (
+            <li class="flex items-center gap-2">
+              <Image src={checkCircle} alt="" class="shrink-0" />
+              <span
+                class:list={[
+                  "text-base leading-tight text-text",
+                  item.bold && "font-bold",
+                ]}
+              >
+                {item.text}
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-2.5">
+    <button
+      type="button"
+      data-modal-open="contact-modal"
+      class="inline-flex items-center justify-center rounded-sm bg-brand-soft px-6 py-3 text-md font-bold leading-normal text-ink transition-colors hover:bg-brand-faint"
+    >
+      Contratar
+    </button>
+    <a
+      href="#calcula"
+      class="inline-flex items-center justify-center rounded-sm bg-brand px-6 py-3 text-md font-bold leading-normal text-surface transition-colors hover:bg-brand-hover"
+    >
+      Calcula tu tarifa
+    </a>
+  </div>
+</article>

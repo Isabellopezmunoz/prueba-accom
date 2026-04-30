@@ -26,7 +26,7 @@ const { id, name, value, label, icons, checked } = Astro.props
     checked={checked}
     class="sr-only"
   />
-  <span class="flex items-center gap-1">
+  <span class="flex items-center">
     {icons.map((icon) => <Image src={icon} alt="" class="h-7 w-auto" />)}
   </span>
   <span class="leading-none">{label}</span>

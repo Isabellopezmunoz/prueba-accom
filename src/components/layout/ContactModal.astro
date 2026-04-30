@@ -1,0 +1,149 @@
+---
+import { Image } from "astro:assets"
+import phoneCall from "../../assets/icons/phone-call.svg"
+import phone from "../../assets/icons/phone.svg"
+import checkLg from "../../assets/icons/check-circle-lg.svg"
+import errorTriangle from "../../assets/icons/error-triangle.svg"
+import Checkbox from "../ui/Checkbox.astro"
+import Modal from "../ui/Modal.astro"
+---
+
+<Modal id="contact-modal" labelledby="contact-modal-title">
+  <div data-contact-form class="flex flex-col gap-7.5 p-6 md:p-10">
+    <header class="flex flex-col items-center gap-2 text-center">
+      <h2
+        id="contact-modal-title"
+        class="text-3xl font-bold leading-tight text-ink"
+      >
+        Contacta con un experto
+      </h2>
+      <p class="text-md text-text">
+        Estamos aquí para optimizar tu consumo energético.
+      </p>
+    </header>
+
+    <div class="flex flex-col items-center gap-4 rounded-md bg-brand-tint p-6">
+      <span
+        class="inline-flex h-8.5 w-12 items-center justify-center rounded-full bg-[#2563eb] shadow-nav"
+      >
+        <Image src={phoneCall} alt="" class="h-4.5 w-auto" />
+      </span>
+      <div class="flex flex-col items-center gap-1 text-center">
+        <span class="text-sm font-bold uppercase tracking-wider text-brand">
+          Atención directa
+        </span>
+        <p class="text-2xl font-bold text-ink">
+          Llámanos ahora al <a href="tel:900000000" class="text-brand">900 000 000</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-4">
+      <span class="h-px flex-1 bg-border-soft"></span>
+      <span class="text-sm text-text-muted">o</span>
+      <span class="h-px flex-1 bg-border-soft"></span>
+    </div>
+
+    <div class="flex flex-col items-center gap-1 text-center">
+      <h3 class="text-lg font-bold text-ink">O te llamamos nosotros</h3>
+      <p class="text-base font-semibold text-accent-dark">
+        Sin esperas y gratuito
+      </p>
+    </div>
+
+    <form class="flex flex-col gap-4" data-contact-submit>
+      <div class="flex flex-col gap-3 md:flex-row">
+        <label class="relative flex-1">
+          <span class="sr-only">Tu número de teléfono</span>
+          <Image
+            src={phone}
+            alt=""
+            class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2"
+          />
+          <input
+            type="tel"
+            name="phone"
+            inputmode="tel"
+            autocomplete="tel"
+            required
+            placeholder="Tu número de teléfono"
+            class="w-full rounded-sm border border-border-soft bg-surface px-9 py-3 text-base text-ink placeholder:text-text-muted focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
+          />
+        </label>
+        <button
+          type="submit"
+          class="inline-flex items-center justify-center rounded-sm bg-brand px-6 py-3 text-md font-bold text-surface transition-colors hover:bg-brand-hover"
+        >
+          Llamadme
+        </button>
+      </div>
+      <Checkbox id="contact-privacy" required shape="square">
+        He leído y acepto la <a href="#" class="text-brand underline">política de privacidad</a>.
+      </Checkbox>
+    </form>
+  </div>
+
+  <div
+    data-contact-success
+    hidden
+    class="flex flex-col items-center gap-7.5 p-6 text-center md:p-10"
+  >
+    <span
+      class="inline-flex h-20 w-20 items-center justify-center rounded-full bg-accent-soft/40"
+    >
+      <Image src={checkLg} alt="" class="h-10 w-auto" />
+    </span>
+    <h2 class="text-2xl font-bold text-ink">¡Solicitud recibida con éxito!</h2>
+    <p class="text-base leading-relaxed text-text">
+      Estamos analizando las mejores tarifas para ti.<br />
+      Un experto de Ahorrarenenergía te contactará para informarte.
+    </p>
+  </div>
+
+  <div
+    data-contact-error
+    hidden
+    class="flex flex-col items-center gap-6 px-8 py-28 text-center"
+  >
+    <span
+      class="inline-flex h-20 w-20 items-center justify-center rounded-full bg-error-soft"
+    >
+      <Image src={errorTriangle} alt="" class="h-9 w-auto" />
+    </span>
+    <h2 class="text-2xl font-bold text-ink">¡Ups! Algo ha salido mal</h2>
+    <p class="text-base leading-relaxed text-text">
+      Hemos tenido un problema técnico al enviar tus datos.<br />
+      Por favor, inténtalo de nuevo.
+    </p>
+  </div>
+</Modal>
+
+<script>
+  const modal = document.getElementById("contact-modal")
+  if (modal) {
+    const formView = modal.querySelector<HTMLElement>("[data-contact-form]")
+    const successView = modal.querySelector<HTMLElement>("[data-contact-success]")
+    const errorView = modal.querySelector<HTMLElement>("[data-contact-error]")
+    const form = modal.querySelector<HTMLFormElement>("[data-contact-submit]")
+    const content = modal.querySelector<HTMLElement>("[data-modal-content]")
+
+    const showOnly = (view: HTMLElement | null) => {
+      ;[formView, successView, errorView].forEach((current) => {
+        if (current) current.hidden = current !== view
+      })
+      content?.classList.toggle("border", view === errorView)
+      content?.classList.toggle("border-error", view === errorView)
+    }
+
+    form?.addEventListener("submit", (event) => {
+      event.preventDefault()
+      const success = Math.random() < 0.8
+      showOnly(success ? successView : errorView)
+    })
+
+    modal.addEventListener("modal:closed", () => {
+      form?.reset()
+      showOnly(formView)
+    })
+  }
+</script>

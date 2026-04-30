@@ -1,7 +1,6 @@
 ---
 import { Image } from "astro:assets"
-import menuIcon from "../../assets/menu-rounded.svg"
-import Button from "../ui/Button.astro"
+import menuIcon from "../../assets/icons/menu-rounded.svg"
 import Logo from "../ui/Logo.astro"
 
 const links = [
@@ -41,7 +40,13 @@ const links = [
           </a>
         ))
       }
-      <Button href="#contactar">Contactar</Button>
+      <button
+        type="button"
+        data-modal-open="contact-modal"
+        class="inline-flex items-center justify-center rounded-sm bg-brand px-6 py-2 text-md font-semibold leading-tight text-surface transition-colors hover:bg-brand-hover"
+      >
+        Contactar
+      </button>
     </div>
   </nav>
 
@@ -64,7 +69,13 @@ const links = [
         ))
       }
       <li>
-        <Button href="#contactar" class="w-full">Contactar</Button>
+        <button
+          type="button"
+          data-modal-open="contact-modal"
+          class="inline-flex w-full items-center justify-center rounded-sm bg-brand px-6 py-2 text-md font-semibold leading-tight text-surface transition-colors hover:bg-brand-hover"
+        >
+          Contactar
+        </button>
       </li>
     </ul>
   </div>
@@ -81,8 +92,8 @@ const links = [
       toggle.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú")
     })
 
-    panel.querySelectorAll("a").forEach((a) =>
-      a.addEventListener("click", () => {
+    panel.querySelectorAll("a").forEach((link) =>
+      link.addEventListener("click", () => {
         panel.classList.add("hidden")
         toggle.setAttribute("aria-expanded", "false")
         toggle.setAttribute("aria-label", "Abrir menú")

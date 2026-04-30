@@ -1,0 +1,78 @@
+---
+import { Image } from "astro:assets"
+import closeIcon from "../../assets/icons/close.svg"
+
+interface Props {
+  id: string
+  labelledby?: string
+  class?: string
+}
+
+const { id, labelledby, class: className = "" } = Astro.props
+---
+
+<div
+  id={id}
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby={labelledby}
+  hidden
+  class="fixed inset-0 z-100 flex items-center justify-center bg-ink/60 px-4 py-8"
+  data-modal
+>
+  <div
+    class:list={[
+      "relative max-h-full w-full max-w-lg overflow-y-auto rounded-md bg-surface shadow-hero",
+      className,
+    ]}
+    data-modal-content
+  >
+    <button
+      type="button"
+      class="absolute right-4 top-4 inline-flex h-8 w-8 items-center justify-center rounded-full text-text transition-colors hover:bg-surface-tint"
+      aria-label="Cerrar"
+      data-modal-close
+    >
+      <Image src={closeIcon} alt="" class="h-[11.67px] w-auto" />
+    </button>
+    <slot />
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-modal]").forEach((modal) => {
+    const id = modal.id
+    const closeBtn = modal.querySelector<HTMLButtonElement>("[data-modal-close]")
+    const content = modal.querySelector<HTMLElement>("[data-modal-content]")
+
+    const open = () => {
+      modal.hidden = false
+      document.body.style.overflow = "hidden"
+      const focusable = content?.querySelector<HTMLElement>(
+        "input, button:not([data-modal-close]), select, textarea, a"
+      )
+      focusable?.focus()
+    }
+
+    const close = () => {
+      modal.hidden = true
+      document.body.style.overflow = ""
+      modal.dispatchEvent(new CustomEvent("modal:closed"))
+    }
+
+    closeBtn?.addEventListener("click", close)
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal) close()
+    })
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !modal.hidden) close()
+    })
+
+    document.querySelectorAll<HTMLElement>(`[data-modal-open="${id}"]`).forEach((trigger) =>
+      trigger.addEventListener("click", (event) => {
+        event.preventDefault()
+        open()
+      })
+    )
+  })
+</script>

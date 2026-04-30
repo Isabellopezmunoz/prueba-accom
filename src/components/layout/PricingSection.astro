@@ -1,0 +1,181 @@
+---
+import PricingCard from "../ui/PricingCard.astro"
+
+const cards = [
+  {
+    tab: "luz",
+    kicker: "precio fijo",
+    title: "Tarifa fija de luz",
+    items: [
+      { text: "Mantenemos el precio durante 5 años.", bold: true },
+      { text: "Precio fijo 12 meses" },
+      { text: "20 cts €/l en tus repostajes." },
+    ],
+  },
+  {
+    tab: "luz",
+    desktopOnly: true,
+    kicker: "precio fijo",
+    title: "Tarifa fija de luz",
+    items: [
+      { text: "Mantenemos el precio durante 5 años.", bold: true },
+      { text: "Precio fijo 12 meses" },
+      { text: "20 cts €/l en tus repostajes." },
+    ],
+  },
+  {
+    tab: "dual",
+    kicker: "ahorro máximo",
+    title: "Tarifa de luz y gas",
+    featured: true,
+    items: [
+      { text: "1 mes gratis de consumo de luz para siempre.", bold: true },
+      { text: "10% dto. en el consumo de luz durante 1 año." },
+      { text: "20% dto. en el de gas durante 1 año." },
+    ],
+  },
+  {
+    tab: "gas",
+    kicker: "precio fijo",
+    title: "Tarifa fija de gas",
+    items: [
+      { text: "Mantenemos el precio durante 5 años.", bold: true },
+      { text: "Precio fijo 12 meses" },
+      { text: "20 cts €/l en tus repostajes." },
+    ],
+  },
+]
+
+const tabs = [
+  { value: "luz", label: "Tarifas luz" },
+  { value: "dual", label: "Tarifa dual" },
+  { value: "gas", label: "Tarifas gas" },
+]
+---
+
+<section id="ofertas" class="bg-surface-tint px-4 py-15 md:px-8">
+  <div class="flex flex-col gap-6 md:gap-12">
+    <h2 class="text-center text-4xl font-bold leading-none text-ink">
+      Las mejores tarifas de luz y gas para ahorrar en tu factura
+    </h2>
+
+    <div
+      role="tablist"
+      aria-label="Tipo de tarifa"
+      class="relative mx-auto flex h-13 w-90 items-center justify-between gap-2.5 rounded-pill bg-surface px-2 py-1.5 shadow-brand md:hidden"
+      data-pricing-tabs
+    >
+      <span
+        aria-hidden="true"
+        class="pointer-events-none absolute left-2 top-1.5 bottom-1.5 rounded-pill bg-brand transition-transform duration-300 ease-out"
+        data-tabs-indicator
+      ></span>
+      {
+        tabs.map((tab, index) => (
+          <button
+            type="button"
+            role="tab"
+            aria-selected={index === 1 ? "true" : "false"}
+            data-tab={tab.value}
+            class="relative z-10 flex-1 whitespace-nowrap rounded-pill px-2 py-2 text-base font-semibold text-ink transition-colors duration-300 ease-out aria-selected:text-surface"
+          >
+            {tab.label}
+          </button>
+        ))
+      }
+    </div>
+
+    <div
+      class="-mx-4 flex snap-x snap-mandatory items-stretch gap-4 overflow-x-auto scroll-smooth px-4 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-4 md:gap-6 md:overflow-visible md:px-0 md:pb-0"
+      data-pricing-track
+    >
+      {
+        cards.map((card) => (
+          <div
+            data-card-tab={card.tab}
+            data-desktop-only={card.desktopOnly ? "true" : undefined}
+            class:list={[
+              "flex w-[85%] shrink-0 snap-center md:w-auto md:shrink",
+              card.desktopOnly && "hidden md:flex",
+            ]}
+          >
+            <PricingCard {...card} />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  const tablist = document.querySelector<HTMLElement>("[data-pricing-tabs]")
+  const track = document.querySelector<HTMLElement>("[data-pricing-track]")
+  if (tablist && track) {
+    const tabs = tablist.querySelectorAll<HTMLButtonElement>("[role=tab]")
+    const indicator = tablist.querySelector<HTMLElement>("[data-tabs-indicator]")
+    const cards = track.querySelectorAll<HTMLElement>(
+      "[data-card-tab]:not([data-desktop-only])"
+    )
+
+    const tabValues = Array.from(tabs).map((tab) => tab.dataset.tab ?? "")
+    const cardTabs = Array.from(cards).map((card) => card.dataset.cardTab ?? "")
+
+    const moveIndicator = (target: HTMLElement) => {
+      if (!indicator) return
+      const tablistRect = tablist.getBoundingClientRect()
+      const targetRect = target.getBoundingClientRect()
+      indicator.style.width = `${targetRect.width}px`
+      indicator.style.transform = `translateX(${targetRect.left - tablistRect.left - 8}px)`
+    }
+
+    const setActiveTab = (value: string) => {
+      tabs.forEach((tab) => {
+        const active = tab.dataset.tab === value
+        tab.setAttribute("aria-selected", active ? "true" : "false")
+        if (active) moveIndicator(tab)
+      })
+    }
+
+    const initial = tablist.querySelector<HTMLElement>('[role=tab][aria-selected=true]')
+    if (initial) requestAnimationFrame(() => moveIndicator(initial))
+    window.addEventListener("resize", () => {
+      const current = tablist.querySelector<HTMLElement>('[role=tab][aria-selected=true]')
+      if (current) moveIndicator(current)
+    })
+
+    tabs.forEach((tab) =>
+      tab.addEventListener("click", () => {
+        const value = tab.dataset.tab ?? ""
+        setActiveTab(value)
+        const cardIndex = cardTabs.indexOf(value)
+        if (cardIndex >= 0)
+          cards[cardIndex]?.scrollIntoView({
+            behavior: "smooth",
+            inline: "center",
+            block: "nearest",
+          })
+      })
+    )
+
+    let scrollTimeout: number | undefined
+    track.addEventListener("scroll", () => {
+      window.clearTimeout(scrollTimeout)
+      scrollTimeout = window.setTimeout(() => {
+        const trackRect = track.getBoundingClientRect()
+        const center = trackRect.left + trackRect.width / 2
+        let closestIndex = 0
+        let closestDistance = Infinity
+        cards.forEach((card, index) => {
+          const cardRect = card.getBoundingClientRect()
+          const distance = Math.abs(cardRect.left + cardRect.width / 2 - center)
+          if (distance < closestDistance) {
+            closestDistance = distance
+            closestIndex = index
+          }
+        })
+        const value = cardTabs[closestIndex]
+        if (value && tabValues.includes(value)) setActiveTab(value)
+      }, 100)
+    })
+  }
+</script>

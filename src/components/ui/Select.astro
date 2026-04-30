@@ -110,28 +110,28 @@ const {
       setOpen(open)
     })
 
-    list.querySelectorAll<HTMLLIElement>("[role=option]").forEach((opt) => {
-      opt.addEventListener("click", () => {
-        list.querySelectorAll("[role=option]").forEach((o) =>
-          o.removeAttribute("aria-selected")
+    list.querySelectorAll<HTMLLIElement>("[role=option]").forEach((option) => {
+      option.addEventListener("click", () => {
+        list.querySelectorAll("[role=option]").forEach((other) =>
+          other.removeAttribute("aria-selected")
         )
-        opt.setAttribute("aria-selected", "true")
-        valueEl.textContent = opt.textContent
+        option.setAttribute("aria-selected", "true")
+        valueEl.textContent = option.textContent
         valueEl.classList.remove("text-text-muted")
         valueEl.classList.add("text-ink")
         trigger.classList.remove("text-text-muted")
         trigger.classList.add("text-ink")
-        hidden.value = opt.dataset.value ?? ""
+        hidden.value = option.dataset.value ?? ""
         setOpen(false)
       })
     })
 
-    document.addEventListener("click", (e) => {
-      if (!root.contains(e.target as Node)) setOpen(false)
+    document.addEventListener("click", (event) => {
+      if (!root.contains(event.target as Node)) setOpen(false)
     })
 
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") setOpen(false)
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") setOpen(false)
     })
   })
 </script>
