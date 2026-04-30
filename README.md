@@ -41,15 +41,13 @@ Al pulsar "Calcular" simulamos el envío con `Math.random() < 0.8` (80% éxito /
 
 Pequeños extras propuestos como mejora de la experiencia de usuario más allá del Figma original:
 
-1. **Modal de éxito → redirige al home al cerrar.** No tiene sentido dejar a la persona en el último paso de la calculadora con los datos rellenos después de un envío exitoso. Al cerrar el modal de éxito redirige a `/`.
+1. **Modal de éxito (en la vista de la calculadora)→ redirige al home al cerrar.** No tiene sentido dejar a la persona en el último paso de la calculadora con los datos rellenos después de un envío exitoso. Al cerrar el modal de éxito redirige a `/`.
 
-2. **Modal de error → permite reintentar sin perder datos.** En caso de error, al cerrar la persona se queda en el paso 4 con el formulario tal cual lo tenía. Para reducir la fricción, el propio modal de error muestra un botón **"Reintentar"** que cierra y reenvía el formulario automáticamente, y un teléfono de soporte (`900 000 000`) como fallback comercial. *Estos extras del modal de error aparecen en los flujos de la calculadora y del Hero* (donde la persona ya rellenó varios campos), pero **no** en el modal de contacto del header / PricingCard (donde el form tiene un único campo y reintentar es trivial). La diferenciación se hace pasando `source: "calculator"` o `source: "hero"` en el evento `modal:open-result`; los elementos extra van con `data-source-only="calculator hero"` y solo se muestran cuando coincide.
+2. **Modal de error  (en la vista de la calculadora)→ permite reintentar sin perder datos.** En caso de error, al cerrar la persona se queda en el paso 4 con el formulario tal cual lo tenía. Para reducir la fricción, el propio modal de error muestra un botón **"Reintentar"** que cierra y reenvía el formulario automáticamente, y un teléfono de soporte (`900 000 000`) como fallback comercial. *Estos extras del modal de error aparecen en los flujos de la calculadora y del Hero* (donde la persona ya rellenó varios campos), pero **no** en el modal de contacto del header / PricingCard (donde el form tiene un único campo y reintentar es trivial).
 
-3. **El form del Hero también dispara el modal de éxito/error.** El botón "Calcular" del banner ya no redirige a `/calcula-tu-tarifa` (sería pedir a la persona que rellenara dos veces lo mismo): hace submit JS y abre el `ContactModal` con la misma randomización 80/20.
+3. **Persistencia del estado en `sessionStorage`.** Si la persona refresca la página o cierra el navegador antes de terminar la calculadora, recuperamos el paso en el que estaba y los datos ya rellenados (suministro, electrodomésticos, franja horaria, teléfono, CP, checkbox). Limpiamos el storage al confirmar el envío con éxito. Usamos `sessionStorage` (no `localStorage`) por privacidad: la información desaparece al cerrar la pestaña.
 
-4. **Persistencia del estado en `sessionStorage`.** Si la persona refresca la página o cierra el navegador antes de terminar la calculadora, recuperamos el paso en el que estaba y los datos ya rellenados (suministro, electrodomésticos, franja horaria, teléfono, CP, checkbox). Limpiamos el storage al confirmar el envío con éxito. Usamos `sessionStorage` (no `localStorage`) por privacidad: la información desaparece al cerrar la pestaña.
-
-5. **Pre-selección del tipo de suministro al venir de una card.** Tanto las cards de "Compara nuestras ofertas en energía" como las `PricingCard` del bloque de tarifas navegan a `/calcula-tu-tarifa?intent=<luz|luz-gas|gas>` cuando la persona pulsa el CTA "Calcula tu tarifa". El mapeo es directo: una card de "Tarifa fija de luz" pasa `intent=luz`, la dual `intent=luz-gas`, etc. Al cargar la calculadora con ese parámetro:
+4. **Pre-selección del tipo de suministro al venir de una card.** Tanto las cards de "Compara nuestras ofertas en energía" como las `PricingCard` del bloque de tarifas navegan a `/calcula-tu-tarifa?intent=<luz|luz-gas|gas>` cuando la persona pulsa el CTA "Calcula tu tarifa". El mapeo es directo: una card de "Tarifa fija de luz" pasa `intent=luz`, la dual `intent=luz-gas`, etc. Al cargar la calculadora con ese parámetro:
    - Limpiamos cualquier estado anterior en `sessionStorage` (la persona ha decidido empezar un nuevo intento desde una card concreta; lo de antes ya no aplica).
    - Marcamos automáticamente el intent en el paso 1.
    - Saltamos directamente al paso 2 (la persona ya tomó esa decisión visualmente, no necesita repetirla).
@@ -64,23 +62,13 @@ Tres páginas estáticas (`/aviso-legal`, `/politica-de-privacidad`, `/cookies`)
 
 Los copys son inventados pero coherentes con el tono de la landing ("comparador", "sin trucos, sin permanencia", etc.).
 
-### Opcional — Modal de contacto ("Contacta con un experto")
-Modal accesible reutilizable que se dispara desde:
-- "Contactar" del header (desktop y panel mobile).
-- "Contratar" de cada PricingCard.
-- "Calcular" del paso 4 de la calculadora (el modal abre directamente en la vista de éxito o error en lugar de la vista de formulario).
+### Modal de contacto ("Contacta con un experto")
+Modal accesible reutilizable que se dispara desde "Contactar" del header, "Contratar" de cada PricingCard.
 
-Tres estados internos:
+Como no hay backend, **el resultado del envío se simula con `Math.random() < 0.8`** (80% éxito / 20% error). Según el resultado, el modal muestra:
+- **Éxito** → "¡Solicitud recibida con éxito!"
+- **Error** → "¡Ups! Algo ha salido mal"
 
-| Estado | Cuándo se muestra |
-| :----- | :---------------- |
-| **Form** | Estado inicial. Datos de contacto directo (`tel:900000000`) + formulario "Te llamamos" con teléfono y checkbox de privacidad. |
-| **Success** | Tras enviar el formulario con éxito. Mensaje "¡Solicitud recibida con éxito!". |
-| **Error** | Tras un fallo simulado de envío. Mensaje "¡Ups! Algo ha salido mal" sobre un modal con borde rojo. Para volver a intentarlo, el usuario cierra el modal y lo abre de nuevo. |
-
-Como no hay backend, el resultado del envío se simula con `Math.random() < 0.8` (80% éxito / 20% error).
-
-Accesibilidad: `role="dialog"`, `aria-modal="true"`, `aria-labelledby` apuntando al título del modal.
 
 ## Notas sobre el diseño
 

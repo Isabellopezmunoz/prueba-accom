@@ -4,6 +4,48 @@ html {
   scroll-behavior: smooth;
 }
 
+@utility btn-shine {
+  position: relative;
+  overflow: hidden;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transform: translateX(-100px) skew(-15deg);
+    pointer-events: none;
+  }
+
+  &::before {
+    left: 0;
+    width: 60px;
+    background: rgba(255, 255, 255, 0.5);
+    filter: blur(30px);
+    opacity: 0.5;
+  }
+
+  &::after {
+    left: 30px;
+    width: 30px;
+    background: rgba(255, 255, 255, 0.2);
+    filter: blur(5px);
+  }
+
+  &:hover::before {
+    opacity: 1;
+  }
+
+  &:hover::before,
+  &:hover::after {
+    transform: translateX(420px) skew(-15deg);
+    transition:
+      transform 1.4s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
 @theme {
   /* Colors */
   --color-brand: #004ac6;
