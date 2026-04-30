@@ -3,17 +3,13 @@ import Layout from "../../layouts/Layout.astro"
 import Header from "./Header.astro"
 import Footer from "./Footer.astro"
 import ContactModal from "./ContactModal.astro"
-
-interface Section {
-  heading: string
-  paragraphs: string[]
-}
+import type { LegalSection } from "../../types/legal"
 
 interface Props {
   title: string
   intro: string
   updatedAt: string
-  sections: Section[]
+  sections: LegalSection[]
 }
 
 const { title, intro, updatedAt, sections } = Astro.props

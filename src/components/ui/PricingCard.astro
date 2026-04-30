@@ -1,18 +1,14 @@
 ---
 import { Image } from "astro:assets"
 import checkCircle from "../../assets/icons/check-circle.svg"
-
-interface PricingItem {
-  text: string
-  bold?: boolean
-}
+import type { PricingItem, PricingIntent } from "../../types/pricing"
 
 interface Props {
   kicker: string
   title: string
   items: PricingItem[]
   featured?: boolean
-  intent?: "luz" | "gas" | "luz-gas"
+  intent?: PricingIntent
 }
 
 const { kicker, title, items, featured = false, intent } = Astro.props

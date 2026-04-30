@@ -1,13 +1,10 @@
 ---
-interface Option {
-  value: string
-  label: string
-}
+import type { SelectOption } from "../../types/forms"
 
 interface Props {
   id: string
   label: string
-  options: Option[]
+  options: SelectOption[]
   placeholder?: string
   required?: boolean
   name?: string

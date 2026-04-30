@@ -1,4 +1,4 @@
-type Field = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+import type { FormField } from "../types/forms"
 
 const messages = {
   valueMissing: {
@@ -19,7 +19,7 @@ const messages = {
   tooShort: { default: "Es demasiado corto." },
 } as const
 
-const messageFor = (field: Field) => {
+const messageFor = (field: FormField) => {
   const validity = field.validity
   if (validity.valueMissing) {
     if (field instanceof HTMLInputElement && field.type === "checkbox") {
@@ -49,12 +49,12 @@ const messageFor = (field: Field) => {
   return ""
 }
 
-const errorElementFor = (field: Field) => {
+const errorElementFor = (field: FormField) => {
   const id = field.getAttribute("aria-describedby") ?? `${field.id}-error`
   return document.getElementById(id)
 }
 
-const showError = (field: Field) => {
+const showError = (field: FormField) => {
   const message = messageFor(field)
   const element = errorElementFor(field)
   if (!element) return
@@ -64,7 +64,7 @@ const showError = (field: Field) => {
   field.setAttribute("aria-invalid", message ? "true" : "false")
 }
 
-const clearError = (field: Field) => {
+const clearError = (field: FormField) => {
   const element = errorElementFor(field)
   if (element) element.dataset.visible = "false"
   field.setAttribute("aria-invalid", "false")
@@ -73,7 +73,7 @@ const clearError = (field: Field) => {
 export const setupInlineValidation = (form: HTMLFormElement) => {
   form.setAttribute("novalidate", "")
   const fields = Array.from(
-    form.querySelectorAll<Field>("input, select, textarea")
+    form.querySelectorAll<FormField>("input, select, textarea")
   )
 
   fields.forEach((field) => {
