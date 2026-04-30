@@ -2,6 +2,7 @@
 interface Props {
   href?: string
   variant?: "brand"
+  size?: "md" | "lg"
   type?: "button" | "submit" | "reset"
   class?: string
 }
@@ -9,16 +10,21 @@ interface Props {
 const {
   href,
   variant = "brand",
+  size = "md",
   type = "button",
   class: className = "",
 } = Astro.props
 
 const base =
-  "inline-flex items-center justify-center rounded-sm px-6 py-2 text-md font-semibold leading-tight transition-colors"
+  "inline-flex items-center justify-center rounded-sm font-semibold transition-colors"
+const sizes = {
+  md: "px-6 py-2 text-md leading-tight",
+  lg: "w-full px-0 py-4 text-lg leading-snug",
+}
 const variants = {
   brand: "bg-brand text-surface hover:bg-brand-hover",
 }
-const classes = [base, variants[variant], className]
+const classes = [base, sizes[size], variants[variant], className]
 ---
 
 {

@@ -1,0 +1,33 @@
+---
+import { Image } from "astro:assets"
+import type { ImageMetadata } from "astro"
+
+interface Props {
+  id: string
+  name: string
+  value: string
+  label: string
+  icons: ImageMetadata[]
+  checked?: boolean
+}
+
+const { id, name, value, label, icons, checked } = Astro.props
+---
+
+<label
+  for={id}
+  class="flex cursor-pointer flex-col items-center justify-center gap-2.5 rounded-sm border border-border-soft p-3 text-md font-semibold text-ink transition-colors hover:border-brand has-[:checked]:border-brand has-[:checked]:bg-brand-tint"
+>
+  <input
+    id={id}
+    type="radio"
+    name={name}
+    value={value}
+    checked={checked}
+    class="sr-only"
+  />
+  <span class="flex items-center gap-1">
+    {icons.map((icon) => <Image src={icon} alt="" class="h-7 w-auto" />)}
+  </span>
+  <span class="leading-none">{label}</span>
+</label>

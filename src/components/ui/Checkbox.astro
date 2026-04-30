@@ -1,0 +1,40 @@
+---
+interface Props {
+  id: string
+  name?: string
+  required?: boolean
+  class?: string
+}
+
+const { id, name, required, class: className = "" } = Astro.props
+---
+
+<label
+  for={id}
+  class:list={["flex items-center gap-3 text-xs leading-tight text-text", className]}
+>
+  <span class="relative inline-flex h-4 w-4 shrink-0">
+    <input
+      id={id}
+      name={name ?? id}
+      type="checkbox"
+      required={required}
+      class="peer h-4 w-4 cursor-pointer appearance-none rounded-xs border border-border bg-surface checked:border-brand checked:bg-brand md:rounded-full"
+    />
+    <svg
+      class="pointer-events-none absolute inset-0 m-auto hidden h-3 w-3 text-surface peer-checked:block"
+      viewBox="0 0 12 12"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M2.5 6.5L5 9l4.5-5"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  </span>
+  <span><slot /></span>
+</label>

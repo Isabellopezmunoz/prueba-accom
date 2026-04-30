@@ -1,0 +1,137 @@
+---
+interface Option {
+  value: string
+  label: string
+}
+
+interface Props {
+  id: string
+  label: string
+  options: Option[]
+  placeholder?: string
+  required?: boolean
+  name?: string
+  class?: string
+}
+
+const {
+  id,
+  label,
+  options,
+  placeholder = "Selecciona una opción",
+  required,
+  name,
+  class: className = "",
+} = Astro.props
+---
+
+<div class:list={["flex flex-col gap-2", className]}>
+  <label for={`${id}-trigger`} class="text-base font-semibold text-ink">
+    {label}
+    {required && <span aria-hidden="true">*</span>}
+  </label>
+
+  <div class="relative" data-select>
+    <input type="hidden" id={id} name={name ?? id} required={required} />
+
+    <button
+      id={`${id}-trigger`}
+      type="button"
+      aria-haspopup="listbox"
+      aria-expanded="false"
+      aria-controls={`${id}-list`}
+      class="flex w-full items-center justify-between rounded-sm border border-border-soft bg-surface-tint px-3 py-3 text-left text-base text-text-muted transition-colors hover:border-brand focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
+      data-select-trigger
+      data-placeholder={placeholder}
+    >
+      <span data-select-value>{placeholder}</span>
+      <svg
+        class="text-text-muted transition-transform"
+        width="12"
+        height="6"
+        viewBox="0 0 12 6"
+        fill="none"
+        aria-hidden="true"
+        data-select-chevron
+      >
+        <path
+          d="M1 1l5 4 5-4"
+          stroke="currentColor"
+          stroke-width="1.575"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </button>
+
+    <ul
+      id={`${id}-list`}
+      role="listbox"
+      tabindex="-1"
+      aria-labelledby={`${id}-trigger`}
+      class="absolute left-0 right-0 top-full z-20 mt-1 hidden max-h-60 overflow-auto rounded-sm border border-border-soft bg-surface py-1 shadow-md"
+      data-select-list
+    >
+      {
+        options.map((opt) => (
+          <li
+            role="option"
+            data-value={opt.value}
+            tabindex="0"
+            class="cursor-pointer px-3 py-2 text-base text-ink transition-colors hover:bg-brand-tint hover:text-brand aria-selected:bg-brand-tint aria-selected:text-brand"
+          >
+            {opt.label}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-select]").forEach((root) => {
+    const trigger = root.querySelector<HTMLButtonElement>(
+      "[data-select-trigger]"
+    )
+    const list = root.querySelector<HTMLUListElement>("[data-select-list]")
+    const valueEl = root.querySelector<HTMLSpanElement>("[data-select-value]")
+    const chevron = root.querySelector<SVGElement>("[data-select-chevron]")
+    const hidden = root.querySelector<HTMLInputElement>("input[type=hidden]")
+    if (!trigger || !list || !valueEl || !chevron || !hidden) return
+
+    const setOpen = (open: boolean) => {
+      list.classList.toggle("hidden", !open)
+      trigger.setAttribute("aria-expanded", String(open))
+      chevron.style.transform = open ? "rotate(180deg)" : ""
+    }
+
+    trigger.addEventListener("click", () => {
+      const open = list.classList.contains("hidden")
+      setOpen(open)
+    })
+
+    list.querySelectorAll<HTMLLIElement>("[role=option]").forEach((opt) => {
+      opt.addEventListener("click", () => {
+        list.querySelectorAll("[role=option]").forEach((o) =>
+          o.removeAttribute("aria-selected")
+        )
+        opt.setAttribute("aria-selected", "true")
+        valueEl.textContent = opt.textContent
+        valueEl.classList.remove("text-text-muted")
+        valueEl.classList.add("text-ink")
+        trigger.classList.remove("text-text-muted")
+        trigger.classList.add("text-ink")
+        hidden.value = opt.dataset.value ?? ""
+        setOpen(false)
+      })
+    })
+
+    document.addEventListener("click", (e) => {
+      if (!root.contains(e.target as Node)) setOpen(false)
+    })
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") setOpen(false)
+    })
+  })
+</script>

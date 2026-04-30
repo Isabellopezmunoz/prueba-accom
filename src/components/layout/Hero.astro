@@ -1,0 +1,129 @@
+---
+import electricityIcon from "../../assets/electricity.svg"
+import gasIcon from "../../assets/gas.svg"
+import verifiedIcon from "../../assets/verified-badge.svg"
+import { Image } from "astro:assets"
+import Badge from "../ui/Badge.astro"
+import Button from "../ui/Button.astro"
+import Checkbox from "../ui/Checkbox.astro"
+import Input from "../ui/Input.astro"
+import IntentButton from "../ui/IntentButton.astro"
+import Select from "../ui/Select.astro"
+
+const consumptionOptions = [
+  { value: "morning", label: "Por la mañana" },
+  { value: "afternoon", label: "Por la tarde" },
+  { value: "night", label: "Por la noche" },
+  { value: "all-day", label: "Durante todo el día" },
+]
+---
+
+<section
+  class="relative overflow-hidden px-4 pb-5 pt-2.5 md:px-8 md:py-11.25"
+>
+  <div class="grid gap-5 md:grid-cols-[1fr_446px] md:gap-0 md:items-start">
+    <div class="flex flex-col gap-5 pb-4 md:max-w-192.5 md:gap-6 md:pb-4">
+      <div class="self-start">
+        <Badge>
+          <span class="block md:inline">Comparador de energía</span>
+          <span class="hidden md:inline">:</span>
+          <span class="block md:inline">¡Ahorro garantizado!</span>
+        </Badge>
+      </div>
+
+      <h1
+        class="text-5xl font-extrabold leading-[1.1] text-ink md:text-[64px] md:leading-none"
+      >
+        Expertos en ahorro: <span class="text-brand">Paga menos en tu factura</span> en solo unos minutos.
+      </h1>
+
+      <p class="text-xl font-normal leading-relaxed text-text">
+        Analizamos tu factura para encontrar una tarifa con la que pagarás
+        menos. Sin trucos, sin permanencia.
+      </p>
+
+      <p class="flex items-center gap-3 text-md font-medium text-text">
+        <Image src={verifiedIcon} alt="" class="shrink-0" />
+        Gestión 100% gratuita
+      </p>
+    </div>
+
+    <div class="relative">
+      <div
+        aria-hidden="true"
+        class="pointer-events-none absolute -top-20 left-1/2 -z-10 h-96 w-96 -translate-x-1/2 rounded-full bg-brand/5 blur-3xl"
+      ></div>
+
+      <form
+        class="relative flex flex-col gap-6 rounded-md border border-border-faint bg-surface p-4 shadow-hero md:p-8 md:pb-12"
+      >
+        <h3 class="text-xl font-bold leading-snug text-ink md:text-2xl">
+          Calcula tu mejor tarifa
+        </h3>
+
+        <fieldset class="flex flex-col gap-3">
+          <legend class="mb-3 text-base font-semibold text-ink">
+            ¿En qué factura quieres ahorrar?
+          </legend>
+          <div class="grid grid-cols-3 gap-3">
+            <IntentButton
+              id="intent-luz"
+              name="intent"
+              value="luz"
+              label="Luz"
+              icons={[electricityIcon]}
+            />
+            <IntentButton
+              id="intent-gas"
+              name="intent"
+              value="gas"
+              label="Gas"
+              icons={[gasIcon]}
+            />
+            <IntentButton
+              id="intent-luz-gas"
+              name="intent"
+              value="luz-gas"
+              label="Luz+gas"
+              icons={[electricityIcon, gasIcon]}
+            />
+          </div>
+        </fieldset>
+
+        <Select
+          id="consumption"
+          label="¿Cuándo es tu mayor consumo?"
+          options={consumptionOptions}
+          placeholder="Selecciona tu consumo"
+        />
+
+        <div class="grid grid-cols-2 gap-4">
+          <Input
+            id="phone"
+            label="Teléfono"
+            type="tel"
+            placeholder="Teléfono"
+            inputmode="tel"
+            autocomplete="tel"
+            required
+          />
+          <Input
+            id="postal-code"
+            label="Código postal"
+            type="text"
+            placeholder="C.P"
+            inputmode="numeric"
+            pattern="[0-9]{5}"
+            autocomplete="postal-code"
+          />
+        </div>
+
+        <Checkbox id="privacy" required>
+          He leído y acepto la <a href="#" class="underline">Política de Privacidad</a>
+        </Checkbox>
+
+        <Button type="submit" size="lg">Calcular</Button>
+      </form>
+    </div>
+  </div>
+</section>
