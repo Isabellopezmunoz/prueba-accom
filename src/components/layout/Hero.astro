@@ -55,6 +55,7 @@ const consumptionOptions = [
       ></div>
 
       <form
+        id="hero-calculator-form"
         class="relative flex flex-col gap-6 rounded-md border border-border-faint bg-surface p-4 shadow-hero md:p-8 md:pb-12"
       >
         <h3 class="text-xl font-bold leading-snug text-ink md:text-2xl">
@@ -119,7 +120,7 @@ const consumptionOptions = [
         </div>
 
         <Checkbox id="privacy" required>
-          He leído y acepto la <a href="/privacy-policy" class="underline"><span class="md:hidden">Política de Privacidad</span><span class="hidden md:inline">Política de Protección de Datos</span></a>
+          He leído y acepto la <a href="/politica-de-privacidad" class="underline"><span class="md:hidden">Política de Privacidad</span><span class="hidden md:inline">Política de Protección de Datos</span></a>
         </Checkbox>
 
         <Button type="submit" size="lg">Calcular</Button>
@@ -127,3 +128,46 @@ const consumptionOptions = [
     </div>
   </div>
 </section>
+
+<script>
+  import { setupInlineValidation } from "../../scripts/inline-validation"
+
+  const form = document.getElementById("hero-calculator-form") as HTMLFormElement | null
+  if (form) {
+    setupInlineValidation(form)
+
+    let lastResultStatus: "success" | "error" | null = null
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault()
+      const modal = document.getElementById("contact-modal")
+      if (!modal) return
+
+      const status: "success" | "error" =
+        Math.random() < 0.8 ? "success" : "error"
+      lastResultStatus = status
+      form.dataset.active = "true"
+      modal.dispatchEvent(
+        new CustomEvent("modal:open-result", {
+          detail: { status, source: "hero" },
+        })
+      )
+      modal.dispatchEvent(new Event("modal:open"))
+    })
+
+    const modal = document.getElementById("contact-modal")
+
+    modal?.addEventListener("modal:closed", () => {
+      if (form.dataset.active !== "true") return
+      if (lastResultStatus === "success") form.reset()
+      lastResultStatus = null
+      delete form.dataset.active
+    })
+
+    modal?.addEventListener("modal:retry", () => {
+      if (form.dataset.active !== "true") return
+      modal.dispatchEvent(new Event("modal:close"))
+      form.requestSubmit()
+    })
+  }
+</script>

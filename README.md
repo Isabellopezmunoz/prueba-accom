@@ -38,9 +38,34 @@ Cuatro cards de tarifa (3 de luz + 1 dual destacada como "TOP VENTAS"), con kick
 ### Bloque 3 — Selectores de oferta + Calculadora
 Sección "Compara nuestras ofertas en energía" con tres tarjetas de selección (Solo Luz / Luz+Gas / Solo Gas). La tarjeta dual lleva el badge "Recomendado". Es la sección a la que apunta el botón "Ofertas" del header.
 
-> ⚠️ La calculadora paso a paso está pendiente de implementar.
+La calculadora vive en su propia página `/calcula-tu-tarifa`, accesible desde:
+- "Calcula tu tarifa" del Header (desktop y panel mobile).
+- "Calcula tu tarifa" de cada PricingCard.
+- Cualquiera de las tres cards de la sección de selectores.
+- El botón "Calcular" del formulario del Hero (al hacer submit redirige al flujo completo).
 
-Calculadora con la interactividad descrita en el diseño: avanzar, retroceder y mostrar un mensaje final tras dejar los datos. Las tres opciones de la primera pregunta siguen el mismo flujo.
+Cuatro pasos secuenciales (sólo se ve el paso activo a la vez):
+
+| Paso | Pregunta | Tipo de input | Avance |
+| :--- | :------- | :------------ | :----- |
+| 1 | "¿Qué quieres empezar a ahorrar hoy?" | Radio (Solo Luz / Luz+Gas / Solo Gas) | Automático al elegir |
+| 2 | "¿Qué electrodomésticos usas?" | Multi-select (6 opciones, grid 2 cols mobile / 3 cols desktop) | Botones Atrás / Siguiente |
+| 3 | "¿Cuándo haces un mayor uso de la energía?" | Radio (Por la mañana / Tarde-Noche / Todo el día) | Automático al elegir |
+| 4 | "Estamos calculando tu ahorro..." | Teléfono + código postal + checkbox de privacidad | Botón Calcular (con validación nativa) |
+
+Al pulsar "Calcular" se reusa el `ContactModal` para mostrar el resultado: simulamos el envío con `Math.random() < 0.8` (80% éxito / 20% error). El mismo modal y los mismos copys de éxito/error que el formulario "Te llamamos" del modal de contacto, para no duplicar pantallas de confirmación.
+
+La página tiene un layout flex (header + main `flex-1` + footer) para que ocupe siempre todo el viewport sin scroll innecesario.
+
+#### Mejoras de UX implementadas
+
+Pequeños extras propuestos como mejora de la experiencia de usuario más allá del Figma original:
+
+1. **Modal de éxito → redirige al home al cerrar.** No tiene sentido dejar a la persona en el último paso de la calculadora con los datos rellenos después de un envío exitoso. Al cerrar el modal de éxito redirige a `/`.
+
+2. **Modal de error → permite reintentar sin perder datos.** En caso de error, al cerrar la persona se queda en el paso 4 con el formulario tal cual lo tenía. Para reducir la fricción, el propio modal de error muestra un botón **"Reintentar"** que cierra y reenvía el formulario automáticamente, y un teléfono de soporte (`900 000 000`) como fallback comercial. *Estos extras del modal de error son específicos del flujo de la calculadora* (en el modal de contacto del header / PricingCard no aparecen, porque el form tiene un único campo y reintentar es trivial). La diferenciación se hace pasando `source: "calculator"` en el evento `modal:open-result`; los elementos extra van con `data-source-only="calculator"` y solo se muestran cuando coincide.
+
+3. **Persistencia del estado en `sessionStorage`.** Si la persona refresca la página o cierra el navegador antes de terminar, recuperamos el paso en el que estaba y los datos ya rellenados (suministro, electrodomésticos, franja horaria, teléfono, CP, checkbox). Limpiamos el storage al confirmar el envío con éxito. Usamos `sessionStorage` (no `localStorage`) por privacidad: la información desaparece al cerrar la pestaña.
 
 ### Footer
 Footer con logo y enlaces a las páginas legales (`Aviso Legal`, `Política de Privacidad`, `Cookies`).
@@ -50,7 +75,7 @@ Footer con logo y enlaces a las páginas legales (`Aviso Legal`, `Política de P
 - Enlaces con el mismo patrón de hover/active que el header (color `text-text/80` → `text-brand`).
 
 ### Páginas legales
-Tres páginas estáticas (`/legal-notice`, `/privacy-policy`, `/cookies`) generadas a partir de un componente compartido `LegalPage.astro` que recibe `title`, `intro`, `updatedAt` y un array de `sections`. Reutilizan `Header`, `Footer` y `ContactModal`.
+Tres páginas estáticas (`/aviso-legal`, `/politica-de-privacidad`, `/cookies`) generadas a partir de un componente compartido `LegalPage.astro` que recibe `title`, `intro`, `updatedAt` y un array de `sections`. Reutilizan `Header`, `Footer` y `ContactModal`.
 
 Los copys son inventados pero coherentes con el tono de la landing ("comparador", "sin trucos, sin permanencia", etc.).
 
@@ -58,6 +83,7 @@ Los copys son inventados pero coherentes con el tono de la landing ("comparador"
 Modal accesible reutilizable que se dispara desde:
 - "Contactar" del header (desktop y panel mobile).
 - "Contratar" de cada PricingCard.
+- "Calcular" del paso 4 de la calculadora (el modal abre directamente en la vista de éxito o error en lugar de la vista de formulario).
 
 Tres estados internos:
 
@@ -85,7 +111,7 @@ Durante la maquetación detecté algunas inconsistencias entre el viewport mobil
 - **Hero mobile**: "Política de Privacidad".
 - **Hero desktop**: "Política de Protección de Datos".
 - **Modal de contacto**: "política de privacidad" (en minúsculas).
-- **Implementación**: dos `<span>` con `md:hidden` / `hidden md:inline` para alternar el copy según viewport. El `href` apunta siempre a la misma página (`/privacy-policy`).
+- **Implementación**: dos `<span>` con `md:hidden` / `hidden md:inline` para alternar el copy según viewport. El `href` apunta siempre a la misma página (`/politica-de-privacidad`).
 - En un caso real preguntaría qué término prefiere legal/marca y unificaría — son dos conceptos distintos en RGPD aunque coloquialmente se usen como sinónimos.
 
 ### 3. Iconos de los selectores de suministro distintos según viewport
@@ -98,6 +124,20 @@ En la sección "Compara nuestras ofertas en energía", los iconos de las tarjeta
 ### 4. Destino del enlace "Ofertas" del header
 La sección con id `#ofertas` (a la que apunta el botón "Ofertas" del header) es la que titula "Compara nuestras ofertas en energía" (selectores), no la de tarjetas de tarifas, porque su copy literal habla de "ofertas". El scroll a esa sección se hace de forma suave (`scroll-behavior: smooth` global) y la sección lleva `scroll-mt-24` para que el header sticky no tape el título al llegar.
 - En un caso real validaría con producto a qué espera la persona usuaria que la lleve ese enlace.
+
+### 5. Border-radius de las cards de electrodomésticos
+En el paso 2 de la calculadora (`/calcula-tu-tarifa`), las cards de electrodomésticos en el Figma vienen con `border-radius` distintos según la posición: las de la izquierda con sólo las esquinas derechas redondeadas, otras con todas las esquinas, etc. Lo interpreté como un despiste del diseño (no hay un patrón visual que justifique esa diferencia: no son cards "agrupadas" por una hoja contínua) y unifiqué todas a `rounded-md` (12px en las 4 esquinas) para mantener consistencia con el resto de cards de la landing.
+- En un caso real lo confirmaría con la persona de diseño antes de aplicar el cambio.
+
+### 6. URLs en español
+Las rutas públicas (`/calcula-tu-tarifa`, `/aviso-legal`, `/politica-de-privacidad`, `/cookies`) están en español aunque el resto del código (componentes, props, archivos) esté en inglés. Decisión consciente porque la landing es de captación: las URLs en idioma nativo mejoran el Quality Score en Google Ads / Meta (mejor match anuncio↔landing → CPC más bajo), suben el CTR orgánico (URL legible en SERP), y dan mejor experiencia al compartir el enlace en WhatsApp o redes.
+- Slugs sin tildes (`politica-de-privacidad`, no `política-de-privacidad`) para evitar problemas de encoding (`%C3%AD` en barras de navegador).
+- En un proyecto puramente interno o con alcance internacional desde el inicio, optaría por URLs en inglés.
+
+### 7. Labels de los inputs del paso 4 de la calculadora
+En el Figma, los labels "TELÉFONO DE CONTACTO" y "CÓDIGO POSTAL" del paso 4 aparecen en mayúsculas. El resto de inputs de la landing (Hero, Modal de contacto) usan labels capitalizados normales. Decidí mantenerlos en el mismo formato que el resto del proyecto ("Teléfono de contacto" / "Código postal") por consistencia: los labels deberían comportarse igual en todos los formularios de la landing.
+- El asterisco de obligatoriedad sí lo mantengo en "Teléfono de contacto" (es campo requerido) y lo retiro de "Código postal" (opcional).
+- En un caso real preguntaría a la persona de diseño qué formato prefiere para los labels y lo unificaría.
 
 ## Cómo ejecutar el proyecto
 
@@ -127,8 +167,9 @@ Desde la raíz del proyecto:
 │   │   └── Layout.astro
 │   ├── pages/
 │   │   ├── index.astro
-│   │   ├── legal-notice.astro
-│   │   ├── privacy-policy.astro
+│   │   ├── calculator-steps.astro
+│   │   ├── aviso-legal.astro
+│   │   ├── politica-de-privacidad.astro
 │   │   └── cookies.astro
 │   └── styles/
 │       └── global.css

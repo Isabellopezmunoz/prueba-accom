@@ -5,6 +5,7 @@ import phone from "../../assets/icons/phone.svg"
 import checkLg from "../../assets/icons/check-circle-lg.svg"
 import errorTriangle from "../../assets/icons/error-triangle.svg"
 import Checkbox from "../ui/Checkbox.astro"
+import FieldError from "../ui/FieldError.astro"
 import Modal from "../ui/Modal.astro"
 ---
 
@@ -52,33 +53,38 @@ import Modal from "../ui/Modal.astro"
     </div>
 
     <form class="flex flex-col gap-4" data-contact-submit>
-      <div class="flex flex-col gap-3 md:flex-row">
-        <label class="relative flex-1">
-          <span class="sr-only">Tu número de teléfono</span>
-          <Image
-            src={phone}
-            alt=""
-            class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2"
-          />
-          <input
-            type="tel"
-            name="phone"
-            inputmode="tel"
-            autocomplete="tel"
-            required
-            placeholder="Tu número de teléfono"
-            class="w-full rounded-sm border border-border-soft bg-surface px-9 py-3 text-base text-ink placeholder:text-text-muted focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
-          />
-        </label>
-        <button
-          type="submit"
-          class="inline-flex items-center justify-center rounded-sm bg-brand px-6 py-3 text-md font-bold text-surface transition-colors hover:bg-brand-hover"
-        >
-          Llamadme
-        </button>
+      <div class="flex flex-col gap-1.5">
+        <div class="flex flex-col gap-3 md:flex-row">
+          <label class="relative flex-1">
+            <span class="sr-only">Tu número de teléfono</span>
+            <Image
+              src={phone}
+              alt=""
+              class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2"
+            />
+            <input
+              id="contact-phone"
+              type="tel"
+              name="phone"
+              inputmode="tel"
+              autocomplete="tel"
+              required
+              placeholder="Tu número de teléfono"
+              aria-describedby="contact-phone-error"
+              class="w-full rounded-sm border border-border-soft bg-surface px-9 py-3 text-base text-ink placeholder:text-text-muted focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 aria-invalid:border-brand"
+            />
+          </label>
+          <button
+            type="submit"
+            class="inline-flex items-center justify-center rounded-sm bg-brand px-6 py-3 text-md font-bold text-surface transition-colors hover:bg-brand-hover"
+          >
+            Llamadme
+          </button>
+        </div>
+        <FieldError id="contact-phone-error" />
       </div>
       <Checkbox id="contact-privacy" required shape="square">
-        He leído y acepto la <a href="/privacy-policy" class="text-brand underline">política de privacidad</a>.
+        He leído y acepto la <a href="/politica-de-privacidad" class="text-brand underline">política de privacidad</a>.
       </Checkbox>
     </form>
   </div>
@@ -103,7 +109,7 @@ import Modal from "../ui/Modal.astro"
   <div
     data-contact-error
     hidden
-    class="flex flex-col items-center gap-6 px-8 py-28 text-center"
+    class="flex flex-col items-center gap-6 px-8 py-16 text-center"
   >
     <span
       class="inline-flex h-20 w-20 items-center justify-center rounded-full bg-error-soft"
@@ -115,10 +121,24 @@ import Modal from "../ui/Modal.astro"
       Hemos tenido un problema técnico al enviar tus datos.<br />
       Por favor, inténtalo de nuevo.
     </p>
+    <button
+      type="button"
+      data-contact-retry
+      data-source-only="calculator hero"
+      hidden
+      class="inline-flex cursor-pointer items-center justify-center rounded-sm bg-brand px-10 py-4 text-lg font-bold text-surface shadow-cta transition-colors hover:bg-brand-hover"
+    >
+      Reintentar
+    </button>
+    <p data-source-only="calculator hero" hidden class="text-sm text-text-subtle">
+      ¿Prefieres que te llamemos? <a href="tel:900000000" class="font-semibold text-brand">900 000 000</a>
+    </p>
   </div>
 </Modal>
 
 <script>
+  import { setupInlineValidation } from "../../scripts/inline-validation"
+
   const modal = document.getElementById("contact-modal")
   if (modal) {
     const formView = modal.querySelector<HTMLElement>("[data-contact-form]")
@@ -126,6 +146,8 @@ import Modal from "../ui/Modal.astro"
     const errorView = modal.querySelector<HTMLElement>("[data-contact-error]")
     const form = modal.querySelector<HTMLFormElement>("[data-contact-submit]")
     const content = modal.querySelector<HTMLElement>("[data-modal-content]")
+
+    if (form) setupInlineValidation(form)
 
     const showOnly = (view: HTMLElement | null) => {
       ;[formView, successView, errorView].forEach((current) => {
@@ -140,6 +162,24 @@ import Modal from "../ui/Modal.astro"
       const success = Math.random() < 0.8
       showOnly(success ? successView : errorView)
     })
+
+    modal.addEventListener("modal:open-result", (event) => {
+      const detail = (event as CustomEvent<{
+        status: "success" | "error"
+        source?: string
+      }>).detail
+      modal.querySelectorAll<HTMLElement>("[data-source-only]").forEach((el) => {
+        const allowed = (el.dataset.sourceOnly ?? "").split(" ")
+        el.hidden = !detail?.source || !allowed.includes(detail.source)
+      })
+      showOnly(detail?.status === "error" ? errorView : successView)
+    })
+
+    modal
+      .querySelector<HTMLButtonElement>("[data-contact-retry]")
+      ?.addEventListener("click", () => {
+        modal.dispatchEvent(new Event("modal:retry"))
+      })
 
     modal.addEventListener("modal:closed", () => {
       form?.reset()

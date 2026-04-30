@@ -1,0 +1,35 @@
+---
+interface Props {
+  id: string
+  class?: string
+}
+
+const { id, class: className = "" } = Astro.props
+---
+
+<p
+  id={id}
+  data-field-error
+  hidden
+  role="alert"
+  class:list={[
+    "flex items-center gap-1.5 text-xs font-medium leading-tight text-text",
+    className,
+  ]}
+>
+  <svg
+    class="h-3.5 w-3.5 shrink-0 text-brand"
+    viewBox="0 0 16 16"
+    fill="none"
+    aria-hidden="true"
+  >
+    <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5" />
+    <path
+      d="M8 7v4M8 4.5v.5"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linecap="round"
+    />
+  </svg>
+  <span data-field-error-text></span>
+</p>

@@ -1,4 +1,7 @@
 ---
+import type { ImageMetadata } from "astro"
+import FieldError from "./FieldError.astro"
+
 interface Props {
   id: string
   label: string
@@ -9,6 +12,7 @@ interface Props {
   inputmode?: "numeric" | "tel" | "text" | "email"
   pattern?: string
   autocomplete?: string
+  icon?: ImageMetadata
   class?: string
 }
 
@@ -22,8 +26,11 @@ const {
   inputmode,
   pattern,
   autocomplete,
+  icon,
   class: className = "",
 } = Astro.props
+
+const errorId = `${id}-error`
 ---
 
 <div class:list={["flex flex-col gap-1", className]}>
@@ -31,15 +38,31 @@ const {
     {label}
     {required && <span aria-hidden="true">*</span>}
   </label>
-  <input
-    id={id}
-    type={type}
-    name={name ?? id}
-    placeholder={placeholder}
-    required={required}
-    inputmode={inputmode}
-    pattern={pattern}
-    autocomplete={autocomplete}
-    class="rounded-sm border border-border-soft bg-surface-tint px-2.5 py-3 text-base text-ink placeholder:text-text-muted focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
-  />
+  <div class="relative">
+    {
+      icon && (
+        <img
+          src={icon.src}
+          alt=""
+          class="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2"
+        />
+      )
+    }
+    <input
+      id={id}
+      type={type}
+      name={name ?? id}
+      placeholder={placeholder}
+      required={required}
+      inputmode={inputmode}
+      pattern={pattern}
+      autocomplete={autocomplete}
+      aria-describedby={errorId}
+      class:list={[
+        "w-full rounded-sm border border-border-soft bg-surface-tint py-3 text-base text-ink placeholder:text-text-muted focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 aria-invalid:border-brand",
+        icon ? "pl-12 pr-4" : "px-2.5",
+      ]}
+    />
+  </div>
+  <FieldError id={errorId} />
 </div>

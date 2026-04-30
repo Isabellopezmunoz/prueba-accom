@@ -29,7 +29,7 @@ const { id, labelledby, class: className = "" } = Astro.props
   >
     <button
       type="button"
-      class="absolute right-4 top-4 inline-flex h-8 w-8 items-center justify-center rounded-full text-text transition-colors hover:bg-surface-tint"
+      class="absolute right-4 top-4 inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-text transition-colors hover:bg-surface-tint"
       aria-label="Cerrar"
       data-modal-close
     >
@@ -74,5 +74,8 @@ const { id, labelledby, class: className = "" } = Astro.props
         open()
       })
     )
+
+    modal.addEventListener("modal:open", open)
+    modal.addEventListener("modal:close", close)
   })
 </script>

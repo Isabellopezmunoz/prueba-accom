@@ -81,6 +81,7 @@ html {
   --shadow-md: 0 10px 13.125px -3px #0000001a;
   --shadow-hero: 0 32px 56px -12px #121c2a0f;
   --shadow-brand: 0 0 20px #314ee440;
+  --shadow-cta: inset 0 2px 0 0 #ffffff33;
   --shadow-focus: 0 0 0 2px #004ac6;
 
   /* Layout */

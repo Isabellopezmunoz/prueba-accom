@@ -1,0 +1,38 @@
+---
+interface Props {
+  direction: "left" | "right"
+  class?: string
+}
+
+const { direction, class: className = "h-4 w-4" } = Astro.props
+---
+
+{
+  direction === "right" ? (
+    <svg
+      class={className}
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <path
+        d="M12.175 9H0V7H12.175L6.575 1.4L8 0L16 8L8 16L6.575 14.6L12.175 9Z"
+        fill="currentColor"
+      />
+    </svg>
+  ) : (
+    <svg
+      class={className}
+      viewBox="0 0 14 14"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <path
+        d="M3.1875 7.5L7.85417 12.1667L6.66667 13.3333L0 6.66667L6.66667 0L7.85417 1.16667L3.1875 5.83333H13.3333V7.5H3.1875Z"
+        fill="currentColor"
+      />
+    </svg>
+  )
+}

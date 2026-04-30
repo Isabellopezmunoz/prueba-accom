@@ -1,4 +1,6 @@
 ---
+import FieldError from "./FieldError.astro"
+
 interface Props {
   id: string
   name?: string
@@ -20,37 +22,43 @@ const shapeClass = {
   square: "rounded-xs",
   circle: "rounded-full",
 }[shape]
+
+const errorId = `${id}-error`
 ---
 
-<label
-  for={id}
-  class:list={["flex items-center gap-3 text-xs leading-tight text-text", className]}
->
-  <span class="relative inline-flex h-4 w-4 shrink-0">
-    <input
-      id={id}
-      name={name ?? id}
-      type="checkbox"
-      required={required}
-      class:list={[
-        "peer h-4 w-4 cursor-pointer appearance-none border border-border bg-surface checked:border-brand checked:bg-brand",
-        shapeClass,
-      ]}
-    />
-    <svg
-      class="pointer-events-none absolute inset-0 m-auto hidden h-3 w-3 text-surface peer-checked:block"
-      viewBox="0 0 12 12"
-      fill="none"
-      aria-hidden="true"
-    >
-      <path
-        d="M2.5 6.5L5 9l4.5-5"
-        stroke="currentColor"
-        stroke-width="1.75"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+<div class:list={["flex flex-col gap-1.5", className]}>
+  <label
+    for={id}
+    class="flex items-center gap-3 text-xs leading-tight text-text"
+  >
+    <span class="relative inline-flex h-4 w-4 shrink-0">
+      <input
+        id={id}
+        name={name ?? id}
+        type="checkbox"
+        required={required}
+        aria-describedby={errorId}
+        class:list={[
+          "peer h-4 w-4 cursor-pointer appearance-none border border-border bg-surface checked:border-brand checked:bg-brand aria-invalid:border-brand",
+          shapeClass,
+        ]}
       />
-    </svg>
-  </span>
-  <span><slot /></span>
-</label>
+      <svg
+        class="pointer-events-none absolute inset-0 m-auto hidden h-3 w-3 text-surface peer-checked:block"
+        viewBox="0 0 12 12"
+        fill="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M2.5 6.5L5 9l4.5-5"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </span>
+    <span><slot /></span>
+  </label>
+  <FieldError id={errorId} class="pl-7" />
+</div>

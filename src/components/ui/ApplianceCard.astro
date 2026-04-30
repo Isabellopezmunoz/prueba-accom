@@ -1,0 +1,32 @@
+---
+import type { ImageMetadata } from "astro"
+
+interface Props {
+  id: string
+  name: string
+  value: string
+  label: string
+  icon: ImageMetadata
+}
+
+const { id, name, value, label, icon } = Astro.props
+---
+
+<label
+  for={id}
+  class="group relative flex h-35 cursor-pointer flex-col items-center justify-center gap-2 rounded-md border border-transparent bg-surface text-center transition-all hover:border-border-soft has-checked:border-brand has-checked:ring-2 has-checked:ring-brand"
+>
+  <input
+    id={id}
+    name={name}
+    value={value}
+    type="checkbox"
+    class="sr-only"
+  />
+  <span
+    class="inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand-tint"
+  >
+    <img src={icon.src} alt="" class="h-7 w-7" />
+  </span>
+  <span class="text-xl font-bold text-ink">{label}</span>
+</label>
