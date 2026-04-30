@@ -19,10 +19,10 @@ const consumptionOptions = [
 ---
 
 <section
-  class="relative overflow-hidden px-4 pb-5 pt-3 md:px-8 md:py-11.25"
+  class="relative overflow-hidden px-4 pb-5 pt-3 md:pt-6 lg:px-8 lg:py-11.25"
 >
-  <div class="grid gap-5 md:grid-cols-[1fr_446px] md:gap-0 md:items-start">
-    <div class="flex flex-col gap-5 pb-4 md:max-w-192.5 md:gap-6 md:pb-4">
+  <div class="grid gap-5 lg:grid-cols-[1fr_446px] lg:gap-8 lg:items-start xl:gap-0">
+    <div class="flex flex-col gap-5 pb-4 lg:max-w-192.5 lg:gap-6 lg:pb-4">
       <div class="self-start">
         <Badge>
           <span class="block md:inline">Comparador de energía</span>
@@ -32,7 +32,7 @@ const consumptionOptions = [
       </div>
 
       <h1
-        class="text-5xl font-extrabold leading-[1.1] text-ink md:text-[64px] md:leading-none"
+        class="text-5xl font-extrabold leading-[1.1] text-ink lg:text-[64px] lg:leading-none"
       >
         Expertos en ahorro: <span class="text-brand">Paga menos en tu factura</span> en solo unos minutos.
       </h1>
@@ -66,7 +66,7 @@ const consumptionOptions = [
           <legend class="mb-3 text-base font-semibold text-ink">
             ¿En qué factura quieres ahorrar?
           </legend>
-          <div class="grid grid-cols-3 gap-3">
+          <div class="grid grid-cols-3 gap-2">
             <IntentButton
               id="intent-luz"
               name="intent"
@@ -106,6 +106,7 @@ const consumptionOptions = [
             placeholder="Teléfono"
             inputmode="tel"
             autocomplete="tel"
+            pattern="[+]?[0-9 ]{9,}"
             required
           />
           <Input
@@ -120,7 +121,7 @@ const consumptionOptions = [
         </div>
 
         <Checkbox id="privacy" required>
-          He leído y acepto la <a href="/politica-de-privacidad" class="underline"><span class="md:hidden">Política de Privacidad</span><span class="hidden md:inline">Política de Protección de Datos</span></a>
+          He leído y acepto la <a href="/politica-de-privacidad" class="underline"><span class="lg:hidden">Política de Privacidad</span><span class="hidden lg:inline">Política de Protección de Datos</span></a>
         </Checkbox>
 
         <Button type="submit" size="lg">Calcular</Button>

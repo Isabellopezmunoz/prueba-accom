@@ -66,7 +66,7 @@ const tabs = [
     <div
       role="tablist"
       aria-label="Tipo de tarifa"
-      class="relative mx-auto flex h-13 w-90 items-center justify-between gap-2.5 rounded-pill bg-surface px-2 py-1.5 shadow-brand md:hidden"
+      class="relative mx-auto flex h-13 w-90 items-center justify-between gap-2.5 rounded-pill bg-surface px-2 py-1.5 shadow-brand lg:hidden"
       data-pricing-tabs
     >
       <span
@@ -90,7 +90,7 @@ const tabs = [
     </div>
 
     <div
-      class="-mx-4 flex snap-x snap-mandatory items-stretch gap-4 overflow-x-auto scroll-smooth px-4 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-4 md:gap-6 md:overflow-visible md:px-0 md:pb-0"
+      class="-mx-4 flex snap-x snap-mandatory items-stretch gap-4 overflow-x-auto scroll-smooth px-4 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:mx-0 lg:grid lg:grid-cols-2 lg:gap-6 lg:overflow-visible lg:px-0 lg:pb-0 xl:grid-cols-4"
       data-pricing-track
     >
       {
@@ -99,8 +99,8 @@ const tabs = [
             data-card-tab={card.tab}
             data-desktop-only={card.desktopOnly ? "true" : undefined}
             class:list={[
-              "flex w-[85%] shrink-0 snap-center md:w-auto md:shrink",
-              card.desktopOnly && "hidden md:flex",
+              "flex w-[85%] shrink-0 snap-center lg:w-auto lg:shrink",
+              card.desktopOnly && "hidden lg:flex",
             ]}
           >
             <PricingCard {...card} />

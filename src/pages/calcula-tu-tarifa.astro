@@ -87,7 +87,7 @@ const timeOptions = [
 <Layout title="Calcula tu ahorro · Ahorrar Energía">
   <Header />
 
-  <main class="flex flex-1 items-center bg-surface-alt px-4 py-15 md:px-48 md:py-22.5">
+  <main class="flex flex-1 items-center bg-surface-alt px-4 py-15 md:px-8 md:py-20 lg:px-48 lg:py-22.5">
     <div class="mx-auto flex w-full max-w-4xl flex-col gap-9">
       <form
         id="calculator-form"
@@ -100,13 +100,13 @@ const timeOptions = [
           class="flex flex-col gap-6 [[hidden]]:hidden"
         >
           <h1
-            class="text-center text-3xl font-bold leading-tight text-ink md:text-5xl md:leading-none"
+            class="text-center text-3xl font-bold leading-tight text-ink lg:text-5xl lg:leading-none"
           >
             ¿Qué quieres empezar a ahorrar hoy?
           </h1>
           <p
             id="step-1-label"
-            class="w-full text-center text-md font-medium text-text md:text-2xl md:leading-none"
+            class="w-full text-center text-md font-medium text-text lg:text-2xl lg:leading-none"
           >
             Selecciona tu tipo de suministro para personalizar tu oferta
           </p>
@@ -136,7 +136,7 @@ const timeOptions = [
         >
           <p
             id="step-2-label"
-            class="w-full text-center text-md font-medium text-text md:text-2xl md:leading-none"
+            class="w-full text-center text-md font-medium text-text lg:text-2xl lg:leading-none"
           >
             ¿Qué electrodomésticos usas?
           </p>
@@ -182,7 +182,7 @@ const timeOptions = [
         >
           <p
             id="step-3-label"
-            class="w-full text-center text-md font-medium text-text md:text-2xl md:leading-none"
+            class="w-full text-center text-md font-medium text-text lg:text-2xl lg:leading-none"
           >
             ¿Cuándo haces un mayor uso de la energía?
           </p>
@@ -225,6 +225,7 @@ const timeOptions = [
               placeholder="600 000 000"
               inputmode="tel"
               autocomplete="tel"
+              pattern="[+]?[0-9 ]{9,}"
               icon={phoneIcon}
               required
             />

@@ -10,10 +10,11 @@ const { id, class: className = "" } = Astro.props
 <p
   id={id}
   data-field-error
-  hidden
   role="alert"
   class:list={[
-    "flex items-center gap-1.5 text-xs font-medium leading-tight text-text",
+    "flex items-center gap-1.5 overflow-hidden text-xs font-medium leading-tight text-text",
+    "max-h-0 -translate-y-1 opacity-0 transition-[max-height,opacity,transform,margin-top,padding-top] duration-300 ease-out",
+    "data-[visible=true]:max-h-10 data-[visible=true]:translate-y-0 data-[visible=true]:opacity-100 data-[visible=true]:pt-1.5",
     className,
   ]}
 >

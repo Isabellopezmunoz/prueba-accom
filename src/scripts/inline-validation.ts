@@ -9,6 +9,7 @@ const messages = {
   },
   patternMismatch: {
     "postal-code": "Introduce un código postal de 5 dígitos.",
+    tel: "Introduce un teléfono válido.",
     default: "El formato no es válido.",
   },
   typeMismatch: {
@@ -33,6 +34,9 @@ const messageFor = (field: Field) => {
     if (field.getAttribute("autocomplete") === "postal-code") {
       return messages.patternMismatch["postal-code"]
     }
+    if (field instanceof HTMLInputElement && field.type === "tel") {
+      return messages.patternMismatch.tel
+    }
     return messages.patternMismatch.default
   }
   if (validity.typeMismatch) {
@@ -56,13 +60,13 @@ const showError = (field: Field) => {
   if (!element) return
   const text = element.querySelector<HTMLElement>("[data-field-error-text]")
   if (text) text.textContent = message
-  element.hidden = !message
+  element.dataset.visible = message ? "true" : "false"
   field.setAttribute("aria-invalid", message ? "true" : "false")
 }
 
 const clearError = (field: Field) => {
   const element = errorElementFor(field)
-  if (element) element.hidden = true
+  if (element) element.dataset.visible = "false"
   field.setAttribute("aria-invalid", "false")
 }
 

@@ -16,16 +16,19 @@ const { id, labelledby, class: className = "" } = Astro.props
   role="dialog"
   aria-modal="true"
   aria-labelledby={labelledby}
-  hidden
-  class="fixed inset-0 z-100 flex items-center justify-center bg-ink/60 px-4 py-8"
+  data-state="closed"
+  class="fixed inset-0 z-100 flex items-center justify-center bg-ink/60 px-4 py-8 opacity-0 transition-opacity duration-200 ease-out data-[state=closed]:pointer-events-none data-[state=open]:opacity-100"
   data-modal
 >
   <div
     class:list={[
-      "relative max-h-full w-full max-w-lg overflow-y-auto rounded-md bg-surface shadow-hero",
+      "relative max-h-full w-full max-w-lg scale-95 overflow-y-auto rounded-md bg-surface opacity-0 shadow-hero transition-[opacity,transform] duration-200 ease-out focus:outline-none",
+      "data-[state=open]:scale-100 data-[state=open]:opacity-100",
       className,
     ]}
+    data-state="closed"
     data-modal-content
+    tabindex="-1"
   >
     <button
       type="button"
@@ -45,17 +48,19 @@ const { id, labelledby, class: className = "" } = Astro.props
     const closeBtn = modal.querySelector<HTMLButtonElement>("[data-modal-close]")
     const content = modal.querySelector<HTMLElement>("[data-modal-content]")
 
+    const setState = (state: "open" | "closed") => {
+      modal.dataset.state = state
+      if (content) content.dataset.state = state
+    }
+
     const open = () => {
-      modal.hidden = false
       document.body.style.overflow = "hidden"
-      const focusable = content?.querySelector<HTMLElement>(
-        "input, button:not([data-modal-close]), select, textarea, a"
-      )
-      focusable?.focus()
+      requestAnimationFrame(() => setState("open"))
+      content?.focus()
     }
 
     const close = () => {
-      modal.hidden = true
+      setState("closed")
       document.body.style.overflow = ""
       modal.dispatchEvent(new CustomEvent("modal:closed"))
     }
@@ -65,7 +70,7 @@ const { id, labelledby, class: className = "" } = Astro.props
       if (event.target === modal) close()
     })
     document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && !modal.hidden) close()
+      if (event.key === "Escape" && modal.dataset.state === "open") close()
     })
 
     document.querySelectorAll<HTMLElement>(`[data-modal-open="${id}"]`).forEach((trigger) =>

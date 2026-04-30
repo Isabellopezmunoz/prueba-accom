@@ -4,47 +4,6 @@ html {
   scroll-behavior: smooth;
 }
 
-@utility btn-shine {
-  position: relative;
-  overflow: hidden;
-
-  &::before,
-  &::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    height: 100%;
-    transform: translateX(-100px) skew(-15deg);
-    pointer-events: none;
-  }
-
-  &::before {
-    left: 0;
-    width: 60px;
-    background: rgba(255, 255, 255, 0.5);
-    filter: blur(30px);
-    opacity: 0.5;
-  }
-
-  &::after {
-    left: 30px;
-    width: 30px;
-    background: rgba(255, 255, 255, 0.2);
-    filter: blur(5px);
-  }
-
-  &:hover::before {
-    opacity: 1;
-  }
-
-  &:hover::before,
-  &:hover::after {
-    transform: translateX(420px) skew(-15deg);
-    transition:
-      transform 1.4s cubic-bezier(0.22, 1, 0.36, 1),
-      opacity 1.4s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-}
 
 @theme {
   /* Colors */
@@ -119,9 +78,10 @@ html {
 
   /* Shadows */
   --shadow-nav: 0 1px 2px #0000000d;
-  --shadow-sm: 0 4px 5.25px -4px #0000001a;
-  --shadow-md: 0 10px 13.125px -3px #0000001a;
-  --shadow-hero: 0 32px 56px -12px #121c2a0f;
+  --shadow-sm: 0 4px 6px -4px #0000001a;
+  --shadow-md: 0 10px 15px -3px #0000001a;
+  --shadow-card: 0 4px 6px -4px #0000001a, 0 10px 15px -3px #0000001a;
+  --shadow-hero: 0 32px 64px -12px #121c2a0f;
   --shadow-brand: 0 0 20px #314ee440;
   --shadow-cta: inset 0 2px 0 0 #ffffff33;
   --shadow-focus: 0 0 0 2px #004ac6;

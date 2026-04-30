@@ -11,14 +11,14 @@ import Modal from "../ui/Modal.astro"
 
 <Modal id="contact-modal" labelledby="contact-modal-title">
   <div data-contact-form class="flex flex-col gap-7.5 p-6 md:p-10">
-    <header class="flex flex-col items-center gap-2 text-center">
+    <header class="flex flex-col items-center gap-3.75 text-center">
       <h2
         id="contact-modal-title"
-        class="text-3xl font-bold leading-tight text-ink"
+        class="text-3xl font-bold leading-9 text-ink"
       >
         Contacta con un experto
       </h2>
-      <p class="text-md text-text">
+      <p class="text-md font-normal leading-normal text-text">
         Estamos aquí para optimizar tu consumo energético.
       </p>
     </header>
@@ -47,7 +47,7 @@ import Modal from "../ui/Modal.astro"
 
     <div class="flex flex-col items-center gap-1 text-center">
       <h3 class="text-lg font-bold text-ink">O te llamamos nosotros</h3>
-      <p class="text-base font-semibold text-accent-dark">
+      <p class="text-base font-medium text-accent">
         Sin esperas y gratuito
       </p>
     </div>
@@ -68,6 +68,7 @@ import Modal from "../ui/Modal.astro"
               name="phone"
               inputmode="tel"
               autocomplete="tel"
+              pattern="[+]?[0-9 ]{9,}"
               required
               placeholder="Tu número de teléfono"
               aria-describedby="contact-phone-error"
