@@ -1,0 +1,62 @@
+---
+import { Image } from "astro:assets"
+import type { ImageMetadata } from "astro"
+
+interface Props {
+  mobileIcons: ImageMetadata[]
+  desktopIcons: ImageMetadata[]
+  title: string
+  description: string
+  recommended?: boolean
+  href?: string
+}
+
+const {
+  mobileIcons,
+  desktopIcons,
+  title,
+  description,
+  recommended = false,
+  href = "#calculadora",
+} = Astro.props
+
+const base =
+  "relative flex flex-col items-center gap-4 rounded-md bg-surface p-8 text-center transition-colors hover:border-brand md:gap-2 md:rounded-sm md:p-5"
+const border = recommended
+  ? "border-2 border-brand-soft"
+  : "border border-transparent md:border-border-soft"
+---
+
+<a href={href} class:list={[base, border]}>
+  {
+    recommended && (
+      <span
+        class="absolute -top-2.5 left-1/2 inline-flex -translate-x-1/2 items-center justify-center rounded-full bg-brand px-3 py-1 text-2xs font-semibold leading-none text-surface"
+      >
+        Recomendado
+      </span>
+    )
+  }
+
+  <span
+    class:list={[
+      "inline-flex h-16 w-16 items-center justify-center rounded-full",
+      recommended ? "bg-brand/10 md:bg-brand-tint" : "bg-brand-faint md:bg-surface-alt",
+    ]}
+  >
+    <span class="flex items-center md:hidden">
+      {mobileIcons.map((icon) => <Image src={icon} alt="" class="h-6 w-auto" />)}
+    </span>
+    <span class="hidden items-center md:flex">
+      {desktopIcons.map((icon) => <Image src={icon} alt="" class="h-6 w-auto" />)}
+    </span>
+  </span>
+
+  <h3 class="text-md font-semibold text-ink md:text-xl md:font-bold">
+    {title}
+  </h3>
+
+  <p class="hidden text-base font-medium text-text-subtle md:block">
+    {description}
+  </p>
+</a>

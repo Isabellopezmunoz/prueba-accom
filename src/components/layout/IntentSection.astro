@@ -1,0 +1,46 @@
+---
+import intentBulb from "../../assets/icons/intent-bulb.svg"
+import intentFan from "../../assets/icons/intent-fan.svg"
+import intentBolt from "../../assets/icons/intent-bolt.svg"
+import intentFlame from "../../assets/icons/intent-flame.svg"
+import IntentCard from "../ui/IntentCard.astro"
+
+const cards = [
+  {
+    mobileIcons: [intentBulb],
+    desktopIcons: [intentBolt],
+    title: "Solo Luz",
+    description: "Electricidad para tu hogar o negocio",
+  },
+  {
+    mobileIcons: [intentBolt],
+    desktopIcons: [intentBolt, intentFlame],
+    title: "Luz + Gas",
+    description: "Máximo ahorro combinando suministros",
+    recommended: true,
+  },
+  {
+    mobileIcons: [intentFan],
+    desktopIcons: [intentFlame],
+    title: "Solo Gas",
+    description: "Calefacción y agua caliente",
+  },
+]
+---
+
+<section class="bg-surface-alt px-4 py-15 md:px-48">
+  <div class="mx-auto flex max-w-90 flex-col items-center gap-6 md:max-w-4xl md:gap-12">
+    <header class="flex flex-col items-center gap-4 text-center">
+      <h2 class="text-3xl font-bold text-ink md:text-5xl md:leading-none">
+        Compara nuestras ofertas en energía
+      </h2>
+      <p class="text-md font-medium text-text md:text-2xl md:leading-none">
+        Selecciona tu tipo de suministro para personalizar tu oferta
+      </p>
+    </header>
+
+    <div class="grid w-full gap-6 md:grid-cols-3">
+      {cards.map((card) => <IntentCard {...card} />)}
+    </div>
+  </div>
+</section>
