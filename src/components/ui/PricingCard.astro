@@ -12,9 +12,14 @@ interface Props {
   title: string
   items: PricingItem[]
   featured?: boolean
+  intent?: "luz" | "gas" | "luz-gas"
 }
 
-const { kicker, title, items, featured = false } = Astro.props
+const { kicker, title, items, featured = false, intent } = Astro.props
+
+const calculatorHref = intent
+  ? `/calcula-tu-tarifa?intent=${intent}`
+  : "/calcula-tu-tarifa"
 
 const cardBase =
   "relative flex w-full flex-col justify-between overflow-hidden rounded-md border bg-surface p-6 transition-colors"
@@ -73,7 +78,7 @@ const kickerColor = featured ? "text-warn-text" : "text-brand"
       Contratar
     </button>
     <a
-      href="/calcula-tu-tarifa"
+      href={calculatorHref}
       class="inline-flex items-center justify-center rounded-sm bg-brand px-6 py-3 text-md font-bold leading-normal text-surface transition-colors hover:bg-brand-hover"
     >
       Calcula tu tarifa

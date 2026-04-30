@@ -89,12 +89,6 @@ const timeOptions = [
 
   <main class="flex flex-1 items-center bg-surface-alt px-4 py-15 md:px-48 md:py-22.5">
     <div class="mx-auto flex w-full max-w-4xl flex-col gap-9">
-      <h1
-        class="text-center text-3xl font-bold leading-tight text-ink md:text-5xl md:leading-none"
-      >
-        ¿Qué quieres empezar a ahorrar hoy?
-      </h1>
-
       <form
         id="calculator-form"
         class="flex flex-col gap-8 md:gap-12"
@@ -105,6 +99,11 @@ const timeOptions = [
           aria-labelledby="step-1-label"
           class="flex flex-col gap-6 [[hidden]]:hidden"
         >
+          <h1
+            class="text-center text-3xl font-bold leading-tight text-ink md:text-5xl md:leading-none"
+          >
+            ¿Qué quieres empezar a ahorrar hoy?
+          </h1>
           <p
             id="step-1-label"
             class="w-full text-center text-md font-medium text-text md:text-2xl md:leading-none"
@@ -341,7 +340,20 @@ const timeOptions = [
       }
     }
 
-    restoreState()
+    const intentParam = new URLSearchParams(window.location.search).get("intent")
+    if (intentParam) {
+      sessionStorage.removeItem(STORAGE_KEY)
+      const intent = form.querySelector<HTMLInputElement>(
+        `input[name='intent'][value='${intentParam}']`
+      )
+      if (intent) {
+        intent.checked = true
+        showStep(1)
+      }
+      window.history.replaceState({}, "", window.location.pathname)
+    } else {
+      restoreState()
+    }
     form.addEventListener("change", saveState)
     form.addEventListener("input", saveState)
 
@@ -363,8 +375,10 @@ const timeOptions = [
       }
     }
 
-    form.addEventListener("change", (event) => {
-      const target = event.target as HTMLInputElement
+    form.addEventListener("click", (event) => {
+      const target = event.target as HTMLElement
+      if (!(target instanceof HTMLInputElement)) return
+      if (target.type !== "radio") return
       if (target.name === "intent" && currentIndex === 0) {
         advanceFromStep1()
       }

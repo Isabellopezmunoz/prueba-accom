@@ -7,7 +7,7 @@ Landing page desarrollada como prueba técnica. El objetivo es trasladar el dise
 - [Astro](https://astro.build/)
 - [Tailwind CSS v4](https://tailwindcss.com/) (CSS-first, foundations en `@theme`)
 - TypeScript
-- Prettier (sin punto y coma, plugin `prettier-plugin-astro`)
+- Prettier
 
 ## Bloques
 
@@ -16,46 +16,26 @@ La landing está compuesta por tres bloques principales:
 ### Bloque 1 — Hero (Banner + formulario)
 Banner con el título destacado, badge, párrafo descriptivo y un formulario lateral con la lógica de validaciones (campos requeridos, checkbox de privacidad).
 
-- Mobile-first: stack vertical con la card del formulario debajo del texto.
-- Desktop: dos columnas (texto izquierda 770px, formulario derecha 446px) sin gap entre ellas, alineadas con el ancho del header.
-- Selector de tipo de tarifa (Luz / Gas / Luz+gas) como botones con icono.
-- Selector custom "¿Cuándo es tu mayor consumo?" con dropdown propio (no usa el `<select>` nativo del navegador).
-- Inputs de teléfono y código postal con autocompletado y validación nativa.
-- Checkbox cuadrado en mobile y redondo en desktop.
-- Overlay azul difuso (`bg-brand/5` con blur 64px) detrás del formulario.
 
 ### Bloque 2 — Tarifas
 Cuatro cards de tarifa (3 de luz + 1 dual destacada como "TOP VENTAS"), con kicker, título, lista de bullets con check verde y dos CTAs por card ("Contratar" y "Calcula tu tarifa").
 
-- **Desktop**: grid de 4 columnas, todas las cards visibles, alineadas a la misma altura.
+- **Desktop**: grid de 4 columnas.
 - **Mobile**: tabs (`Tarifas luz` / `Tarifa dual` / `Tarifas gas`) + carrusel horizontal con scroll-snap. Las tabs y el carrusel están sincronizados:
   - Click en una tab → el carrusel hace smooth scroll a la card correspondiente.
   - Swipe manual del carrusel → la tab activa se actualiza al detectar la card centrada.
-  - La pill azul activa se desliza con `transform: translateX` y `transition` para evitar el salto.
-- Hover sobre cards no destacadas (solo desktop) cambia el borde a azul.
-- La card destacada lleva un badge "TOP VENTAS" en la esquina superior derecha (rectángulo naranja con la esquina inferior izquierda redondeada para "morder" la card).
 
 ### Bloque 3 — Selectores de oferta + Calculadora
-Sección "Compara nuestras ofertas en energía" con tres tarjetas de selección (Solo Luz / Luz+Gas / Solo Gas). La tarjeta dual lleva el badge "Recomendado". Es la sección a la que apunta el botón "Ofertas" del header.
+Sección "Compara nuestras ofertas en energía" con tres tarjetas de selección (Solo Luz / Luz+Gas / Solo Gas).
 
 La calculadora vive en su propia página `/calcula-tu-tarifa`, accesible desde:
 - "Calcula tu tarifa" del Header (desktop y panel mobile).
 - "Calcula tu tarifa" de cada PricingCard.
 - Cualquiera de las tres cards de la sección de selectores.
-- El botón "Calcular" del formulario del Hero (al hacer submit redirige al flujo completo).
 
-Cuatro pasos secuenciales (sólo se ve el paso activo a la vez):
 
-| Paso | Pregunta | Tipo de input | Avance |
-| :--- | :------- | :------------ | :----- |
-| 1 | "¿Qué quieres empezar a ahorrar hoy?" | Radio (Solo Luz / Luz+Gas / Solo Gas) | Automático al elegir |
-| 2 | "¿Qué electrodomésticos usas?" | Multi-select (6 opciones, grid 2 cols mobile / 3 cols desktop) | Botones Atrás / Siguiente |
-| 3 | "¿Cuándo haces un mayor uso de la energía?" | Radio (Por la mañana / Tarde-Noche / Todo el día) | Automático al elegir |
-| 4 | "Estamos calculando tu ahorro..." | Teléfono + código postal + checkbox de privacidad | Botón Calcular (con validación nativa) |
+Al pulsar "Calcular" simulamos el envío con `Math.random() < 0.8` (80% éxito / 20% error). El mismo modal y los mismos copys de éxito/error que el formulario "Te llamamos" del modal de contacto, para no duplicar pantallas de confirmación.
 
-Al pulsar "Calcular" se reusa el `ContactModal` para mostrar el resultado: simulamos el envío con `Math.random() < 0.8` (80% éxito / 20% error). El mismo modal y los mismos copys de éxito/error que el formulario "Te llamamos" del modal de contacto, para no duplicar pantallas de confirmación.
-
-La página tiene un layout flex (header + main `flex-1` + footer) para que ocupe siempre todo el viewport sin scroll innecesario.
 
 #### Mejoras de UX implementadas
 
@@ -63,16 +43,21 @@ Pequeños extras propuestos como mejora de la experiencia de usuario más allá 
 
 1. **Modal de éxito → redirige al home al cerrar.** No tiene sentido dejar a la persona en el último paso de la calculadora con los datos rellenos después de un envío exitoso. Al cerrar el modal de éxito redirige a `/`.
 
-2. **Modal de error → permite reintentar sin perder datos.** En caso de error, al cerrar la persona se queda en el paso 4 con el formulario tal cual lo tenía. Para reducir la fricción, el propio modal de error muestra un botón **"Reintentar"** que cierra y reenvía el formulario automáticamente, y un teléfono de soporte (`900 000 000`) como fallback comercial. *Estos extras del modal de error son específicos del flujo de la calculadora* (en el modal de contacto del header / PricingCard no aparecen, porque el form tiene un único campo y reintentar es trivial). La diferenciación se hace pasando `source: "calculator"` en el evento `modal:open-result`; los elementos extra van con `data-source-only="calculator"` y solo se muestran cuando coincide.
+2. **Modal de error → permite reintentar sin perder datos.** En caso de error, al cerrar la persona se queda en el paso 4 con el formulario tal cual lo tenía. Para reducir la fricción, el propio modal de error muestra un botón **"Reintentar"** que cierra y reenvía el formulario automáticamente, y un teléfono de soporte (`900 000 000`) como fallback comercial. *Estos extras del modal de error aparecen en los flujos de la calculadora y del Hero* (donde la persona ya rellenó varios campos), pero **no** en el modal de contacto del header / PricingCard (donde el form tiene un único campo y reintentar es trivial). La diferenciación se hace pasando `source: "calculator"` o `source: "hero"` en el evento `modal:open-result`; los elementos extra van con `data-source-only="calculator hero"` y solo se muestran cuando coincide.
 
-3. **Persistencia del estado en `sessionStorage`.** Si la persona refresca la página o cierra el navegador antes de terminar, recuperamos el paso en el que estaba y los datos ya rellenados (suministro, electrodomésticos, franja horaria, teléfono, CP, checkbox). Limpiamos el storage al confirmar el envío con éxito. Usamos `sessionStorage` (no `localStorage`) por privacidad: la información desaparece al cerrar la pestaña.
+3. **El form del Hero también dispara el modal de éxito/error.** El botón "Calcular" del banner ya no redirige a `/calcula-tu-tarifa` (sería pedir a la persona que rellenara dos veces lo mismo): hace submit JS y abre el `ContactModal` con la misma randomización 80/20.
+
+4. **Persistencia del estado en `sessionStorage`.** Si la persona refresca la página o cierra el navegador antes de terminar la calculadora, recuperamos el paso en el que estaba y los datos ya rellenados (suministro, electrodomésticos, franja horaria, teléfono, CP, checkbox). Limpiamos el storage al confirmar el envío con éxito. Usamos `sessionStorage` (no `localStorage`) por privacidad: la información desaparece al cerrar la pestaña.
+
+5. **Pre-selección del tipo de suministro al venir de una card.** Tanto las cards de "Compara nuestras ofertas en energía" como las `PricingCard` del bloque de tarifas navegan a `/calcula-tu-tarifa?intent=<luz|luz-gas|gas>` cuando la persona pulsa el CTA "Calcula tu tarifa". El mapeo es directo: una card de "Tarifa fija de luz" pasa `intent=luz`, la dual `intent=luz-gas`, etc. Al cargar la calculadora con ese parámetro:
+   - Limpiamos cualquier estado anterior en `sessionStorage` (la persona ha decidido empezar un nuevo intento desde una card concreta; lo de antes ya no aplica).
+   - Marcamos automáticamente el intent en el paso 1.
+   - Saltamos directamente al paso 2 (la persona ya tomó esa decisión visualmente, no necesita repetirla).
+   - Limpiamos la query string para que un refresh no vuelva a disparar el reset.
+   - Si la persona accede sin query (link "Calcula tu tarifa" del Header / vuelta atrás del navegador), aplica la rehidratación normal del punto 4.
 
 ### Footer
 Footer con logo y enlaces a las páginas legales (`Aviso Legal`, `Política de Privacidad`, `Cookies`).
-
-- Mobile: stack vertical, logo arriba y enlaces debajo en una fila.
-- Desktop: `flex` horizontal con `justify-between`, logo a la izquierda y enlaces a la derecha.
-- Enlaces con el mismo patrón de hover/active que el header (color `text-text/80` → `text-brand`).
 
 ### Páginas legales
 Tres páginas estáticas (`/aviso-legal`, `/politica-de-privacidad`, `/cookies`) generadas a partir de un componente compartido `LegalPage.astro` que recibe `title`, `intro`, `updatedAt` y un array de `sections`. Reutilizan `Header`, `Footer` y `ContactModal`.
@@ -126,13 +111,13 @@ La sección con id `#ofertas` (a la que apunta el botón "Ofertas" del header) e
 - En un caso real validaría con producto a qué espera la persona usuaria que la lleve ese enlace.
 
 ### 5. Border-radius de las cards de electrodomésticos
-En el paso 2 de la calculadora (`/calcula-tu-tarifa`), las cards de electrodomésticos en el Figma vienen con `border-radius` distintos según la posición: las de la izquierda con sólo las esquinas derechas redondeadas, otras con todas las esquinas, etc. Lo interpreté como un despiste del diseño (no hay un patrón visual que justifique esa diferencia: no son cards "agrupadas" por una hoja contínua) y unifiqué todas a `rounded-md` (12px en las 4 esquinas) para mantener consistencia con el resto de cards de la landing.
+En el paso 2 de la calculadora (`/calcula-tu-tarifa`), las cards de electrodomésticos en el Figma vienen con `border-radius` distintos según la posición: las de la izquierda con sólo las esquinas derechas redondeadas, otras con todas las esquinas, etc. Lo interpreté como un despiste del diseño (no hay un patrón visual que justifique esa diferencia: no son cards "agrupadas" por una hoja contínua) y unifiqué todas para mantener consistencia con el resto de cards de la landing.
 - En un caso real lo confirmaría con la persona de diseño antes de aplicar el cambio.
 
 ### 6. URLs en español
 Las rutas públicas (`/calcula-tu-tarifa`, `/aviso-legal`, `/politica-de-privacidad`, `/cookies`) están en español aunque el resto del código (componentes, props, archivos) esté en inglés. Decisión consciente porque la landing es de captación: las URLs en idioma nativo mejoran el Quality Score en Google Ads / Meta (mejor match anuncio↔landing → CPC más bajo), suben el CTR orgánico (URL legible en SERP), y dan mejor experiencia al compartir el enlace en WhatsApp o redes.
 - Slugs sin tildes (`politica-de-privacidad`, no `política-de-privacidad`) para evitar problemas de encoding (`%C3%AD` en barras de navegador).
-- En un proyecto puramente interno o con alcance internacional desde el inicio, optaría por URLs en inglés.
+- En un proyecto con alcance internacional desde el inicio, optaría por URLs en inglés.
 
 ### 7. Labels de los inputs del paso 4 de la calculadora
 En el Figma, los labels "TELÉFONO DE CONTACTO" y "CÓDIGO POSTAL" del paso 4 aparecen en mayúsculas. El resto de inputs de la landing (Hero, Modal de contacto) usan labels capitalizados normales. Decidí mantenerlos en el mismo formato que el resto del proyecto ("Teléfono de contacto" / "Código postal") por consistencia: los labels deberían comportarse igual en todos los formularios de la landing.
@@ -167,10 +152,12 @@ Desde la raíz del proyecto:
 │   │   └── Layout.astro
 │   ├── pages/
 │   │   ├── index.astro
-│   │   ├── calculator-steps.astro
+│   │   ├── calcula-tu-tarifa.astro
 │   │   ├── aviso-legal.astro
 │   │   ├── politica-de-privacidad.astro
 │   │   └── cookies.astro
+│   ├── scripts/
+│   │   └── inline-validation.ts
 │   └── styles/
 │       └── global.css
 ├── astro.config.mjs
@@ -182,5 +169,5 @@ Desde la raíz del proyecto:
 
 - **Foundations primero**: todos los colores, radios, sombras y tipografías están declarados como tokens en `src/styles/global.css` (`@theme`). Los componentes consumen las clases derivadas (`bg-brand`, `rounded-md`, `shadow-hero`, etc.) en vez de hardcodear valores.
 - **Mobile-first**: las clases base aplican a mobile, las variantes `md:` añaden los cambios para desktop.
-- **Componentes en dos carpetas**: `ui/` para piezas reutilizables y `layout/` para estructuras de página (Header, Hero, secciones).
+- **Componentes en dos carpetas**: `ui/` para piezas reutilizables y `layout/` para estructuras de página (Header, Hero, secciones, ...).
 
