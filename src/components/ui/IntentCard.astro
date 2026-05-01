@@ -31,7 +31,7 @@ const border = recommended
   {
     recommended && (
       <span
-        class="absolute -top-2.5 left-1/2 inline-flex -translate-x-1/2 items-center justify-center rounded-full bg-brand px-3 py-1 text-2xs font-semibold leading-none text-surface"
+        class="absolute -top-2.5 left-1/2 inline-flex -translate-x-1/2 items-center justify-center rounded-full bg-brand px-3 py-1 text-2xs font-semibold uppercase leading-none text-surface"
       >
         Recomendado
       </span>
@@ -41,7 +41,7 @@ const border = recommended
   <span
     class:list={[
       "inline-flex h-16 w-16 items-center justify-center rounded-full",
-      recommended ? "bg-brand/10 md:bg-brand-tint" : "bg-brand-faint md:bg-surface-alt",
+      recommended ? "bg-brand-faint md:bg-brand-tint" : "bg-brand-faint md:bg-surface-alt",
     ]}
   >
     <span class="flex items-center md:hidden">

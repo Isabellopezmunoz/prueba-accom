@@ -33,17 +33,18 @@ const cards = [
 
 <section id="ofertas" class="scroll-mt-24 bg-surface-alt px-4 py-15 md:px-8 lg:px-48">
   <div class="mx-auto flex max-w-90 flex-col items-center gap-6 md:max-w-4xl md:gap-12">
-    <header class="flex flex-col items-center gap-4 text-center">
-      <h2 class="text-3xl font-bold text-ink lg:text-5xl lg:leading-none">
-        Compara nuestras ofertas en energía
-      </h2>
-      <p class="text-md font-medium text-text lg:text-2xl lg:leading-none">
+    <h2 class="text-center text-3xl font-bold text-ink lg:text-5xl lg:leading-none">
+      Compara nuestras ofertas de energía
+    </h2>
+
+    <div class="flex w-full flex-col items-center gap-3 md:gap-6">
+      <p class="text-center text-md font-medium text-text lg:text-2xl lg:leading-none">
         Selecciona tu tipo de suministro para personalizar tu oferta
       </p>
-    </header>
 
-    <div class="grid w-full gap-6 md:grid-cols-3">
-      {cards.map((card) => <IntentCard {...card} />)}
+      <div class="grid w-full gap-6 md:grid-cols-3">
+        {cards.map((card) => <IntentCard {...card} />)}
+      </div>
     </div>
   </div>
 </section>
