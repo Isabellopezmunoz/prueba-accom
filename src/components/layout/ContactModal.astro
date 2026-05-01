@@ -11,29 +11,29 @@ import Modal from "../ui/Modal.astro"
 
 <Modal id="contact-modal" labelledby="contact-modal-title">
   <div data-contact-form class="flex flex-col gap-7.5 p-6 md:p-10">
-    <header class="flex flex-col items-center gap-3.75 text-center">
+    <header class="flex flex-col items-center gap-2 text-center">
       <h2
         id="contact-modal-title"
         class="text-3xl font-bold leading-9 text-ink"
       >
         Contacta con un experto
       </h2>
-      <p class="text-md font-normal leading-normal text-text">
+      <p class="text-md text-text">
         Estamos aquí para optimizar tu consumo energético.
       </p>
     </header>
 
     <div class="flex flex-col items-center gap-4 rounded-md bg-brand-tint p-6">
       <span
-        class="inline-flex h-8.5 w-12 items-center justify-center rounded-full bg-[#2563eb] shadow-nav"
+        class="inline-flex h-8.5 w-12 items-center justify-center rounded-full bg-info shadow-nav"
       >
         <Image src={phoneCall} alt="" class="h-4.5 w-auto" />
       </span>
       <div class="flex flex-col items-center gap-1 text-center">
-        <span class="text-sm font-bold uppercase tracking-wider text-brand">
+        <span class="text-base font-bold uppercase tracking-widest text-brand">
           Atención directa
         </span>
-        <p class="text-2xl font-bold text-ink">
+        <p class="font-display text-2xl font-bold text-ink">
           Llámanos ahora al <a href="tel:900000000" class="text-brand">900 000 000</a>
         </p>
       </div>
@@ -41,12 +41,12 @@ import Modal from "../ui/Modal.astro"
 
     <div class="flex items-center gap-4">
       <span class="h-px flex-1 bg-border-soft"></span>
-      <span class="text-sm text-text-muted">o</span>
+      <span class="text-sm text-text-subtle">o</span>
       <span class="h-px flex-1 bg-border-soft"></span>
     </div>
 
     <div class="flex flex-col items-center gap-1 text-center">
-      <h3 class="text-lg font-bold text-ink">O te llamamos nosotros</h3>
+      <h3 class="font-display text-lg font-bold text-ink">O te llamamos nosotros</h3>
       <p class="text-base font-medium text-accent">
         Sin esperas y gratuito
       </p>
@@ -60,7 +60,7 @@ import Modal from "../ui/Modal.astro"
             <Image
               src={phone}
               alt=""
-              class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2"
+              class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2"
             />
             <input
               id="contact-phone"
@@ -72,12 +72,12 @@ import Modal from "../ui/Modal.astro"
               required
               placeholder="Tu número de teléfono"
               aria-describedby="contact-phone-error"
-              class="w-full rounded-sm border border-border-soft bg-surface px-9 py-3 text-base text-ink placeholder:text-text-muted focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 aria-invalid:border-brand"
+              class="h-13 w-full rounded-sm border border-border-soft bg-surface pl-11 pr-4 text-base text-ink placeholder:text-text-muted focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 aria-invalid:border-brand"
             />
           </label>
           <button
             type="submit"
-            class="inline-flex cursor-pointer items-center justify-center rounded-sm bg-brand px-6 py-3 text-md font-bold text-surface transition-colors hover:bg-brand-hover"
+            class="inline-flex h-13 cursor-pointer items-center justify-center rounded-sm bg-brand px-6 text-lg font-bold text-surface transition-colors hover:bg-brand-hover"
           >
             Llamadme
           </button>
@@ -93,35 +93,39 @@ import Modal from "../ui/Modal.astro"
   <div
     data-contact-success
     hidden
-    class="flex flex-col items-center gap-7.5 p-6 text-center md:p-10"
+    class="flex flex-col items-center gap-6 p-6 text-center md:p-10"
   >
     <span
-      class="inline-flex h-20 w-20 items-center justify-center rounded-full bg-accent-soft/40"
+      class="inline-flex h-20 w-20 items-center justify-center rounded-full bg-accent/10"
     >
-      <Image src={checkLg} alt="" class="h-10 w-auto" />
+      <Image src={checkLg} alt="" class="h-10.5 w-auto" />
     </span>
-    <h2 class="text-2xl font-bold text-ink">¡Solicitud recibida con éxito!</h2>
-    <p class="text-base leading-relaxed text-text">
-      Estamos analizando las mejores tarifas para ti.<br />
-      Un experto de Ahorrarenenergía te contactará para informarte.
-    </p>
+    <div class="flex flex-col gap-4">
+      <h2 class="text-2xl font-bold text-ink">¡Solicitud recibida con éxito!</h2>
+      <p class="text-base leading-relaxed text-text">
+        Estamos analizando las mejores tarifas para ti.<br />
+        Un experto de Ahorrarenenergía te contactará para informarte.
+      </p>
+    </div>
   </div>
 
   <div
     data-contact-error
     hidden
-    class="flex flex-col items-center gap-6 px-8 py-16 text-center"
+    class="flex flex-col items-center gap-6 p-6 text-center md:p-10"
   >
     <span
       class="inline-flex h-20 w-20 items-center justify-center rounded-full bg-error-soft"
     >
-      <Image src={errorTriangle} alt="" class="h-9 w-auto" />
+      <Image src={errorTriangle} alt="" class="h-7.125 w-8.25" />
     </span>
-    <h2 class="text-2xl font-bold text-ink">¡Ups! Algo ha salido mal</h2>
-    <p class="text-base leading-relaxed text-text">
-      Hemos tenido un problema técnico al enviar tus datos.<br />
-      Por favor, inténtalo de nuevo.
-    </p>
+    <div class="flex flex-col gap-3">
+      <h2 class="text-2xl font-bold text-ink">¡Ups! Algo ha salido mal</h2>
+      <p class="text-md text-text">
+        Hemos tenido un problema técnico al enviar tus datos.<br />
+        Por favor, inténtalo de nuevo.
+      </p>
+    </div>
     <button
       type="button"
       data-contact-retry
@@ -131,7 +135,7 @@ import Modal from "../ui/Modal.astro"
     >
       Reintentar
     </button>
-    <p data-source-only="calculator hero" hidden class="text-sm text-text-subtle">
+    <p data-source-only="calculator hero" hidden class="text-md text-text-subtle">
       ¿Prefieres que te llamemos? <a href="tel:900000000" class="font-semibold text-brand">900 000 000</a>
     </p>
   </div>

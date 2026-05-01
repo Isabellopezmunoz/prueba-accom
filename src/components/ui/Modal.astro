@@ -22,7 +22,7 @@ const { id, labelledby, class: className = "" } = Astro.props
 >
   <div
     class:list={[
-      "relative max-h-full w-full max-w-lg scale-95 overflow-y-auto rounded-md bg-surface opacity-0 shadow-hero transition-[opacity,transform] duration-200 ease-out focus:outline-none",
+      "relative max-h-full w-full max-w-lg scale-95 overflow-y-auto rounded-md border border-border-faint bg-surface opacity-0 shadow-hero transition-[opacity,transform] duration-200 ease-out focus:outline-none",
       "data-[state=open]:scale-100 data-[state=open]:opacity-100",
       className,
     ]}
@@ -32,7 +32,7 @@ const { id, labelledby, class: className = "" } = Astro.props
   >
     <button
       type="button"
-      class="absolute right-4 top-4 inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-text transition-colors hover:bg-surface-tint"
+      class="absolute right-4 top-4 inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-full text-text transition-colors hover:bg-surface-tint"
       aria-label="Cerrar"
       data-modal-close
     >

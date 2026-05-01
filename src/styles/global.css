@@ -38,6 +38,7 @@ html {
   --color-warn-text: #855300;
   --color-error: #ba1a1a;
   --color-error-soft: #ffdad6;
+  --color-info: #2563eb;
 
   /* Typography */
   --font-sans:

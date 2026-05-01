@@ -89,6 +89,13 @@ Como no hay backend, **el resultado del envío se simula con `Math.random() < 0.
 
 ## Notas sobre el diseño
 
+### Cómo he leído el Figma y traducido los espaciados
+
+Antes de listar las inconsistencias detectadas, dos disclaimers sobre cómo se ha trabajado el handoff del diseño:
+
+- **Acceso limitado al Figma**: solo dispongo de cuenta gratuita, sin Dev Mode completo. He inspeccionado los nodos con las herramientas a las que tengo acceso (panel de propiedades, copiar valores manualmente, anotaciones del archivo) y he ajustado tamaños, colores y espaciados al valor más cercano que he podido leer. En un proyecto real con Dev Mode tendría acceso directo a tokens de Figma exportables y podría garantizar 1:1 sin lectura manual.
+- **Espaciados con `gap` en lugar de `padding`/`margin`**: en muchos puntos del Figma los espacios entre elementos están resueltos con padding-bottom o margin individual de cada hijo. En el código lo he traducido a `flex` con `gap` (a veces con contenedores anidados para tener dos gaps distintos en el mismo bloque). Es más limpio, menos propenso a desincronizarse cuando cambia el contenido, y se adapta mejor a viewports distintos. El resultado visual es idéntico al Figma — solo cambia la herramienta CSS usada.
+
 ### 1. Checkbox de privacidad: forma distinta según el contexto
 En el Figma, el checkbox de "acepto política de privacidad" aparece con tratamiento distinto según el formulario:
 - **Hero (formulario principal)**: cuadrado en mobile y **redondo** en desktop.
@@ -181,7 +188,7 @@ Desde la raíz del proyecto:
 
 ### Convenciones
 
-- **Foundations primero**: todos los colores, radios, sombras y tipografías están declarados como tokens en `src/styles/global.css` (`@theme`). Los componentes consumen las clases derivadas (`bg-brand`, `rounded-md`, `shadow-hero`, etc.) en vez de hardcodear valores.
-- **Mobile-first**: las clases base aplican a mobile, las variantes `md:` añaden los cambios para desktop.
+- **Foundations primero**: todos los colores, radios, sombras y tipografías están declarados como tokens en `src/styles/global.css` (`@theme`). Los componentes consumen las clases derivadas (`bg-brand`, `rounded-md`, `shadow-hero`, etc.).
+- **Mobile-first**: las clases base aplican a mobile y las variantes responsive (`md:`, `lg:`, `xl:`) añaden los cambios para tablet y desktop. Cuando un breakpoint requiere desactivar un estilo previo (por ejemplo, la opacidad de las cards atenuadas del carrusel solo aplica hasta tablet y debe desactivarse en el grid de desktop) uso variantes inversas como `max-xl:` para que el estilo se aplique solo por debajo del breakpoint indicado.
 - **Componentes en dos carpetas**: `ui/` para piezas reutilizables y `layout/` para estructuras de página (Header, Hero, secciones, ...).
 
