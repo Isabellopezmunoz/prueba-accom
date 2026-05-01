@@ -9,33 +9,6 @@ Landing page desarrollada como prueba técnica. El objetivo es trasladar el dise
 - TypeScript
 - Prettier
 
-## Bloques
-
-La landing está compuesta por tres bloques principales:
-
-### Bloque 1 — Hero (Banner + formulario)
-Banner con el título destacado, badge, párrafo descriptivo y un formulario lateral con la lógica de validaciones (campos requeridos, checkbox de privacidad).
-
-
-### Bloque 2 — Tarifas
-Cuatro cards de tarifa (3 de luz + 1 dual destacada como "TOP VENTAS"), con kicker, título, lista de bullets con check verde y dos CTAs por card ("Contratar" y "Calcula tu tarifa").
-
-- **Desktop**: grid de 4 columnas.
-- **Mobile**: tabs (`Tarifas luz` / `Tarifa dual` / `Tarifas gas`) + carrusel horizontal con scroll-snap. Las tabs y el carrusel están sincronizados:
-  - Click en una tab → el carrusel hace smooth scroll a la card correspondiente.
-  - Swipe manual del carrusel → la tab activa se actualiza al detectar la card centrada.
-
-### Bloque 3 — Calculadora
-Sección "Compara nuestras ofertas en energía" con tres tarjetas de selección (Solo Luz / Luz+Gas / Solo Gas).
-
-La calculadora vive en su propia página `/calcula-tu-tarifa`, accesible desde:
-- "Calcula tu tarifa" del Header (desktop y panel mobile).
-- "Calcula tu tarifa" de cada PricingCard.
-- Cualquiera de las tres cards de la sección de selectores de ofertas.
-
-Es completamente funcional. Al pulsar "Calcular" se muestra el resultado siguiendo el patrón descrito en *Simulación de envíos*.
-
-
 #### Mejoras de UX implementadas
 
 Pequeños extras propuestos como mejora de la experiencia de usuario más allá del Figma original:
@@ -44,42 +17,11 @@ Pequeños extras propuestos como mejora de la experiencia de usuario más allá 
 
 2. **Persistencia del estado en `sessionStorage`.** Si la persona refresca la página o cierra el navegador antes de terminar la calculadora, recuperamos el paso en el que estaba y los datos ya rellenados (suministro, electrodomésticos, franja horaria, teléfono, CP, checkbox). Limpiamos el storage al confirmar el envío con éxito. Usamos `sessionStorage` (no `localStorage`) por privacidad: la información desaparece al cerrar la pestaña.
 
-3. **Dos formas de entrar a la calculadora, dos comportamientos distintos.** La calculadora se puede abrir desde un CTA contextual (una card que ya implica un tipo de suministro) o desde un enlace neutro. Detectamos uno u otro caso con la query `?intent=<luz|luz-gas|gas>` y ajustamos el flujo para no hacer repetir a la persona una decisión que ya tomó.
-
-   **Caso A — Entrada desde una card con intent ya elegido** (`/calcula-tu-tarifa?intent=luz`, etc.)
-
-   Disparado desde:
-   - Cualquiera de las tres cards de la sección "Compara nuestras ofertas en energía" (Solo Luz, Luz+Gas, Solo Gas).
-   - El CTA "Calcula tu tarifa" de cada `PricingCard` del bloque de tarifas (mapeo directo: card de luz → `intent=luz`, dual → `intent=luz-gas`, gas → `intent=gas`).
-
-   Al cargar la calculadora con ese parámetro:
-   - Limpiamos cualquier estado anterior en `sessionStorage` (la persona ha decidido empezar un nuevo intento desde una card concreta; lo que tuviera a medias ya no aplica).
-   - Marcamos automáticamente el intent en el paso 1.
-   - **Saltamos directamente al paso 2** — la persona ya tomó esa decisión visualmente, no necesita repetirla.
-
-   **Caso B — Entrada en limpio** (`/calcula-tu-tarifa` sin query)
-
-   Disparado desde:
-   - Enlace "Calcula tu tarifa" del Header (desktop y panel móvil).
-   - Acceso directo a la URL.
-
-   Al cargar:
-   - **Arrancamos en el paso 1** (selección de suministro), con todos los pasos vacíos por defecto.
-   - Si hay un estado guardado en `sessionStorage` de un intento anterior sin terminar, **rehidratamos** todos los campos y reposicionamos a la persona en el paso donde lo dejó (ver punto 3).
-
-4. **Borde unificado en cards "Recomendado".** En el Figma, la card "Luz + Gas" del paso 1 de la calculadora aparece **sin borde** en estado normal, pero la card "Luz + Gas" de la sección "Compara nuestras ofertas en energía" sí lleva un borde brand-soft de 2px. He unificado ambas para que cualquier card marcada como "Recomendado" lleve siempre el mismo borde brand-soft, independientemente del bloque donde aparezca. Razones:
+3. **Borde unificado en cards "Recomendado".** En el Figma, la card "Luz + Gas" del paso 1 de la calculadora aparece **sin borde** en estado normal, pero la card "Luz + Gas" de la sección "Compara nuestras ofertas en energía" sí lleva un borde brand-soft de 2px. He unificado ambas para que cualquier card marcada como "Recomendado" lleve siempre el mismo borde brand-soft, independientemente del bloque donde aparezca. Razones:
    - **Consistencia visual**: el badge "Recomendado" debe verse y comportarse igual en toda la landing.
    - **Atención del usuario**: el borde refuerza el badge y guía la mirada hacia la opción destacada (objetivo del propio badge).
    - **Mantenibilidad**: una sola regla — "card recomendada → borde brand-soft" — frente a tener que recordar excepciones por bloque.
    - En un caso real lo confirmaría con la persona de diseño antes de aplicar el cambio — puede haber una intención que no veo (jerarquía distinta entre los dos bloques, etc.).
-
-### Páginas legales
-Tres páginas estáticas (`/aviso-legal`, `/politica-de-privacidad`, `/cookies`) generadas a partir de un componente compartido `LegalPage.astro` que recibe `title`, `intro`, `updatedAt` y un array de `sections`. Reutilizan `Header`, `Footer` y `ContactModal`.
-
-Los copys son ficticios pero coherentes con el tono de la landing ("comparador", "sin trucos, sin permanencia", etc.).
-
-### Modal de contacto ("Contacta con un experto")
-Modal accesible reutilizable que se dispara desde "Contactar" del header, panel mobile y "Contratar" de cada PricingCard. Al enviar el form se muestra el resultado siguiendo el patrón descrito en *Simulación de envíos*.
 
 ## Simulación de envíos: modal de éxito y modal de error
 
