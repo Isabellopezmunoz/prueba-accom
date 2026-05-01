@@ -77,15 +77,15 @@ import Modal from "../ui/Modal.astro"
           </label>
           <button
             type="submit"
-            class="inline-flex items-center justify-center rounded-sm bg-brand px-6 py-3 text-md font-bold text-surface transition-colors hover:bg-brand-hover"
+            class="inline-flex cursor-pointer items-center justify-center rounded-sm bg-brand px-6 py-3 text-md font-bold text-surface transition-colors hover:bg-brand-hover"
           >
             Llamadme
           </button>
         </div>
         <FieldError id="contact-phone-error" />
       </div>
-      <Checkbox id="contact-privacy" required shape="square">
-        He leído y acepto la <a href="/politica-de-privacidad" class="text-brand underline">política de privacidad</a>.
+      <Checkbox id="contact-privacy" required>
+        He leído y acepto la <a href="/politica-de-privacidad" class="text-brand underline transition-colors hover:text-brand-hover">política de privacidad</a>.
       </Checkbox>
     </form>
   </div>

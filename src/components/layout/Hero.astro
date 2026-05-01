@@ -121,8 +121,31 @@ const consumptionOptions = [
         </div>
 
         <Checkbox id="privacy" required>
-          He leído y acepto la <a href="/politica-de-privacidad" class="underline"><span class="lg:hidden">Política de Privacidad</span><span class="hidden lg:inline">Política de Protección de Datos</span></a>
+          He leído y acepto la <a href="/politica-de-privacidad" class="text-brand underline transition-colors hover:text-brand-hover"><span class="lg:hidden">Política de Privacidad</span><span class="hidden lg:inline">Política de Protección de Datos</span></a>
         </Checkbox>
+
+        <p
+          data-form-error
+          role="alert"
+          hidden
+          class="flex items-center gap-1.5 text-xs font-medium leading-tight text-brand"
+        >
+          <svg
+            class="h-3.5 w-3.5 shrink-0"
+            viewBox="0 0 16 16"
+            fill="none"
+            aria-hidden="true"
+          >
+            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5" />
+            <path
+              d="M8 7v4M8 4.5v.5"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
+          </svg>
+          Para calcular tu tarifa con mayor exactitud, selecciona el tipo de factura y tu consumo.
+        </p>
 
         <Button type="submit" size="lg">Calcular</Button>
       </form>
@@ -137,10 +160,40 @@ const consumptionOptions = [
   if (form) {
     setupInlineValidation(form)
 
+    const formError = form.querySelector<HTMLElement>("[data-form-error]")
+    const intentInputs = form.querySelectorAll<HTMLInputElement>(
+      "input[name='intent']"
+    )
+    const consumptionSelect = form.querySelector<HTMLSelectElement>("#consumption")
+
+    const hasIntent = () =>
+      Array.from(intentInputs).some((input) => input.checked)
+    const hasConsumption = () => Boolean(consumptionSelect?.value)
+
+    const hideFormError = () => {
+      if (formError) formError.hidden = true
+    }
+
+    intentInputs.forEach((input) =>
+      input.addEventListener("change", () => {
+        if (hasIntent() && hasConsumption()) hideFormError()
+      })
+    )
+    consumptionSelect?.addEventListener("change", () => {
+      if (hasIntent() && hasConsumption()) hideFormError()
+    })
+
     let lastResultStatus: "success" | "error" | null = null
 
     form.addEventListener("submit", (event) => {
       event.preventDefault()
+
+      if (!hasIntent() || !hasConsumption()) {
+        if (formError) formError.hidden = false
+        return
+      }
+      hideFormError()
+
       const modal = document.getElementById("contact-modal")
       if (!modal) return
 

@@ -66,7 +66,7 @@ const tabs = [
     <div
       role="tablist"
       aria-label="Tipo de tarifa"
-      class="relative mx-auto flex h-13 w-90 items-center justify-between gap-2.5 rounded-pill bg-surface px-2 py-1.5 shadow-brand lg:hidden"
+      class="relative mx-auto flex h-13 w-90 items-center justify-between gap-2.5 rounded-pill bg-surface px-2 py-1.5 shadow-brand xl:hidden"
       data-pricing-tabs
     >
       <span
@@ -81,7 +81,7 @@ const tabs = [
             role="tab"
             aria-selected={index === 0 ? "true" : "false"}
             data-tab={tab.value}
-            class="relative z-10 flex-1 whitespace-nowrap rounded-pill px-2 py-2 text-base font-semibold text-ink transition-colors duration-300 ease-out aria-selected:text-surface"
+            class="relative z-10 flex-1 cursor-pointer whitespace-nowrap rounded-pill px-2 py-2 text-base font-semibold text-ink transition-colors duration-300 ease-out aria-selected:text-surface"
           >
             {tab.label}
           </button>
@@ -90,7 +90,7 @@ const tabs = [
     </div>
 
     <div
-      class="-mx-4 flex snap-x snap-mandatory items-stretch gap-4 overflow-x-auto scroll-smooth px-4 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:mx-0 lg:grid lg:grid-cols-2 lg:gap-6 lg:overflow-visible lg:px-0 lg:pb-0 xl:grid-cols-4"
+      class="-mx-4 flex snap-x snap-mandatory items-stretch gap-4 overflow-x-auto scroll-smooth px-[10%] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden xl:mx-0 xl:grid xl:grid-cols-4 xl:gap-6 xl:overflow-visible xl:px-0 xl:pb-0"
       data-pricing-track
     >
       {
@@ -99,8 +99,8 @@ const tabs = [
             data-card-tab={card.tab}
             data-desktop-only={card.desktopOnly ? "true" : undefined}
             class:list={[
-              "flex w-[85%] shrink-0 snap-center lg:w-auto lg:shrink",
-              card.desktopOnly && "hidden lg:flex",
+              "flex w-[80%] max-w-md shrink-0 snap-center transition-transform duration-300 ease-out max-xl:[&:not([data-active=true])]:opacity-60 max-xl:[&:not([data-active=true])]:scale-95 xl:w-auto xl:max-w-none",
+              card.desktopOnly && "hidden xl:flex",
             ]}
           >
             <PricingCard {...card} />
@@ -108,6 +108,13 @@ const tabs = [
         ))
       }
     </div>
+
+    <div
+      class="flex justify-center gap-2 xl:hidden"
+      role="tablist"
+      aria-label="Paginación de tarifas"
+      data-pricing-bullets
+    ></div>
   </div>
 </section>
 
@@ -124,6 +131,34 @@ const tabs = [
     const tabValues = Array.from(tabs).map((tab) => tab.dataset.tab ?? "")
     const cardTabs = Array.from(cards).map((card) => card.dataset.cardTab ?? "")
 
+    const bulletsContainer = document.querySelector<HTMLElement>(
+      "[data-pricing-bullets]"
+    )
+
+    const bullets: HTMLButtonElement[] = []
+    if (bulletsContainer) {
+      cards.forEach((card, index) => {
+        const bullet = document.createElement("button")
+        bullet.type = "button"
+        bullet.role = "tab"
+        bullet.setAttribute("aria-label", `Ir a tarifa ${index + 1}`)
+        bullet.dataset.bulletIndex = String(index)
+        bullet.className =
+          "h-2.5 w-2.5 cursor-pointer rounded-full bg-border-soft transition-all aria-selected:w-6 aria-selected:bg-brand"
+        bullet.addEventListener("click", () => {
+          card.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" })
+        })
+        bulletsContainer.appendChild(bullet)
+        bullets.push(bullet)
+      })
+    }
+
+    const setActiveIndex = (index: number) => {
+      bullets.forEach((bullet, bulletIndex) => {
+        bullet.setAttribute("aria-selected", bulletIndex === index ? "true" : "false")
+      })
+    }
+
     const moveIndicator = (target: HTMLElement) => {
       if (!indicator) return
       const tablistRect = tablist.getBoundingClientRect()
@@ -138,10 +173,28 @@ const tabs = [
         tab.setAttribute("aria-selected", active ? "true" : "false")
         if (active) moveIndicator(tab)
       })
+      cards.forEach((card, cardIndex) => {
+        const active = card.dataset.cardTab === value
+        if (active) {
+          card.dataset.active = "true"
+          setActiveIndex(cardIndex)
+        } else {
+          delete card.dataset.active
+        }
+      })
     }
 
     const initial = tablist.querySelector<HTMLElement>('[role=tab][aria-selected=true]')
-    if (initial) requestAnimationFrame(() => moveIndicator(initial))
+    if (initial) {
+      requestAnimationFrame(() => moveIndicator(initial))
+      const initialValue = initial.dataset.tab ?? ""
+      cards.forEach((card, cardIndex) => {
+        if (card.dataset.cardTab === initialValue) {
+          card.dataset.active = "true"
+          setActiveIndex(cardIndex)
+        }
+      })
+    }
     window.addEventListener("resize", () => {
       const current = tablist.querySelector<HTMLElement>('[role=tab][aria-selected=true]')
       if (current) moveIndicator(current)

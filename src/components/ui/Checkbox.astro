@@ -5,23 +5,10 @@ interface Props {
   id: string
   name?: string
   required?: boolean
-  shape?: "auto" | "square" | "circle"
   class?: string
 }
 
-const {
-  id,
-  name,
-  required,
-  shape = "auto",
-  class: className = "",
-} = Astro.props
-
-const shapeClass = {
-  auto: "rounded-xs md:rounded-full",
-  square: "rounded-xs",
-  circle: "rounded-full",
-}[shape]
+const { id, name, required, class: className = "" } = Astro.props
 
 const errorId = `${id}-error`
 ---
@@ -38,10 +25,7 @@ const errorId = `${id}-error`
         type="checkbox"
         required={required}
         aria-describedby={errorId}
-        class:list={[
-          "peer h-4 w-4 cursor-pointer appearance-none border border-border bg-surface checked:border-brand checked:bg-brand aria-invalid:border-brand",
-          shapeClass,
-        ]}
+        class="peer h-4 w-4 cursor-pointer appearance-none rounded-xs border border-border bg-surface checked:border-brand checked:bg-brand aria-invalid:border-brand"
       />
       <svg
         class="pointer-events-none absolute inset-0 m-auto hidden h-3 w-3 text-surface peer-checked:block"
