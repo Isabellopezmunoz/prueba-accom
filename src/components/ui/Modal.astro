@@ -36,7 +36,7 @@ const { id, labelledby, class: className = "" } = Astro.props
       aria-label="Cerrar"
       data-modal-close
     >
-      <Image src={closeIcon} alt="" class="h-[11.67px] w-auto" />
+      <Image src={closeIcon} alt="" class="h-4 w-auto md:h-[11.67px]" />
     </button>
     <slot />
   </div>

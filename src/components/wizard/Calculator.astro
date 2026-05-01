@@ -164,7 +164,7 @@ const timeOptions = [
         type="button"
         data-action="next"
         data-step-target="2"
-        class="inline-flex cursor-pointer items-center gap-3 rounded-sm bg-brand px-10 py-4 text-lg font-bold text-surface shadow-cta transition-colors hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-50"
+        class="inline-flex cursor-pointer items-center gap-2 rounded-sm bg-brand px-5 py-2.5 text-base font-bold text-surface shadow-cta transition-colors hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-50 md:gap-3 md:px-10 md:py-4 md:text-lg"
       >
         Siguiente
         <ArrowIcon direction="right" />
@@ -235,6 +235,7 @@ const timeOptions = [
         placeholder="28001"
         inputmode="numeric"
         pattern="[0-9]{5}"
+        maxlength={5}
         autocomplete="postal-code"
         icon={locationIcon}
         variant="plain"
@@ -245,15 +246,7 @@ const timeOptions = [
       He leído y acepto la <a href="/politica-de-privacidad" class="text-brand underline transition-colors hover:text-brand-hover">Política de Privacidad</a> y consiento el tratamiento de mis datos.
     </Checkbox>
 
-    <div class="relative flex items-center justify-center">
-      <button
-        type="button"
-        data-action="back"
-        class="absolute left-0 inline-flex cursor-pointer items-center gap-2 rounded-sm px-6 py-3 text-md font-semibold text-text-slate transition-colors hover:text-ink"
-      >
-        <ArrowIcon direction="left" />
-        Atrás
-      </button>
+    <div class="flex items-center justify-center">
       <button
         type="submit"
         class="inline-flex cursor-pointer items-center justify-center rounded-sm bg-brand px-10 py-4 text-lg font-bold text-surface shadow-cta transition-colors hover:bg-brand-hover"

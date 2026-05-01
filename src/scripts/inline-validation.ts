@@ -8,7 +8,7 @@ const messages = {
     default: "Este campo es obligatorio.",
   },
   patternMismatch: {
-    "postal-code": "Introduce un código postal de 5 dígitos.",
+    "postal-code": "Introduce un código postal válido.",
     tel: "Introduce un teléfono válido.",
     default: "El formato no es válido.",
   },
@@ -81,6 +81,15 @@ export const setupInlineValidation = (form: HTMLFormElement) => {
       event.preventDefault()
       showError(field)
     })
+    if (
+      field instanceof HTMLInputElement &&
+      field.getAttribute("autocomplete") === "postal-code"
+    ) {
+      field.addEventListener("input", () => {
+        const cleaned = field.value.replace(/\D/g, "")
+        if (cleaned !== field.value) field.value = cleaned
+      })
+    }
     const clearOn = field.type === "checkbox" || field.type === "radio" ? "change" : "input"
     field.addEventListener(clearOn, () => {
       if (field.checkValidity()) clearError(field)

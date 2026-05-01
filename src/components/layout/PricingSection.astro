@@ -99,7 +99,7 @@ const tabs = [
             data-card-tab={card.tab}
             data-desktop-only={card.desktopOnly ? "true" : undefined}
             class:list={[
-              "flex w-[80%] max-w-md shrink-0 snap-center transition-transform duration-300 ease-out max-tablet-lg:[&:not([data-active=true])]:opacity-60 max-tablet-lg:[&:not([data-active=true])]:scale-95 tablet-lg:w-auto tablet-lg:max-w-none",
+              "flex w-[80%] max-w-md shrink-0 snap-center transition-[transform,opacity] duration-300 ease-out max-tablet-lg:[&:not([data-active=true])]:opacity-60 max-tablet-lg:[&:not([data-active=true])]:scale-95 tablet-lg:w-auto tablet-lg:max-w-none",
               card.desktopOnly && "hidden tablet-lg:flex",
             ]}
           >

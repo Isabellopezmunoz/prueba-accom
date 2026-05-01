@@ -1,0 +1,99 @@
+---
+import { Image } from "astro:assets"
+import menuIcon from "../../assets/icons/menu-rounded.svg"
+
+interface NavLink {
+  href: string
+  label: string
+}
+
+interface Props {
+  links: NavLink[]
+  currentPath: string
+  variant: "trigger" | "panel"
+}
+
+const { links, currentPath, variant } = Astro.props
+const isActive = (href: string) =>
+  href.startsWith("/") && (currentPath === href || currentPath === `${href}/`)
+---
+
+{
+  variant === "trigger" && (
+    <button
+      type="button"
+      class="flex h-12 w-12 cursor-pointer items-center justify-center md:hidden"
+      aria-label="Abrir menú"
+      aria-expanded="false"
+      aria-controls="mobile-nav"
+      data-menu-toggle
+    >
+      <Image src={menuIcon} alt="" class="h-6 w-9" />
+    </button>
+  )
+}
+
+{
+  variant === "panel" && (
+    <div
+      id="mobile-nav"
+      class="group/panel absolute inset-x-0 top-full max-h-0 overflow-hidden border-border-faint bg-surface opacity-0 shadow-nav transition-[max-height,opacity,border-top-width] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] data-open:max-h-96 data-open:border-t data-open:opacity-100 md:hidden"
+      data-menu-panel
+    >
+      <ul
+        class="flex -translate-y-2 flex-col gap-4 p-4 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-data-open/panel:translate-y-0"
+      >
+        {links.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              aria-current={isActive(link.href) ? "page" : undefined}
+              data-reset-calculator={
+                link.href === "/calcula-tu-tarifa" ? "true" : undefined
+              }
+              class:list={[
+                "block rounded-sm px-3 py-2 text-md font-medium leading-tight transition-colors hover:bg-brand-tint hover:text-brand active:bg-brand-tint active:text-brand",
+                isActive(link.href) ? "bg-brand-tint text-brand" : "text-text",
+              ]}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))}
+        <li>
+          <button
+            type="button"
+            data-modal-open="contact-modal"
+            class="inline-flex w-full cursor-pointer items-center justify-center rounded-sm bg-brand px-6 py-2 text-md font-semibold leading-tight text-surface transition-colors hover:bg-brand-hover"
+          >
+            Contactar
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <script>
+      const toggle = document.querySelector<HTMLButtonElement>(
+        "[data-menu-toggle]"
+      )
+      const panel = document.querySelector<HTMLElement>("[data-menu-panel]")
+
+      if (toggle && panel) {
+        const setOpen = (open: boolean) => {
+          if (open) panel.dataset.open = ""
+          else delete panel.dataset.open
+          toggle.setAttribute("aria-expanded", String(open))
+          toggle.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú")
+        }
+
+        toggle.addEventListener("click", () =>
+          setOpen(panel.dataset.open === undefined)
+        )
+
+        panel.querySelectorAll("a").forEach((link) =>
+          link.addEventListener("click", () => setOpen(false))
+        )
+      }
+    </script>
+  )
+}

@@ -10,22 +10,22 @@ import Modal from "../ui/Modal.astro"
 ---
 
 <Modal id="contact-modal" labelledby="contact-modal-title">
-  <div data-contact-form class="flex flex-col gap-7.5 p-6 md:p-10">
-    <header class="flex flex-col items-center gap-2 text-center">
+  <div data-contact-form class="flex flex-col gap-5 p-5 md:gap-7.5 md:p-10">
+    <header class="flex flex-col items-start gap-2 pr-12 text-left md:items-center md:pr-0 md:text-center">
       <h2
         id="contact-modal-title"
-        class="text-3xl font-bold leading-9 text-ink"
+        class="text-2xl font-bold leading-tight text-ink md:text-3xl md:leading-9"
       >
         Contacta con un experto
       </h2>
-      <p class="text-md text-text">
+      <p class="text-base text-text md:text-md">
         Estamos aquí para optimizar tu consumo energético.
       </p>
     </header>
 
-    <div class="flex flex-col items-center gap-4 rounded-md bg-brand-tint p-6">
+    <div class="flex flex-col items-center gap-3 rounded-md bg-brand-tint p-4 md:gap-4 md:p-6">
       <span
-        class="inline-flex h-8.5 w-12 items-center justify-center rounded-full bg-info shadow-nav"
+        class="inline-flex h-7 w-10 items-center justify-center rounded-full bg-info shadow-nav md:h-8.5 md:w-12"
       >
         <Image src={phoneCall} alt="" class="h-4.5 w-auto" />
       </span>
@@ -33,8 +33,8 @@ import Modal from "../ui/Modal.astro"
         <span class="text-base font-bold uppercase tracking-widest text-brand">
           Atención directa
         </span>
-        <p class="font-display text-2xl font-bold text-ink">
-          Llámanos ahora al <a href="tel:900000000" class="text-brand">900 000 000</a>
+        <p class="font-display text-xl font-bold text-ink md:text-2xl">
+          Llámanos ahora al <a href="tel:900000000" class="whitespace-nowrap text-brand">900 000 000</a>
         </p>
       </div>
     </div>
@@ -46,8 +46,8 @@ import Modal from "../ui/Modal.astro"
     </div>
 
     <div class="flex flex-col items-center gap-1 text-center">
-      <h3 class="font-display text-lg font-bold text-ink">O te llamamos nosotros</h3>
-      <p class="text-base font-medium text-accent">
+      <h3 class="font-display text-base font-bold text-ink md:text-lg">O te llamamos nosotros</h3>
+      <p class="text-sm font-medium text-accent md:text-base">
         Sin esperas y gratuito
       </p>
     </div>
