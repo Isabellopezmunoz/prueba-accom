@@ -52,6 +52,7 @@ input[data-input-variant="plain"]:-webkit-autofill:active {
   --color-border-faint: #c3c6d71a;
 
   --color-warn: #fea619;
+  --color-warn-soft: #ffd27a;
   --color-warn-text: #855300;
   --color-error: #ba1a1a;
   --color-error-soft: #ffdad6;
@@ -101,6 +102,7 @@ input[data-input-variant="plain"]:-webkit-autofill:active {
   --shadow-card: 0 4px 6px -4px #0000001a, 0 10px 15px -3px #0000001a;
   --shadow-hero: 0 32px 64px -12px #121c2a0f;
   --shadow-brand: 0 0 20px #314ee440;
+  --shadow-tab: 0 2.88px 23.04px 0 #1b3fd81a;
   --shadow-cta: inset 0 2px 0 0 #ffffff33;
   --shadow-focus: 0 0 0 2px #004ac6;
 

@@ -20,7 +20,7 @@ const calculatorHref = intent
 const cardBase =
   "relative flex h-full w-full flex-col gap-6 overflow-hidden rounded-md border bg-surface p-6 transition-colors"
 const cardVariant = featured
-  ? "border-2 border-warn lg:shadow-card"
+  ? "border-2 border-warn lg:shadow-card lg:hover:border-warn-soft"
   : "border-border-softer lg:hover:border-brand"
 const kickerColor = featured ? "text-warn-text" : "text-brand"
 ---
@@ -34,35 +34,33 @@ const kickerColor = featured ? "text-warn-text" : "text-brand"
     )
   }
 
-  <div>
-    <header class="flex flex-col gap-1 pb-4">
+  <div class="flex flex-col gap-4">
+    <header class="flex flex-col gap-[4.5px]">
       <span
-        class:list={["text-2xs font-semibold uppercase tracking-wider", kickerColor]}
+        class:list={["text-2xs font-semibold uppercase tracking-widest", kickerColor]}
       >
         {kicker}
       </span>
-      <h3 class="text-xl font-bold leading-snug text-ink">{title}</h3>
+      <h3 class="text-xl font-bold leading-7 text-ink">{title}</h3>
     </header>
 
-    <div class="pb-8">
-      <ul class="flex flex-col gap-3 pb-0.5">
-        {
-          items.map((item) => (
-            <li class="flex items-center gap-2">
-              <Image src={checkCircle} alt="" class="shrink-0" />
-              <span
-                class:list={[
-                  "text-base leading-tight text-text",
-                  item.bold && "font-bold",
-                ]}
-              >
-                {item.text}
-              </span>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
+    <ul class="flex flex-col gap-3 pb-0.5">
+      {
+        items.map((item) => (
+          <li class="flex items-center gap-2">
+            <Image src={checkCircle} alt="" class="shrink-0" />
+            <span
+              class:list={[
+                "text-base leading-5 text-text",
+                item.bold && "font-bold",
+              ]}
+            >
+              {item.text}
+            </span>
+          </li>
+        ))
+      }
+    </ul>
   </div>
 
   <div class="mt-auto flex flex-col gap-2.5">
