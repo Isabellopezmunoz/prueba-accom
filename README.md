@@ -56,13 +56,12 @@ Pequeños extras propuestos como mejora de la experiencia de usuario más allá 
    - Limpiamos cualquier estado anterior en `sessionStorage` (la persona ha decidido empezar un nuevo intento desde una card concreta; lo que tuviera a medias ya no aplica).
    - Marcamos automáticamente el intent en el paso 1.
    - **Saltamos directamente al paso 2** — la persona ya tomó esa decisión visualmente, no necesita repetirla.
-   - Limpiamos la query string para que un refresh no vuelva a disparar el reset.
 
    **Caso B — Entrada en limpio** (`/calcula-tu-tarifa` sin query)
 
    Disparado desde:
    - Enlace "Calcula tu tarifa" del Header (desktop y panel móvil).
-   - Acceso directo a la URL, vuelta atrás del navegador, etc.
+   - Acceso directo a la URL.
 
    Al cargar:
    - **Arrancamos en el paso 1** (selección de suministro), con todos los pasos vacíos por defecto.
@@ -74,13 +73,10 @@ Pequeños extras propuestos como mejora de la experiencia de usuario más allá 
    - **Mantenibilidad**: una sola regla — "card recomendada → borde brand-soft" — frente a tener que recordar excepciones por bloque.
    - En un caso real lo confirmaría con la persona de diseño antes de aplicar el cambio — puede haber una intención que no veo (jerarquía distinta entre los dos bloques, etc.).
 
-### Footer
-Footer con logo y enlaces a las páginas legales (`Aviso Legal`, `Política de Privacidad`, `Cookies`).
-
 ### Páginas legales
 Tres páginas estáticas (`/aviso-legal`, `/politica-de-privacidad`, `/cookies`) generadas a partir de un componente compartido `LegalPage.astro` que recibe `title`, `intro`, `updatedAt` y un array de `sections`. Reutilizan `Header`, `Footer` y `ContactModal`.
 
-Los copys son inventados pero coherentes con el tono de la landing ("comparador", "sin trucos, sin permanencia", etc.).
+Los copys son ficticios pero coherentes con el tono de la landing ("comparador", "sin trucos, sin permanencia", etc.).
 
 ### Modal de contacto ("Contacta con un experto")
 Modal accesible reutilizable que se dispara desde "Contactar" del header, panel mobile y "Contratar" de cada PricingCard. Al enviar el form se muestra el resultado siguiendo el patrón descrito en *Simulación de envíos*.
@@ -200,8 +196,9 @@ Desde la raíz del proyecto:
 ```text
 /
 ├── public/
-│   ├── favicon.ico
-│   └── favicon.svg
+│   ├── favicon.svg
+│   ├── og-image.svg
+│   └── robots.txt
 ├── src/
 │   ├── assets/
 │   ├── components/
