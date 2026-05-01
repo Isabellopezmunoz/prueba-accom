@@ -13,6 +13,7 @@ interface Props {
   pattern?: string
   autocomplete?: string
   icon?: ImageMetadata
+  variant?: "tint" | "plain"
   class?: string
 }
 
@@ -27,10 +28,15 @@ const {
   pattern,
   autocomplete,
   icon,
+  variant = "tint",
   class: className = "",
 } = Astro.props
 
 const errorId = `${id}-error`
+
+const sizeClass = variant === "plain" ? "h-14" : "h-10.5"
+const bgClass = variant === "plain" ? "bg-surface" : "bg-surface-tint"
+const borderClass = variant === "plain" ? "border-border-softer" : "border-border-soft"
 ---
 
 <div class:list={["flex flex-col gap-1", className]}>
@@ -58,8 +64,12 @@ const errorId = `${id}-error`
       pattern={pattern}
       autocomplete={autocomplete}
       aria-describedby={errorId}
+      data-input-variant={variant}
       class:list={[
-        "h-10.5 w-full rounded-sm border border-border-soft bg-surface-tint text-base text-ink placeholder:text-text-muted focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 aria-invalid:border-brand",
+        "w-full rounded-sm border text-base text-ink placeholder:text-text-muted focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 aria-invalid:border-brand",
+        sizeClass,
+        bgClass,
+        borderClass,
         icon ? "pl-12 pr-4" : "px-2.5",
       ]}
     />

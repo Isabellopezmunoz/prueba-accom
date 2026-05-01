@@ -29,10 +29,8 @@ const {
   for={id}
   class:list={[
     "relative flex h-full cursor-pointer flex-col items-center gap-4 rounded-md bg-surface p-8 text-center transition-all md:gap-2 md:rounded-sm md:p-5",
-    "has-[:checked]:border-brand has-[:checked]:ring-2 has-[:checked]:ring-brand",
-    recommended
-      ? "border-2 border-brand-soft"
-      : "border border-transparent md:border-border-soft",
+    "border has-checked:border-brand has-checked:ring-2 has-checked:ring-brand",
+    recommended ? "border-2 border-brand-soft" : "border-transparent",
   ]}
 >
   <input
@@ -45,7 +43,7 @@ const {
 
   {
     recommended && (
-      <span class="absolute -top-2.5 left-1/2 inline-flex -translate-x-1/2 items-center justify-center rounded-full bg-brand px-3 py-1 text-2xs font-semibold leading-none text-surface">
+      <span class="absolute -top-2.5 left-1/2 inline-flex -translate-x-1/2 items-center justify-center rounded-full bg-brand px-3 py-1 text-2xs font-bold uppercase leading-none [letter-spacing:-0.5px] text-surface">
         Recomendado
       </span>
     )

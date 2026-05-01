@@ -1,0 +1,272 @@
+---
+import IntentRadio from "../ui/IntentRadio.astro"
+import ApplianceCard from "../ui/ApplianceCard.astro"
+import TimeOptionCard from "../ui/TimeOptionCard.astro"
+import Input from "../ui/Input.astro"
+import Checkbox from "../ui/Checkbox.astro"
+import ArrowIcon from "../ui/ArrowIcon.astro"
+import FieldError from "../ui/FieldError.astro"
+import intentBulb from "../../assets/icons/intent-bulb.svg"
+import intentFan from "../../assets/icons/intent-fan.svg"
+import intentBolt from "../../assets/icons/intent-bolt.svg"
+import intentFlame from "../../assets/icons/intent-flame.svg"
+import fridgeIcon from "../../assets/icons/appliance-fridge.svg"
+import microwaveIcon from "../../assets/icons/appliance-microwave.svg"
+import ovenIcon from "../../assets/icons/appliance-oven.svg"
+import washerIcon from "../../assets/icons/appliance-washer.svg"
+import dishwasherIcon from "../../assets/icons/appliance-dishwasher.svg"
+import acIcon from "../../assets/icons/appliance-ac.svg"
+import morningIcon from "../../assets/icons/time-morning.svg"
+import eveningIcon from "../../assets/icons/time-evening.svg"
+import allDayIcon from "../../assets/icons/time-allday.svg"
+import phoneIcon from "../../assets/icons/phone.svg"
+import locationIcon from "../../assets/icons/location-pin.svg"
+
+const intents = [
+  {
+    mobileIcons: [intentBulb],
+    desktopIcons: [intentBolt],
+    title: "Solo Luz",
+    description: "Electricidad para tu hogar o negocio",
+    value: "luz",
+  },
+  {
+    mobileIcons: [intentBolt],
+    desktopIcons: [intentBolt, intentFlame],
+    title: "Luz + Gas",
+    description: "Máximo ahorro combinando suministros",
+    value: "luz-gas",
+    recommended: true,
+  },
+  {
+    mobileIcons: [intentFan],
+    desktopIcons: [intentFlame],
+    title: "Solo Gas",
+    description: "Calefacción y agua caliente",
+    value: "gas",
+  },
+]
+
+const appliances = [
+  { id: "appliance-fridge", value: "fridge", label: "Frigorífico", icon: fridgeIcon },
+  { id: "appliance-microwave", value: "microwave", label: "Microondas", icon: microwaveIcon },
+  { id: "appliance-oven", value: "oven", label: "Horno", icon: ovenIcon },
+  { id: "appliance-washer", value: "washer", label: "Lavadora", icon: washerIcon },
+  { id: "appliance-dishwasher", value: "dishwasher", label: "Lavavajillas", icon: dishwasherIcon },
+  { id: "appliance-ac", value: "ac", label: "Aire acondicionado", icon: acIcon },
+]
+
+const timeOptions = [
+  {
+    id: "time-morning",
+    value: "morning",
+    label: "Por la mañana",
+    description: "Ideal si teletrabajas o tienes mañanas activas.",
+    icon: morningIcon,
+  },
+  {
+    id: "time-evening",
+    value: "evening",
+    label: "Tarde-Noche",
+    description: "Cuando la actividad comienza al llegar del trabajo.",
+    icon: eveningIcon,
+  },
+  {
+    id: "time-allday",
+    value: "allday",
+    label: "Todo el día",
+    description: "Siempre hay alguien en casa o consumo constante.",
+    icon: allDayIcon,
+  },
+]
+---
+
+<form
+  id="calculator-form"
+  class="flex flex-col gap-8 md:gap-12"
+  novalidate
+>
+  <section
+    data-step="1"
+    aria-labelledby="step-1-label"
+    class="flex flex-col gap-6 [[hidden]]:hidden"
+  >
+    <header class="flex flex-col gap-6 lg:gap-9">
+      <h1
+        class="text-center text-3xl font-bold leading-tight text-ink lg:text-5xl lg:leading-9"
+      >
+        ¿Qué quieres empezar a ahorrar hoy?
+      </h1>
+      <p
+        id="step-1-label"
+        class="w-full text-center text-md font-medium text-text lg:text-2xl lg:leading-none"
+      >
+        Selecciona tu tipo de suministro para personalizar tu oferta
+      </p>
+    </header>
+    <div class="grid w-full gap-6 md:grid-cols-3">
+      {
+        intents.map((intent) => (
+          <IntentRadio
+            id={`intent-${intent.value}`}
+            name="intent"
+            value={intent.value}
+            mobileIcons={intent.mobileIcons}
+            desktopIcons={intent.desktopIcons}
+            title={intent.title}
+            description={intent.description}
+            recommended={intent.recommended}
+          />
+        ))
+      }
+    </div>
+  </section>
+
+  <section
+    data-step="2"
+    hidden
+    aria-labelledby="step-2-label"
+    class="flex flex-col gap-6 [[hidden]]:hidden"
+  >
+    <p
+      id="step-2-label"
+      class="w-full text-center text-md font-medium text-text lg:text-2xl lg:leading-none"
+    >
+      ¿Qué electrodomésticos usas?
+    </p>
+    <div>
+      <div class="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
+        {
+          appliances.map((appliance) => (
+            <ApplianceCard
+              id={appliance.id}
+              name="appliances"
+              value={appliance.value}
+              label={appliance.label}
+              icon={appliance.icon}
+            />
+          ))
+        }
+      </div>
+      <FieldError id="appliances-error" class="data-[visible=true]:pt-3!" />
+    </div>
+
+    <div class="flex items-center justify-between gap-4">
+      <button
+        type="button"
+        data-action="back"
+        class="inline-flex cursor-pointer items-center gap-2 rounded-sm px-6 py-3 text-md font-semibold text-text-slate transition-colors hover:text-ink"
+      >
+        <ArrowIcon direction="left" />
+        Atrás
+      </button>
+      <button
+        type="button"
+        data-action="next"
+        data-step-target="2"
+        class="inline-flex cursor-pointer items-center gap-3 rounded-sm bg-brand px-10 py-4 text-lg font-bold text-surface shadow-cta transition-colors hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        Siguiente
+        <ArrowIcon direction="right" />
+      </button>
+    </div>
+  </section>
+
+  <section
+    data-step="3"
+    hidden
+    aria-labelledby="step-3-label"
+    class="flex flex-col gap-6 [[hidden]]:hidden"
+  >
+    <p
+      id="step-3-label"
+      class="w-full text-center text-md font-medium text-text lg:text-2xl lg:leading-none"
+    >
+      ¿Cuándo haces un mayor uso de la energía?
+    </p>
+    <div class="flex flex-col gap-4 md:flex-row">
+      {timeOptions.map((option) => <TimeOptionCard {...option} name="usage-time" />)}
+    </div>
+
+    <div class="flex items-center justify-between gap-4">
+      <button
+        type="button"
+        data-action="back"
+        class="inline-flex cursor-pointer items-center gap-2 rounded-sm px-6 py-3 text-md font-semibold text-text-slate transition-colors hover:text-ink"
+      >
+        <ArrowIcon direction="left" />
+        Atrás
+      </button>
+    </div>
+  </section>
+
+  <section
+    data-step="4"
+    hidden
+    aria-labelledby="step-4-label"
+    class="flex flex-col gap-6 [[hidden]]:hidden"
+  >
+    <header id="step-4-label" class="flex flex-col gap-2 text-center">
+      <p class="text-2xl font-bold leading-none text-text">
+        Estamos calculando tu ahorro.
+      </p>
+      <p class="text-md font-semibold leading-normal text-text">
+        Completa los detalles finales para recibir tu estudio gratuito.
+      </p>
+    </header>
+
+    <div class="grid gap-4 md:grid-cols-2 md:gap-6">
+      <Input
+        id="calc-phone"
+        label="Teléfono de contacto"
+        type="tel"
+        placeholder="600 000 000"
+        inputmode="tel"
+        autocomplete="tel"
+        pattern="[+]?[0-9 ]{9,}"
+        icon={phoneIcon}
+        variant="plain"
+        required
+      />
+      <Input
+        id="calc-postal-code"
+        label="Código postal"
+        type="text"
+        placeholder="28001"
+        inputmode="numeric"
+        pattern="[0-9]{5}"
+        autocomplete="postal-code"
+        icon={locationIcon}
+        variant="plain"
+      />
+    </div>
+
+    <Checkbox id="calc-privacy" size="md" required>
+      He leído y acepto la <a href="/politica-de-privacidad" class="text-brand underline transition-colors hover:text-brand-hover">Política de Privacidad</a> y consiento el tratamiento de mis datos.
+    </Checkbox>
+
+    <div class="relative flex items-center justify-center">
+      <button
+        type="button"
+        data-action="back"
+        class="absolute left-0 inline-flex cursor-pointer items-center gap-2 rounded-sm px-6 py-3 text-md font-semibold text-text-slate transition-colors hover:text-ink"
+      >
+        <ArrowIcon direction="left" />
+        Atrás
+      </button>
+      <button
+        type="submit"
+        class="inline-flex cursor-pointer items-center justify-center rounded-sm bg-brand px-10 py-4 text-lg font-bold text-surface shadow-cta transition-colors hover:bg-brand-hover"
+      >
+        Calcular
+      </button>
+    </div>
+  </section>
+</form>
+
+<script>
+  import { setupCalculator } from "../../scripts/calculator"
+
+  const form = document.getElementById("calculator-form") as HTMLFormElement | null
+  if (form) setupCalculator(form)
+</script>

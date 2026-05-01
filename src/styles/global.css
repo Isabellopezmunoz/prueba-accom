@@ -4,6 +4,23 @@ html {
   scroll-behavior: smooth;
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-text-fill-color: var(--color-ink);
+  -webkit-box-shadow: 0 0 0 1000px var(--color-surface-tint) inset;
+  caret-color: var(--color-ink);
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+input[data-input-variant="plain"]:-webkit-autofill,
+input[data-input-variant="plain"]:-webkit-autofill:hover,
+input[data-input-variant="plain"]:-webkit-autofill:focus,
+input[data-input-variant="plain"]:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px var(--color-surface) inset;
+}
+
 
 @theme {
   /* Colors */

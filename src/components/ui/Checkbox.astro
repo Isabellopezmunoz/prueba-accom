@@ -5,30 +5,41 @@ interface Props {
   id: string
   name?: string
   required?: boolean
+  size?: "sm" | "md"
   class?: string
 }
 
-const { id, name, required, class: className = "" } = Astro.props
+const { id, name, required, size = "sm", class: className = "" } = Astro.props
 
 const errorId = `${id}-error`
+
+const boxClass = size === "md" ? "h-5 w-5" : "h-4 w-4"
+const checkClass = size === "md" ? "h-3.5 w-3.5" : "h-3 w-3"
+const errorPad = size === "md" ? "pl-8" : "pl-7"
 ---
 
 <div class:list={["flex flex-col", className]}>
   <label
     for={id}
-    class="flex items-center gap-3 text-xs leading-tight text-text"
+    class="flex items-center gap-3 text-sm leading-snug text-text"
   >
-    <span class="relative inline-flex h-4 w-4 shrink-0">
+    <span class:list={["relative inline-flex shrink-0", boxClass]}>
       <input
         id={id}
         name={name ?? id}
         type="checkbox"
         required={required}
         aria-describedby={errorId}
-        class="peer h-4 w-4 cursor-pointer appearance-none rounded-xs border border-border bg-surface checked:border-brand checked:bg-brand aria-invalid:border-brand"
+        class:list={[
+          "peer cursor-pointer appearance-none rounded-xs border border-border bg-surface checked:border-brand checked:bg-brand aria-invalid:border-brand",
+          boxClass,
+        ]}
       />
       <svg
-        class="pointer-events-none absolute inset-0 m-auto hidden h-3 w-3 text-surface peer-checked:block"
+        class:list={[
+          "pointer-events-none absolute inset-0 m-auto hidden text-surface peer-checked:block",
+          checkClass,
+        ]}
         viewBox="0 0 12 12"
         fill="none"
         aria-hidden="true"
@@ -44,5 +55,5 @@ const errorId = `${id}-error`
     </span>
     <span><slot /></span>
   </label>
-  <FieldError id={errorId} class="pl-7" />
+  <FieldError id={errorId} class={errorPad} />
 </div>

@@ -15,7 +15,7 @@ const { id, name, value, label, description, icon } = Astro.props
 
 <label
   for={id}
-  class="group relative flex cursor-pointer flex-col items-center gap-3 rounded-md border border-transparent bg-surface p-6 text-center transition-all hover:border-border-soft has-checked:border-brand has-checked:ring-2 has-checked:ring-brand md:flex-1"
+  class="group relative flex cursor-pointer flex-col items-center gap-3 rounded-sm bg-surface p-6 text-center transition-shadow has-checked:shadow-focus md:flex-1"
 >
   <input
     id={id}
@@ -27,7 +27,7 @@ const { id, name, value, label, description, icon } = Astro.props
   <span
     class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-brand-tint"
   >
-    <img src={icon.src} alt="" class="h-7 w-7" />
+    <img src={icon.src} alt="" width="28" height="28" />
   </span>
   <span class="flex flex-col gap-1">
     <span class="text-lg font-bold leading-tight text-ink">{label}</span>

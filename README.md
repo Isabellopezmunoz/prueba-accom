@@ -71,6 +71,12 @@ Pequeños extras propuestos como mejora de la experiencia de usuario más allá 
    - **Arrancamos en el paso 1** (selección de suministro), con todos los pasos vacíos por defecto.
    - Si hay un estado guardado en `sessionStorage` de un intento anterior sin terminar, **rehidratamos** todos los campos y reposicionamos a la persona en el paso donde lo dejó (ver punto 3).
 
+5. **Borde unificado en cards "Recomendado".** En el Figma, la card "Luz + Gas" del paso 1 de la calculadora aparece **sin borde** en estado normal, pero la card "Luz + Gas" de la sección "Compara nuestras ofertas en energía" sí lleva un borde brand-soft de 2px. He unificado ambas para que cualquier card marcada como "Recomendado" lleve siempre el mismo borde brand-soft, independientemente del bloque donde aparezca. Razones:
+   - **Consistencia visual**: el badge "Recomendado" debe verse y comportarse igual en toda la landing.
+   - **Atención del usuario**: el borde refuerza el badge y guía la mirada hacia la opción destacada (objetivo del propio badge).
+   - **Mantenibilidad**: una sola regla — "card recomendada → borde brand-soft" — frente a tener que recordar excepciones por bloque.
+   - En un caso real lo confirmaría con la persona de diseño antes de aplicar el cambio — puede haber una intención que no veo (jerarquía distinta entre los dos bloques, etc.).
+
 ### Footer
 Footer con logo y enlaces a las páginas legales (`Aviso Legal`, `Política de Privacidad`, `Cookies`).
 
@@ -96,15 +102,24 @@ Antes de listar las inconsistencias detectadas, dos disclaimers sobre cómo se h
 - **Acceso limitado al Figma**: solo dispongo de cuenta gratuita, sin Dev Mode completo. He inspeccionado los nodos con las herramientas a las que tengo acceso (panel de propiedades, copiar valores manualmente, anotaciones del archivo) y he ajustado tamaños, colores y espaciados al valor más cercano que he podido leer. En un proyecto real con Dev Mode tendría acceso directo a tokens de Figma exportables y podría garantizar 1:1 sin lectura manual.
 - **Espaciados con `gap` en lugar de `padding`/`margin`**: en muchos puntos del Figma los espacios entre elementos están resueltos con padding-bottom o margin individual de cada hijo. En el código lo he traducido a `flex` con `gap` (a veces con contenedores anidados para tener dos gaps distintos en el mismo bloque). Es más limpio, menos propenso a desincronizarse cuando cambia el contenido, y se adapta mejor a viewports distintos. El resultado visual es idéntico al Figma — solo cambia la herramienta CSS usada.
 
-### 1. Checkbox de privacidad: forma distinta según el contexto
-En el Figma, el checkbox de "acepto política de privacidad" aparece con tratamiento distinto según el formulario:
+### 1. Checkbox de privacidad: forma y tamaño según el contexto
+En el Figma, el checkbox de "acepto política de privacidad" aparece con tratamiento distinto según el formulario, en dos ejes:
+
+**Forma:**
 - **Hero (formulario principal)**: cuadrado en mobile y **redondo** en desktop.
 - **Modal de contacto** y **calculadora (paso 4)**: cuadrado.
-- **Implementación**: he unificado los tres a checkbox cuadrado en todos los viewports y formularios. Razones:
+
+**Tamaño:**
+- **Hero y modal de contacto**: 16×16.
+- **Calculadora (paso 4)**: 20×20.
+
+**Implementación:**
+- He unificado los tres a checkbox **cuadrado** en todos los viewports y formularios. Razones:
   - Conceptualmente es el mismo control ("acepto política de privacidad") en los tres sitios — debería verse igual.
   - El patrón estándar en formularios web para "acepto términos" es cuadrado; el redondo se asocia con radio buttons (selección excluyente), no con un único toggle de aceptación.
   - Tener dos formas para el mismo control crea ruido visual sin aportar nada funcional.
-- En un caso real lo confirmaría con la persona de diseño antes de aplicar el cambio — puede haber una intención que no veo (jerarquía visual, decisión de marca, etc.).
+- He **mantenido los dos tamaños** (16 / 20) y los he expuesto como prop `size="sm" | "md"` del componente `Checkbox`. La diferencia de tamaño sí tiene justificación funcional: en la calculadora el checkbox vive aislado al final de un formulario amplio (más target táctil, más jerarquía), mientras que en Hero y modal va dentro de bloques más densos donde el tamaño compacto encaja mejor.
+- En un caso real confirmaría la decisión sobre la forma con la persona de diseño antes de aplicar el cambio — puede haber una intención que no veo (jerarquía visual, decisión de marca, etc.).
 
 ### 2. Texto del enlace de privacidad: distinto en mobile vs desktop
 - **Hero mobile**: "Política de Privacidad".
@@ -144,6 +159,13 @@ Las rutas públicas (`/calcula-tu-tarifa`, `/aviso-legal`, `/politica-de-privaci
 En el Figma, los labels "TELÉFONO DE CONTACTO" y "CÓDIGO POSTAL" del paso 4 aparecen en mayúsculas. El resto de inputs de la landing (Hero, Modal de contacto) usan labels capitalizados normales. Decidí mantenerlos en el mismo formato que el resto del proyecto ("Teléfono de contacto" / "Código postal") por consistencia: los labels deberían comportarse igual en todos los formularios de la landing.
 - El asterisco de obligatoriedad sí lo mantengo en "Teléfono de contacto" (es campo requerido) y lo retiro de "Código postal" (opcional).
 - En un caso real preguntaría a la persona de diseño qué formato prefiere para los labels y lo unificaría.
+
+### 9. Botón "Atrás" en el paso 4 de la calculadora
+En el Figma, los pasos 2 y 3 de la calculadora tienen botón "Atrás", pero el paso 4 no. He añadido el botón "Atrás" también en el paso 4 por UX:
+- Si el usuario llega al paso final y se da cuenta de que quiere corregir un dato anterior (intent, electrodomésticos, franja horaria), sin "Atrás" la única opción sería recargar la página y empezar de cero — eso frustra y aumenta el abandono justo en el paso de conversión.
+- Probablemente sea un descuido del diseño (los pasos 2 y 3 sí lo tienen; mantener "Atrás" en todo el wizard es el patrón estándar).
+- Lo coloco alineado a la izquierda con la misma estética que en los otros pasos. El botón "Calcular" sigue centrado como CTA principal para no romper la jerarquía visual del Figma.
+- En un caso real lo confirmaría con la persona de diseño.
 
 ## Cómo ejecutar el proyecto
 
