@@ -43,11 +43,9 @@ Pequeños extras propuestos como mejora de la experiencia de usuario más allá 
 
 1. **Modal de éxito (en la vista de la calculadora)→ redirige al home al cerrar.** No tiene sentido dejar a la persona en el último paso de la calculadora con los datos rellenos después de un envío exitoso. Al cerrar el modal de éxito redirige a `/`.
 
-2. **Modal de error  (en la vista de la calculadora)→ permite reintentar sin perder datos.** En caso de error, al cerrar la persona se queda en el paso 4 con el formulario tal cual lo tenía. Para reducir la fricción, el propio modal de error muestra un botón **"Reintentar"** que cierra y reenvía el formulario automáticamente, y un teléfono de soporte (`900 000 000`) como fallback comercial. *Estos extras del modal de error aparecen en los flujos de la calculadora y del Hero* (donde la persona ya rellenó varios campos), pero **no** en el modal de contacto del header / PricingCard (donde el form tiene un único campo y reintentar es trivial).
+2. **Persistencia del estado en `sessionStorage`.** Si la persona refresca la página o cierra el navegador antes de terminar la calculadora, recuperamos el paso en el que estaba y los datos ya rellenados (suministro, electrodomésticos, franja horaria, teléfono, CP, checkbox). Limpiamos el storage al confirmar el envío con éxito. Usamos `sessionStorage` (no `localStorage`) por privacidad: la información desaparece al cerrar la pestaña.
 
-3. **Persistencia del estado en `sessionStorage`.** Si la persona refresca la página o cierra el navegador antes de terminar la calculadora, recuperamos el paso en el que estaba y los datos ya rellenados (suministro, electrodomésticos, franja horaria, teléfono, CP, checkbox). Limpiamos el storage al confirmar el envío con éxito. Usamos `sessionStorage` (no `localStorage`) por privacidad: la información desaparece al cerrar la pestaña.
-
-4. **Dos formas de entrar a la calculadora, dos comportamientos distintos.** La calculadora se puede abrir desde un CTA contextual (una card que ya implica un tipo de suministro) o desde un enlace neutro. Detectamos uno u otro caso con la query `?intent=<luz|luz-gas|gas>` y ajustamos el flujo para no hacer repetir a la persona una decisión que ya tomó.
+3. **Dos formas de entrar a la calculadora, dos comportamientos distintos.** La calculadora se puede abrir desde un CTA contextual (una card que ya implica un tipo de suministro) o desde un enlace neutro. Detectamos uno u otro caso con la query `?intent=<luz|luz-gas|gas>` y ajustamos el flujo para no hacer repetir a la persona una decisión que ya tomó.
 
    **Caso A — Entrada desde una card con intent ya elegido** (`/calcula-tu-tarifa?intent=luz`, etc.)
 
@@ -71,7 +69,7 @@ Pequeños extras propuestos como mejora de la experiencia de usuario más allá 
    - **Arrancamos en el paso 1** (selección de suministro), con todos los pasos vacíos por defecto.
    - Si hay un estado guardado en `sessionStorage` de un intento anterior sin terminar, **rehidratamos** todos los campos y reposicionamos a la persona en el paso donde lo dejó (ver punto 3).
 
-5. **Borde unificado en cards "Recomendado".** En el Figma, la card "Luz + Gas" del paso 1 de la calculadora aparece **sin borde** en estado normal, pero la card "Luz + Gas" de la sección "Compara nuestras ofertas en energía" sí lleva un borde brand-soft de 2px. He unificado ambas para que cualquier card marcada como "Recomendado" lleve siempre el mismo borde brand-soft, independientemente del bloque donde aparezca. Razones:
+4. **Borde unificado en cards "Recomendado".** En el Figma, la card "Luz + Gas" del paso 1 de la calculadora aparece **sin borde** en estado normal, pero la card "Luz + Gas" de la sección "Compara nuestras ofertas en energía" sí lleva un borde brand-soft de 2px. He unificado ambas para que cualquier card marcada como "Recomendado" lleve siempre el mismo borde brand-soft, independientemente del bloque donde aparezca. Razones:
    - **Consistencia visual**: el badge "Recomendado" debe verse y comportarse igual en toda la landing.
    - **Atención del usuario**: el borde refuerza el badge y guía la mirada hacia la opción destacada (objetivo del propio badge).
    - **Mantenibilidad**: una sola regla — "card recomendada → borde brand-soft" — frente a tener que recordar excepciones por bloque.

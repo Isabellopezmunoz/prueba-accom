@@ -7,7 +7,7 @@ import Badge from "../ui/Badge.astro"
 import Button from "../ui/Button.astro"
 import Checkbox from "../ui/Checkbox.astro"
 import Input from "../ui/Input.astro"
-import IntentButton from "../ui/IntentButton.astro"
+import EnergyTypeButton from "../ui/EnergyTypeButton.astro"
 import Select from "../ui/Select.astro"
 
 const consumptionOptions = [
@@ -67,22 +67,22 @@ const consumptionOptions = [
             ¿En qué factura quieres ahorrar?
           </legend>
           <div class="grid grid-cols-3 gap-2">
-            <IntentButton
-              id="intent-luz"
+            <EnergyTypeButton
+              id="energy-luz"
               name="intent"
               value="luz"
               label="Luz"
               icons={[electricityIcon]}
             />
-            <IntentButton
-              id="intent-gas"
+            <EnergyTypeButton
+              id="energy-gas"
               name="intent"
               value="gas"
               label="Gas"
               icons={[gasIcon]}
             />
-            <IntentButton
-              id="intent-luz-gas"
+            <EnergyTypeButton
+              id="energy-luz-gas"
               name="intent"
               value="luz-gas"
               label="Luz+gas"
@@ -195,7 +195,7 @@ const consumptionOptions = [
       }
       hideFormError()
 
-      const modal = document.getElementById("contact-modal")
+      const modal = document.getElementById("result-modal")
       if (!modal) return
 
       const status: "success" | "error" =
@@ -210,19 +210,13 @@ const consumptionOptions = [
       modal.dispatchEvent(new Event("modal:open"))
     })
 
-    const modal = document.getElementById("contact-modal")
+    const modal = document.getElementById("result-modal")
 
     modal?.addEventListener("modal:closed", () => {
       if (form.dataset.active !== "true") return
       if (lastResultStatus === "success") form.reset()
       lastResultStatus = null
       delete form.dataset.active
-    })
-
-    modal?.addEventListener("modal:retry", () => {
-      if (form.dataset.active !== "true") return
-      modal.dispatchEvent(new Event("modal:close"))
-      form.requestSubmit()
     })
   }
 </script>

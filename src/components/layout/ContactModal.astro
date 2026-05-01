@@ -2,8 +2,6 @@
 import { Image } from "astro:assets"
 import phoneCall from "../../assets/icons/phone-call.svg"
 import phone from "../../assets/icons/phone.svg"
-import checkLg from "../../assets/icons/check-circle-lg.svg"
-import errorTriangle from "../../assets/icons/error-triangle.svg"
 import Checkbox from "../ui/Checkbox.astro"
 import FieldError from "../ui/FieldError.astro"
 import Modal from "../ui/Modal.astro"
@@ -89,56 +87,6 @@ import Modal from "../ui/Modal.astro"
       </Checkbox>
     </form>
   </div>
-
-  <div
-    data-contact-success
-    hidden
-    class="flex flex-col items-center gap-6 p-6 text-center md:p-10"
-  >
-    <span
-      class="inline-flex h-20 w-20 items-center justify-center rounded-full bg-accent/10"
-    >
-      <Image src={checkLg} alt="" class="h-10.5 w-auto" />
-    </span>
-    <div class="flex flex-col gap-4">
-      <h2 class="text-2xl font-bold text-ink">¡Solicitud recibida con éxito!</h2>
-      <p class="text-base leading-relaxed text-text">
-        Estamos analizando las mejores tarifas para ti.<br />
-        Un experto de Ahorrarenenergía te contactará para informarte.
-      </p>
-    </div>
-  </div>
-
-  <div
-    data-contact-error
-    hidden
-    class="flex flex-col items-center gap-6 p-6 text-center md:p-10"
-  >
-    <span
-      class="inline-flex h-20 w-20 items-center justify-center rounded-full bg-error-soft"
-    >
-      <Image src={errorTriangle} alt="" class="h-7.125 w-8.25" />
-    </span>
-    <div class="flex flex-col gap-3">
-      <h2 class="text-2xl font-bold text-ink">¡Ups! Algo ha salido mal</h2>
-      <p class="text-md text-text">
-        Hemos tenido un problema técnico al enviar tus datos.<br />
-        Por favor, inténtalo de nuevo.
-      </p>
-    </div>
-    <button
-      type="button"
-      data-contact-retry
-      data-source-only="calculator hero"
-      hidden
-      class="inline-flex cursor-pointer items-center justify-center rounded-sm bg-brand px-10 py-4 text-lg font-bold text-surface shadow-cta transition-colors hover:bg-brand-hover"
-    >
-      Reintentar
-    </button>
-    <p data-source-only="calculator hero" hidden class="text-md text-text-subtle">
-      ¿Prefieres que te llamemos? <a href="tel:900000000" class="whitespace-nowrap font-semibold text-brand">900 000 000</a>
-    </p>
-  </div>
 </Modal>
 
 <script>
@@ -146,49 +94,25 @@ import Modal from "../ui/Modal.astro"
 
   const modal = document.getElementById("contact-modal")
   if (modal) {
-    const formView = modal.querySelector<HTMLElement>("[data-contact-form]")
-    const successView = modal.querySelector<HTMLElement>("[data-contact-success]")
-    const errorView = modal.querySelector<HTMLElement>("[data-contact-error]")
     const form = modal.querySelector<HTMLFormElement>("[data-contact-submit]")
-    const content = modal.querySelector<HTMLElement>("[data-modal-content]")
 
     if (form) setupInlineValidation(form)
 
-    const showOnly = (view: HTMLElement | null) => {
-      ;[formView, successView, errorView].forEach((current) => {
-        if (current) current.hidden = current !== view
-      })
-      content?.classList.toggle("border", view === errorView)
-      content?.classList.toggle("border-error", view === errorView)
-    }
-
     form?.addEventListener("submit", (event) => {
       event.preventDefault()
-      const success = Math.random() < 0.8
-      showOnly(success ? successView : errorView)
+      const status: "success" | "error" = Math.random() < 0.8 ? "success" : "error"
+      modal.dispatchEvent(new Event("modal:close"))
+      const resultModal = document.getElementById("result-modal")
+      if (resultModal) {
+        resultModal.dispatchEvent(
+          new CustomEvent("modal:open-result", { detail: { status } })
+        )
+        resultModal.dispatchEvent(new Event("modal:open"))
+      }
     })
-
-    modal.addEventListener("modal:open-result", (event) => {
-      const detail = (event as CustomEvent<{
-        status: "success" | "error"
-        source?: string
-      }>).detail
-      modal.querySelectorAll<HTMLElement>("[data-source-only]").forEach((el) => {
-        const allowed = (el.dataset.sourceOnly ?? "").split(" ")
-        el.hidden = !detail?.source || !allowed.includes(detail.source)
-      })
-      showOnly(detail?.status === "error" ? errorView : successView)
-    })
-
-    modal
-      .querySelector<HTMLButtonElement>("[data-contact-retry]")
-      ?.addEventListener("click", () => {
-        modal.dispatchEvent(new Event("modal:retry"))
-      })
 
     modal.addEventListener("modal:closed", () => {
       form?.reset()
-      showOnly(formView)
     })
   }
 </script>

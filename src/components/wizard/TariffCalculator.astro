@@ -4,8 +4,9 @@ import ApplianceCard from "../ui/ApplianceCard.astro"
 import TimeOptionCard from "../ui/TimeOptionCard.astro"
 import Input from "../ui/Input.astro"
 import Checkbox from "../ui/Checkbox.astro"
-import ArrowIcon from "../ui/ArrowIcon.astro"
 import FieldError from "../ui/FieldError.astro"
+import WizardBackButton from "../ui/WizardBackButton.astro"
+import WizardNextButton from "../ui/WizardNextButton.astro"
 import intentBulb from "../../assets/icons/intent-bulb.svg"
 import intentFan from "../../assets/icons/intent-fan.svg"
 import intentBolt from "../../assets/icons/intent-bolt.svg"
@@ -152,23 +153,8 @@ const timeOptions = [
     </div>
 
     <div class="flex items-center justify-between gap-4">
-      <button
-        type="button"
-        data-action="back"
-        class="inline-flex cursor-pointer items-center gap-2 rounded-sm px-6 py-3 text-md font-semibold text-text-slate transition-colors hover:text-ink"
-      >
-        <ArrowIcon direction="left" />
-        Atrás
-      </button>
-      <button
-        type="button"
-        data-action="next"
-        data-step-target="2"
-        class="inline-flex cursor-pointer items-center gap-2 rounded-sm bg-brand px-5 py-2.5 text-base font-bold text-surface shadow-cta transition-colors hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-50 md:gap-3 md:px-10 md:py-4 md:text-lg"
-      >
-        Siguiente
-        <ArrowIcon direction="right" />
-      </button>
+      <WizardBackButton />
+      <WizardNextButton stepTarget={2}>Siguiente</WizardNextButton>
     </div>
   </section>
 
@@ -189,14 +175,7 @@ const timeOptions = [
     </div>
 
     <div class="flex items-center justify-between gap-4">
-      <button
-        type="button"
-        data-action="back"
-        class="inline-flex cursor-pointer items-center gap-2 rounded-sm px-6 py-3 text-md font-semibold text-text-slate transition-colors hover:text-ink"
-      >
-        <ArrowIcon direction="left" />
-        Atrás
-      </button>
+      <WizardBackButton />
     </div>
   </section>
 
@@ -247,12 +226,7 @@ const timeOptions = [
     </Checkbox>
 
     <div class="flex items-center justify-center">
-      <button
-        type="submit"
-        class="inline-flex cursor-pointer items-center justify-center rounded-sm bg-brand px-10 py-4 text-lg font-bold text-surface shadow-cta transition-colors hover:bg-brand-hover"
-      >
-        Calcular
-      </button>
+      <WizardNextButton type="submit" withArrow={false}>Calcular</WizardNextButton>
     </div>
   </section>
 </form>

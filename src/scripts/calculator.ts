@@ -165,7 +165,7 @@ export const setupCalculator = (form: HTMLFormElement) => {
   form.addEventListener("submit", (event) => {
     event.preventDefault()
 
-    const modal = document.getElementById("contact-modal")
+    const modal = document.getElementById("result-modal")
     if (!modal) return
 
     const status: "success" | "error" =
@@ -180,7 +180,7 @@ export const setupCalculator = (form: HTMLFormElement) => {
     modal.dispatchEvent(new Event("modal:open"))
   })
 
-  const modal = document.getElementById("contact-modal")
+  const modal = document.getElementById("result-modal")
 
   modal?.addEventListener("modal:closed", () => {
     if (form.dataset.active !== "true") return
@@ -192,9 +192,4 @@ export const setupCalculator = (form: HTMLFormElement) => {
     delete form.dataset.active
   })
 
-  modal?.addEventListener("modal:retry", () => {
-    if (form.dataset.active !== "true") return
-    modal.dispatchEvent(new Event("modal:close"))
-    form.requestSubmit()
-  })
 }

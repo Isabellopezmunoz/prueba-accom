@@ -1,0 +1,21 @@
+---
+import ArrowIcon from "./ArrowIcon.astro"
+
+interface Props {
+  type?: "button" | "submit"
+  stepTarget?: number
+  withArrow?: boolean
+}
+
+const { type = "button", stepTarget, withArrow = true } = Astro.props
+---
+
+<button
+  type={type}
+  data-action={type === "button" ? "next" : undefined}
+  data-step-target={stepTarget}
+  class="inline-flex cursor-pointer items-center justify-center gap-2 rounded-sm bg-brand px-5 py-2.5 text-base font-bold text-surface shadow-cta transition-colors hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-50 md:gap-3 md:px-10 md:py-4 md:text-lg"
+>
+  <slot />
+  {withArrow && <ArrowIcon direction="right" />}
+</button>
