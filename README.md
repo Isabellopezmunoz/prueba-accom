@@ -25,16 +25,15 @@ Cuatro cards de tarifa (3 de luz + 1 dual destacada como "TOP VENTAS"), con kick
   - Click en una tab → el carrusel hace smooth scroll a la card correspondiente.
   - Swipe manual del carrusel → la tab activa se actualiza al detectar la card centrada.
 
-### Bloque 3 — Selectores de oferta + Calculadora
+### Bloque 3 — Calculadora
 Sección "Compara nuestras ofertas en energía" con tres tarjetas de selección (Solo Luz / Luz+Gas / Solo Gas).
 
 La calculadora vive en su propia página `/calcula-tu-tarifa`, accesible desde:
 - "Calcula tu tarifa" del Header (desktop y panel mobile).
 - "Calcula tu tarifa" de cada PricingCard.
-- Cualquiera de las tres cards de la sección de selectores.
+- Cualquiera de las tres cards de la sección de selectores de ofertas.
 
-
-Al pulsar "Calcular" simulamos el envío con `Math.random() < 0.8` (80% éxito / 20% error). El mismo modal y los mismos copys de éxito/error que el formulario "Te llamamos" del modal de contacto, para no duplicar pantallas de confirmación.
+Es completamente funcional. Al pulsar "Calcular" se muestra el resultado siguiendo el patrón descrito en *Simulación de envíos*.
 
 
 #### Mejoras de UX implementadas
@@ -84,12 +83,21 @@ Tres páginas estáticas (`/aviso-legal`, `/politica-de-privacidad`, `/cookies`)
 Los copys son inventados pero coherentes con el tono de la landing ("comparador", "sin trucos, sin permanencia", etc.).
 
 ### Modal de contacto ("Contacta con un experto")
-Modal accesible reutilizable que se dispara desde "Contactar" del header, "Contratar" de cada PricingCard.
+Modal accesible reutilizable que se dispara desde "Contactar" del header, panel mobile y "Contratar" de cada PricingCard. Al enviar el form se muestra el resultado siguiendo el patrón descrito en *Simulación de envíos*.
 
-Como no hay backend, **el resultado del envío se simula con `Math.random() < 0.8`** (80% éxito / 20% error). Según el resultado, el modal muestra:
+## Simulación de envíos: modal de éxito y modal de error
+
+Como esta prueba no tiene backend ni endpoint real al que enviar los formularios, **el resultado del envío se simula** con `Math.random() < 0.8` (80% éxito / 20% error). Aplica a los tres formularios de la landing: el del Hero, el del modal de contacto y el de la calculadora.
+
+Según el resultado, se muestra una de las dos modales:
 - **Éxito** → "¡Solicitud recibida con éxito!"
 - **Error** → "¡Ups! Algo ha salido mal"
 
+### Sobre la modal de error
+
+En un proyecto real, la modal de error iría acompañada de lógica que la justifica: comprobar el código de respuesta del backend, distinguir tipos de error (4xx vs 5xx, timeout, sin conexión), permitir reintentar o llamar a soporte, registrar el evento en un sistema de tracking, etc.
+
+Aquí, al no haber backend, la modal de error se mantiene únicamente para que el diseño sea **visible y revisable** durante la prueba. Si forzase siempre éxito, el evaluador no podría ver el estado de error que también está en Figma. La probabilidad del 20% es solo para que ambos estados aparezcan al probar la landing varias veces.
 
 ## Notas sobre el diseño
 
