@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#eff4ff"/>
+      <stop offset="100%" stop-color="#f8f9ff"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <g transform="translate(80, 80)">
+    <text x="0" y="40" font-family="Inter, system-ui, sans-serif" font-size="22" font-weight="700" fill="#004ac6" letter-spacing="2">
+      AHORRAR ENERGÍA
+    </text>
+  </g>
+
+  <g transform="translate(80, 220)">
+    <text x="0" y="0" font-family="Inter, system-ui, sans-serif" font-size="68" font-weight="800" fill="#121c2a">
+      <tspan x="0" dy="0">Compara tarifas</tspan>
+      <tspan x="0" dy="80">de luz y gas y</tspan>
+      <tspan x="0" dy="80" fill="#004ac6">paga menos.</tspan>
+    </text>
+  </g>
+
+  <g transform="translate(80, 530)">
+    <text x="0" y="0" font-family="Inter, system-ui, sans-serif" font-size="26" font-weight="500" fill="#434655">
+      Sin trucos · Sin permanencia · Gestión 100% gratuita
+    </text>
+  </g>
+
+  <g transform="translate(960, 100) scale(2.5)">
+    <rect width="64" height="64" rx="14" fill="#004AC6"/>
+    <path d="M30 12 L18 36 H28 L24 52 L46 28 H36 L40 12 Z" fill="#fff"/>
+  </g>
+</svg>

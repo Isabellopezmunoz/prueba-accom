@@ -15,7 +15,7 @@ interface Props {
 const { title, intro, updatedAt, sections } = Astro.props
 ---
 
-<Layout title={`${title} · Ahorrar Energía`}>
+<Layout title={`${title} · Ahorrar Energía`} description={intro}>
   <Header />
   <main class="min-h-screen bg-surface-tint px-4 py-15 md:px-8 md:py-24">
     <article class="mx-auto flex max-w-3xl flex-col gap-10">

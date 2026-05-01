@@ -3,51 +3,72 @@ import "../styles/global.css"
 
 interface Props {
   title?: string
+  description?: string
+  image?: string
 }
 
-const { title = "Ahorrar Energía" } = Astro.props
+const {
+  title = "Ahorrar Energía",
+  description = "Compara tarifas de luz y gas y ahorra en tu factura. Sin trucos, sin permanencia. Gestión 100% gratuita.",
+  image = "/og-image.svg",
+} = Astro.props
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href
+const ogImage = new URL(image, Astro.site).href
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Ahorrar Energía",
+  url: Astro.site?.toString(),
+  logo: new URL("/favicon.svg", Astro.site).href,
+  description,
+}
 ---
 
 <html lang="es">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content="Ahorrar Energía" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700&display=swap"
+    />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700&display=swap"
     />
-    <title>{title}</title>
+
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(organizationSchema)}
+    />
   </head>
   <body class="flex min-h-screen flex-col bg-surface-tint">
     <slot />
-    <script>
-      document.addEventListener(
-        "gesturestart",
-        (event) => event.preventDefault(),
-        { passive: false }
-      )
-      document.addEventListener(
-        "gesturechange",
-        (event) => event.preventDefault(),
-        { passive: false }
-      )
-      let lastTouchEnd = 0
-      document.addEventListener(
-        "touchend",
-        (event) => {
-          const now = Date.now()
-          if (now - lastTouchEnd < 300) event.preventDefault()
-          lastTouchEnd = now
-        },
-        { passive: false }
-      )
-    </script>
   </body>
 </html>

@@ -158,12 +158,22 @@ En el Figma, los labels "TELÉFONO DE CONTACTO" y "CÓDIGO POSTAL" del paso 4 ap
 - El asterisco de obligatoriedad sí lo mantengo en "Teléfono de contacto" (es campo requerido) y lo retiro de "Código postal" (opcional).
 - En un caso real preguntaría a la persona de diseño qué formato prefiere para los labels y lo unificaría.
 
-### 9. Botón "Atrás" en el paso 4 de la calculadora
-En el Figma, los pasos 2 y 3 de la calculadora tienen botón "Atrás", pero el paso 4 no. He añadido el botón "Atrás" también en el paso 4 por UX:
-- Si el usuario llega al paso final y se da cuenta de que quiere corregir un dato anterior (intent, electrodomésticos, franja horaria), sin "Atrás" la única opción sería recargar la página y empezar de cero — eso frustra y aumenta el abandono justo en el paso de conversión.
-- Probablemente sea un descuido del diseño (los pasos 2 y 3 sí lo tienen; mantener "Atrás" en todo el wizard es el patrón estándar).
-- Lo coloco alineado a la izquierda con la misma estética que en los otros pasos. El botón "Calcular" sigue centrado como CTA principal para no romper la jerarquía visual del Figma.
-- En un caso real lo confirmaría con la persona de diseño.
+
+## SEO
+
+La landing está preparada para indexarse correctamente en buscadores y mostrar previsualizaciones al compartir enlaces. Lo que se ha implementado:
+
+- **Meta tags por página** (`<title>`, `<meta name="description">`) con copys distintos por ruta.
+- **Open Graph** y **Twitter Cards** para previsualizaciones en redes sociales.
+- **`<link rel="canonical">`** dinámico por página.
+- **JSON-LD** con schema `Organization`.
+- **`sitemap.xml`** generado automáticamente al hacer build (con `@astrojs/sitemap`).
+- **`robots.txt`** apuntando al sitemap.
+- **`og-image.svg`** como imagen de previsualización con la marca.
+
+### Aviso sobre la imagen Open Graph
+
+Actualmente se sirve un SVG (`/og-image.svg`) referenciado desde `og:image` y `twitter:image`. **Soy consciente de que las plataformas sociales (WhatsApp, Facebook, Twitter, LinkedIn, Slack, ....) no soportan SVG en sus tarjetas de previsualización** — solo JPG, PNG o WebP.
 
 ## Cómo ejecutar el proyecto
 
@@ -188,7 +198,9 @@ Desde la raíz del proyecto:
 │   ├── assets/
 │   ├── components/
 │   │   ├── ui/
-│   │   └── layout/
+│   │   ├── layout/
+│   │   └── wizard/
+│   │       └── TariffCalculator.astro
 │   ├── layouts/
 │   │   └── Layout.astro
 │   ├── pages/
@@ -198,7 +210,12 @@ Desde la raíz del proyecto:
 │   │   ├── politica-de-privacidad.astro
 │   │   └── cookies.astro
 │   ├── scripts/
+│   │   ├── calculator.ts
 │   │   └── inline-validation.ts
+│   ├── types/
+│   │   ├── forms.ts
+│   │   ├── legal.ts
+│   │   └── pricing.ts
 │   └── styles/
 │       └── global.css
 ├── astro.config.mjs
@@ -210,5 +227,5 @@ Desde la raíz del proyecto:
 
 - **Foundations primero**: todos los colores, radios, sombras y tipografías están declarados como tokens en `src/styles/global.css` (`@theme`). Los componentes consumen las clases derivadas (`bg-brand`, `rounded-md`, `shadow-hero`, etc.).
 - **Mobile-first**: las clases base aplican a mobile y las variantes responsive (`md:`, `lg:`, `xl:`) añaden los cambios para tablet y desktop. Cuando un breakpoint requiere desactivar un estilo previo (por ejemplo, la opacidad de las cards atenuadas del carrusel solo aplica hasta tablet y debe desactivarse en el grid de desktop) uso variantes inversas como `max-xl:` para que el estilo se aplique solo por debajo del breakpoint indicado.
-- **Componentes en dos carpetas**: `ui/` para piezas reutilizables y `layout/` para estructuras de página (Header, Hero, secciones, ...).
+- **Componentes en tres carpetas**: `ui/` para piezas reutilizables (Modal, Input, Button, Select, MobileNav, etc.), `layout/` para estructuras de página (Header, Hero, Footer, ContactModal, ResultModal, secciones, ...) y `wizard/` para el flujo de la calculadora multi-paso (`TariffCalculator`).
 
