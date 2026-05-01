@@ -130,5 +130,18 @@ const {
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") setOpen(false)
     })
+
+    const placeholder = trigger.dataset.placeholder ?? ""
+    trigger.closest("form")?.addEventListener("reset", () => {
+      hidden.value = ""
+      valueEl.textContent = placeholder
+      valueEl.classList.add("text-text-muted")
+      valueEl.classList.remove("text-ink")
+      trigger.classList.add("text-text-muted")
+      trigger.classList.remove("text-ink")
+      list
+        .querySelectorAll("[role=option]")
+        .forEach((option) => option.removeAttribute("aria-selected"))
+    })
   })
 </script>

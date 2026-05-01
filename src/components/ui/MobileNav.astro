@@ -90,8 +90,8 @@ const isActive = (href: string) =>
           setOpen(panel.dataset.open === undefined)
         )
 
-        panel.querySelectorAll("a").forEach((link) =>
-          link.addEventListener("click", () => setOpen(false))
+        panel.querySelectorAll("a, button").forEach((element) =>
+          element.addEventListener("click", () => setOpen(false))
         )
       }
     </script>
