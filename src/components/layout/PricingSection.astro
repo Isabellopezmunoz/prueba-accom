@@ -66,7 +66,7 @@ const tabs = [
     <div
       role="tablist"
       aria-label="Tipo de tarifa"
-      class="relative mx-auto flex h-13 w-90 items-center justify-between gap-2.5 rounded-pill bg-surface px-2 py-1.5 shadow-brand xl:hidden"
+      class="relative mx-auto flex h-13 w-90 items-center justify-between gap-2.5 rounded-pill bg-surface px-2 py-1.5 shadow-brand tablet-lg:hidden"
       data-pricing-tabs
     >
       <span
@@ -90,7 +90,7 @@ const tabs = [
     </div>
 
     <div
-      class="-mx-4 flex snap-x snap-mandatory items-stretch gap-4 overflow-x-auto scroll-smooth px-[10%] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden xl:mx-0 xl:grid xl:grid-cols-4 xl:gap-6 xl:overflow-visible xl:px-0 xl:pb-0"
+      class="-mx-4 flex snap-x snap-mandatory items-stretch gap-4 overflow-x-auto scroll-smooth px-[10%] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden tablet-lg:mx-0 tablet-lg:grid tablet-lg:grid-cols-4 tablet-lg:gap-6 tablet-lg:overflow-visible tablet-lg:px-0 tablet-lg:pb-0"
       data-pricing-track
     >
       {
@@ -99,8 +99,8 @@ const tabs = [
             data-card-tab={card.tab}
             data-desktop-only={card.desktopOnly ? "true" : undefined}
             class:list={[
-              "flex w-[80%] max-w-md shrink-0 snap-center transition-transform duration-300 ease-out max-xl:[&:not([data-active=true])]:opacity-60 max-xl:[&:not([data-active=true])]:scale-95 xl:w-auto xl:max-w-none",
-              card.desktopOnly && "hidden xl:flex",
+              "flex w-[80%] max-w-md shrink-0 snap-center transition-transform duration-300 ease-out max-tablet-lg:[&:not([data-active=true])]:opacity-60 max-tablet-lg:[&:not([data-active=true])]:scale-95 tablet-lg:w-auto tablet-lg:max-w-none",
+              card.desktopOnly && "hidden tablet-lg:flex",
             ]}
           >
             <PricingCard {...card} />
@@ -110,7 +110,7 @@ const tabs = [
     </div>
 
     <div
-      class="flex justify-center gap-2 xl:hidden"
+      class="flex justify-center gap-2 tablet-lg:hidden"
       role="tablist"
       aria-label="Paginación de tarifas"
       data-pricing-bullets
@@ -214,10 +214,11 @@ const tabs = [
       })
     )
 
-    let scrollTimeout: number | undefined
+    let scrollFrame = 0
     track.addEventListener("scroll", () => {
-      window.clearTimeout(scrollTimeout)
-      scrollTimeout = window.setTimeout(() => {
+      if (scrollFrame) return
+      scrollFrame = requestAnimationFrame(() => {
+        scrollFrame = 0
         const trackRect = track.getBoundingClientRect()
         const center = trackRect.left + trackRect.width / 2
         let closestIndex = 0
@@ -232,7 +233,7 @@ const tabs = [
         })
         const value = cardTabs[closestIndex]
         if (value && tabValues.includes(value)) setActiveTab(value)
-      }, 100)
+      })
     })
   }
 </script>

@@ -109,4 +109,5 @@ input[data-input-variant="plain"]:-webkit-autofill:active {
   /* Layout */
   --container-site: 1280px;
   --breakpoint-mobile: 390px;
+  --breakpoint-tablet-lg: 1180px;
 }
