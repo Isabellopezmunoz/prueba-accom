@@ -37,7 +37,7 @@ const {
       aria-haspopup="listbox"
       aria-expanded="false"
       aria-controls={`${id}-list`}
-      class="flex h-11.5 w-full cursor-pointer items-center justify-between rounded-sm border border-border-soft bg-surface-tint px-3 text-left text-base text-text-muted transition-colors hover:border-brand focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 aria-expanded:border-brand aria-expanded:bg-brand-tint aria-expanded:text-ink"
+      class="flex h-11.5 w-full cursor-pointer items-center justify-between rounded-sm border border-border-soft bg-surface-tint px-3 text-left text-md text-text-muted transition-colors hover:border-brand focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 aria-expanded:border-brand aria-expanded:bg-brand-tint aria-expanded:text-ink md:text-base"
       data-select-trigger
       data-placeholder={placeholder}
     >
@@ -75,7 +75,7 @@ const {
             role="option"
             data-value={opt.value}
             tabindex="0"
-            class="cursor-pointer px-3 py-2 text-base text-ink transition-colors hover:bg-brand-tint hover:text-brand aria-selected:bg-brand-tint aria-selected:text-brand"
+            class="cursor-pointer px-3 py-2 text-md text-ink transition-colors hover:bg-brand-tint hover:text-brand aria-selected:bg-brand-tint aria-selected:text-brand md:text-base"
           >
             {opt.label}
           </li>
