@@ -18,17 +18,17 @@ const calculatorHref = intent
   : "/calcula-tu-tarifa"
 
 const cardBase =
-  "relative flex h-full w-full flex-col gap-10 overflow-hidden rounded-md border-2 bg-surface p-6 transition-colors duration-200 tablet-lg:gap-6"
+  "relative flex h-full w-full flex-col gap-10 overflow-hidden rounded-md bg-surface p-6 transition-[box-shadow,border-color] duration-200 tablet-lg:gap-6"
 const cardVariant = featured
-  ? "border-warn lg:shadow-card lg:hover:border-warn-soft"
-  : "border-border-softer lg:hover:border-brand"
+  ? "border-2 border-warn lg:shadow-card lg:hover:border-warn-soft"
+  : "border border-border-softer lg:hover:shadow-[0_0_0_2px_var(--color-brand)]"
 const kickerColor = featured ? "text-warn-text" : "text-brand"
 ---
 
-<article class:list={[cardBase, cardVariant]}>
+<article class:list={["group/card", cardBase, cardVariant]}>
   {
     featured && (
-      <span class="absolute right-0 top-0 rounded-bl-sm bg-warn px-3 py-1 text-2xs font-semibold leading-normal text-ink">
+      <span class="absolute right-0 top-0 rounded-bl-sm bg-warn px-3 py-1 text-2xs font-semibold leading-normal text-ink transition-colors lg:group-hover/card:bg-warn-soft">
         TOP VENTAS
       </span>
     )
