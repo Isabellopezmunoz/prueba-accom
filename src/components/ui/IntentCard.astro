@@ -21,10 +21,10 @@ const {
 } = Astro.props
 
 const base =
-  "relative flex flex-col items-center gap-4 rounded-md bg-surface p-8 text-center transition-colors hover:border-brand md:gap-2 md:rounded-sm md:p-5"
+  "relative flex flex-col items-center gap-4 rounded-md border-2 bg-surface p-8 text-center transition-colors hover:border-brand md:gap-2 md:rounded-sm md:p-5"
 const border = recommended
-  ? "border-2 border-brand-soft"
-  : "border border-transparent md:border-border-soft"
+  ? "border-[#DBE1FF]"
+  : "border-transparent md:border-border-soft"
 ---
 
 <a href={href} class:list={[base, border]}>

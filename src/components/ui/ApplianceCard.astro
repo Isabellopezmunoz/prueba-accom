@@ -14,7 +14,7 @@ const { id, name, value, label, icon } = Astro.props
 
 <label
   for={id}
-  class="group relative flex h-35 cursor-pointer flex-col items-center justify-center gap-2 rounded-md bg-surface text-center transition-shadow has-checked:shadow-focus"
+  class="group relative flex h-35 cursor-pointer flex-col items-center justify-center gap-2 rounded-md border-2 border-transparent bg-surface text-center transition-[box-shadow,border-color] not-has-checked:hover:border-brand has-checked:shadow-focus"
 >
   <input
     id={id}
