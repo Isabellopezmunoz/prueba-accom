@@ -9,6 +9,44 @@ Landing page desarrollada como prueba técnica. El objetivo es trasladar el dise
 - TypeScript
 - Prettier
 
+## Cómo ejecutar el proyecto
+
+### Requisitos previos
+
+- **Node.js 18+** ([descargar aquí](https://nodejs.org)).
+
+### Pasos
+
+**1. Clonar el repositorio**
+
+```bash
+git clone https://github.com/Isabellopezmunoz/prueba-accom.git
+```
+
+**2. Instalar dependencias**
+
+```bash
+npm install
+```
+
+**3. Arrancar el servidor de desarrollo**
+
+```bash
+npm run dev
+```
+
+**4. Abrir el navegador**
+
+Ve a [http://localhost:4321](http://localhost:4321) y verás la landing funcionando.
+
+### Otros comandos útiles
+
+| Comando            | Acción                                                       |
+| :----------------- | :----------------------------------------------------------- |
+| `npm run build`    | Genera la build de producción optimizada en `./dist/`        |
+| `npm run preview`  | Sirve la build de producción para revisar el resultado final |
+| `npm run format`   | Formatea todo el código con Prettier                         |
+
 #### Mejoras de UX implementadas
 
 Pequeños extras propuestos como mejora de la experiencia de usuario más allá del Figma original:
@@ -120,19 +158,6 @@ La landing está preparada para indexarse correctamente en buscadores y mostrar 
 ### Aviso sobre la imagen Open Graph
 
 Actualmente se sirve un SVG (/og-image.svg) por simplicidad de la prueba. Aunque en producción habría que exportar a JPG/PNG para que las redes sociales (WhatsApp, X, etc.) muestren la previsualización. 
-
-## Cómo ejecutar el proyecto
-
-Desde la raíz del proyecto:
-
-| Comando            | Acción                                       |
-| :----------------- | :------------------------------------------- |
-| `npm install`      | Instala las dependencias                     |
-| `npm run dev`      | Arranca el servidor local en `localhost:4321`|
-| `npm run build`    | Genera la build de producción en `./dist/`   |
-| `npm run preview`  | Previsualiza la build de producción          |
-| `npm run format`   | Formatea el código con Prettier              |
-
 
 ### Convenciones
 
