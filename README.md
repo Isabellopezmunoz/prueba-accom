@@ -46,6 +46,12 @@ Antes de listar las inconsistencias detectadas, dos disclaimers sobre cómo se h
 - **Acceso limitado al Figma**: solo dispongo de cuenta gratuita, sin Dev Mode completo. He inspeccionado los nodos con las herramientas a las que tengo acceso (panel de propiedades, copiar valores manualmente, anotaciones del archivo) y he ajustado tamaños, colores y espaciados al valor más cercano que he podido leer. En un proyecto real con Dev Mode tendría acceso directo a tokens de Figma exportables y podría garantizar 1:1 sin lectura manual.
 - **Espaciados con `gap` en lugar de `padding`/`margin`**: en muchos puntos del Figma los espacios entre elementos están resueltos con padding-bottom o margin individual de cada hijo. En el código lo he traducido a `flex` con `gap` (a veces con contenedores anidados para tener dos gaps distintos en el mismo bloque). Es más limpio, menos propenso a desincronizarse cuando cambia el contenido, y se adapta mejor a viewports distintos. El resultado visual es idéntico al Figma — solo cambia la herramienta CSS usada.
 
+### Referente  a las fundations
+
+Creo que sería útil añadir a las foundations una página dedicada a los **estados** de los componentes interactivos (hover, active, focus, disabled). Centralizarlos en un solo sitio haría que el handoff fuese aún más rápido y consistente.
+
+En la maquetación he intentado resolver los estados que no estaban explícitos siguiendo la paleta del propio sistema, buscando coherencia con lo ya definido.
+
 ### 1. Checkbox de privacidad: forma y tamaño según el contexto
 En el Figma, el checkbox de "acepto política de privacidad" aparece con tratamiento distinto según el formulario, en dos ejes:
 
@@ -65,41 +71,35 @@ En el Figma, el checkbox de "acepto política de privacidad" aparece con tratami
 - He **mantenido los dos tamaños** (16 / 20) y los he expuesto como prop `size="sm" | "md"` del componente `Checkbox`. La diferencia de tamaño sí tiene justificación funcional: en la calculadora el checkbox vive aislado al final de un formulario amplio (más target táctil, más jerarquía), mientras que en Hero y modal va dentro de bloques más densos donde el tamaño compacto encaja mejor.
 - En un caso real confirmaría la decisión sobre la forma con la persona de diseño antes de aplicar el cambio — puede haber una intención que no veo (jerarquía visual, decisión de marca, etc.).
 
-### 2. Texto del enlace de privacidad: distinto en mobile vs desktop
-- **Hero mobile**: "Política de Privacidad".
-- **Hero desktop**: "Política de Protección de Datos".
-- **Modal de contacto**: "política de privacidad" (en minúsculas).
-- **Implementación**: dos `<span>` con `md:hidden` / `hidden md:inline` para alternar el copy según viewport. El `href` apunta siempre a la misma página (`/politica-de-privacidad`).
-- En un caso real preguntaría qué término prefiere legal/marca y unificaría — son dos conceptos distintos en RGPD aunque coloquialmente se usen como sinónimos.
 
-### 3. Color del enlace de privacidad: distinto según contexto
+### 2. Color del enlace de privacidad: distinto según contexto
 En el Figma, el enlace a la política de privacidad aparece con tratamiento distinto según el formulario:
 - **Calculadora (paso 4)**: en color `brand` (azul) directamente.
 - **Hero y modal de contacto**: en color de texto neutro.
 - **Implementación**: he unificado los tres en color `brand` porque conceptualmente es el mismo enlace ("acepto política de privacidad") y debería verse igual en cualquier formulario de la landing. Tomo como referencia el tratamiento de la calculadora porque es el más visible y reconocible como enlace.
 - En un caso real lo confirmaría con la persona de diseño antes de aplicar el cambio — puede haber una intención detrás (jerarquía visual del Hero, peso del modal, etc.) que no estoy viendo.
 
-### 4. Iconos de los selectores de suministro distintos según viewport
+### 3. Iconos de los selectores de suministro distintos según viewport
 En la sección "Compara nuestras ofertas en energía", los iconos de las tarjetas Solo Luz / Luz+Gas / Solo Gas no coinciden entre mobile y desktop:
 - **Mobile**: bombilla / rayo / aspas-ventilador.
 - **Desktop**: rayo / rayo+llama / llama.
 - **Implementación**: `IntentCard` recibe `mobileIcons` y `desktopIcons` y muestra unos u otros con `md:hidden` / `hidden md:flex`.
 - En un caso real propondría un único set para reforzar consistencia de marca y reducir mantenimiento de assets.
 
-### 5. Destino del enlace "Ofertas" del header
-La sección con id `#ofertas` (a la que apunta el botón "Ofertas" del header) es la que titula "Compara nuestras ofertas en energía" (selectores), no la de tarjetas de tarifas, porque su copy literal habla de "ofertas". El scroll a esa sección se hace de forma suave (`scroll-behavior: smooth` global) y la sección lleva `scroll-mt-24` para que el header sticky no tape el título al llegar.
+### 4. Destino del enlace "Ofertas" del header
+La sección con id `#ofertas` (a la que apunta el botón "Ofertas" del header) es la que titula "Compara nuestras ofertas en energía" (selectores), no la de tarjetas de tarifas, porque su copy literal habla de "ofertas". 
 - En un caso real validaría con producto a qué espera la persona usuaria que la lleve ese enlace.
 
-### 6. Border-radius de las cards de electrodomésticos
-En el paso 2 de la calculadora (`/calcula-tu-tarifa`), las cards de electrodomésticos en el Figma vienen con `border-radius` distintos según la posición: las de la izquierda con sólo las esquinas derechas redondeadas, otras con todas las esquinas, etc. Lo interpreté como un despiste del diseño (no hay un patrón visual que justifique esa diferencia: no son cards "agrupadas" por una hoja contínua) y unifiqué todas para mantener consistencia con el resto de cards de la landing.
+### 5. Border-radius de las cards de electrodomésticos
+En el paso 2 de la calculadora (`/calcula-tu-tarifa`), las cards de electrodomésticos en el Figma vienen con `border-radius` distintos según la posición: las de la izquierda con sólo las esquinas derechas redondeadas, otras con todas las esquinas, etc. Lo interpreté como un despiste del diseño y unifiqué todas para mantener consistencia con el resto de cards de la landing.
 - En un caso real lo confirmaría con la persona de diseño antes de aplicar el cambio.
 
-### 7. URLs en español
-Las rutas públicas (`/calcula-tu-tarifa`, `/aviso-legal`, `/politica-de-privacidad`, `/cookies`) están en español aunque el resto del código (componentes, props, archivos) esté en inglés. Decisión consciente porque la landing es de captación: las URLs en idioma nativo mejoran el Quality Score en Google Ads / Meta (mejor match anuncio↔landing → CPC más bajo), suben el CTR orgánico (URL legible en SERP), y dan mejor experiencia al compartir el enlace en WhatsApp o redes.
+### 6. URLs en español
+Las rutas públicas (`/calcula-tu-tarifa`, `/aviso-legal`, `/politica-de-privacidad`, `/cookies`) están en español aunque el resto del código (componentes, props, archivos) esté en inglés. Decisión consciente porque la landing es de captación: las URLs en idioma nativo mejoran el Quality Score en Google Ads, suben el CTR orgánico, y dan mejor experiencia al compartir el enlace.
 - Slugs sin tildes (`politica-de-privacidad`, no `política-de-privacidad`) para evitar problemas de encoding (`%C3%AD` en barras de navegador).
 - En un proyecto con alcance internacional desde el inicio, optaría por URLs en inglés.
 
-### 8. Labels de los inputs del paso 4 de la calculadora
+### 7. Labels de los inputs del paso 4 de la calculadora
 En el Figma, los labels "TELÉFONO DE CONTACTO" y "CÓDIGO POSTAL" del paso 4 aparecen en mayúsculas. El resto de inputs de la landing (Hero, Modal de contacto) usan labels capitalizados normales. Decidí mantenerlos en el mismo formato que el resto del proyecto ("Teléfono de contacto" / "Código postal") por consistencia: los labels deberían comportarse igual en todos los formularios de la landing.
 - El asterisco de obligatoriedad sí lo mantengo en "Teléfono de contacto" (es campo requerido) y lo retiro de "Código postal" (opcional).
 - En un caso real preguntaría a la persona de diseño qué formato prefiere para los labels y lo unificaría.
@@ -119,7 +119,7 @@ La landing está preparada para indexarse correctamente en buscadores y mostrar 
 
 ### Aviso sobre la imagen Open Graph
 
-Actualmente se sirve un SVG (`/og-image.svg`) referenciado desde `og:image` y `twitter:image`. **Soy consciente de que las plataformas sociales (WhatsApp, Facebook, Twitter, LinkedIn, Slack, ....) no soportan SVG en sus tarjetas de previsualización** — solo JPG, PNG o WebP.
+Actualmente se sirve un SVG (/og-image.svg) por simplicidad de la prueba. Aunque en producción habría que exportar a JPG/PNG para que las redes sociales (WhatsApp, X, etc.) muestren la previsualización. 
 
 ## Cómo ejecutar el proyecto
 
@@ -133,42 +133,6 @@ Desde la raíz del proyecto:
 | `npm run preview`  | Previsualiza la build de producción          |
 | `npm run format`   | Formatea el código con Prettier              |
 
-## Estructura
-
-```text
-/
-├── public/
-│   ├── favicon.svg
-│   ├── og-image.svg
-│   └── robots.txt
-├── src/
-│   ├── assets/
-│   ├── components/
-│   │   ├── ui/
-│   │   ├── layout/
-│   │   └── wizard/
-│   │       └── TariffCalculator.astro
-│   ├── layouts/
-│   │   └── Layout.astro
-│   ├── pages/
-│   │   ├── index.astro
-│   │   ├── calcula-tu-tarifa.astro
-│   │   ├── aviso-legal.astro
-│   │   ├── politica-de-privacidad.astro
-│   │   └── cookies.astro
-│   ├── scripts/
-│   │   ├── calculator.ts
-│   │   └── inline-validation.ts
-│   ├── types/
-│   │   ├── forms.ts
-│   │   ├── legal.ts
-│   │   └── pricing.ts
-│   └── styles/
-│       └── global.css
-├── astro.config.mjs
-├── package.json
-└── tsconfig.json
-```
 
 ### Convenciones
 

@@ -37,11 +37,11 @@ const isActive = (href: string) =>
   variant === "panel" && (
     <div
       id="mobile-nav"
-      class="group/panel absolute inset-x-0 top-full max-h-0 overflow-hidden border-border-faint bg-surface opacity-0 shadow-nav transition-[max-height,opacity,border-top-width] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] data-open:max-h-96 data-open:border-t data-open:opacity-100 md:hidden"
+      class="group/panel absolute inset-x-0 top-full grid grid-rows-[0fr] overflow-hidden border-border-faint bg-surface opacity-0 shadow-nav transition-[grid-template-rows,opacity,border-top-width] duration-450 ease-in-out data-open:grid-rows-[1fr] data-open:border-t data-open:opacity-100 md:hidden"
       data-menu-panel
     >
       <ul
-        class="flex -translate-y-2 flex-col gap-4 p-4 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-data-open/panel:translate-y-0"
+        class="flex min-h-0 -translate-y-2 flex-col gap-4 p-4 transition-transform duration-450 ease-in-out group-data-open/panel:translate-y-0"
       >
         {links.map((link) => (
           <li>

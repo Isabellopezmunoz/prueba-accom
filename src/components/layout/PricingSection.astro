@@ -90,7 +90,7 @@ const tabs = [
     </div>
 
     <div
-      class="-mx-4 flex snap-x snap-mandatory items-stretch gap-4 overflow-x-auto scroll-smooth px-[10%] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden tablet-lg:mx-0 tablet-lg:grid tablet-lg:grid-cols-4 tablet-lg:gap-6 tablet-lg:overflow-visible tablet-lg:px-0 tablet-lg:pb-0"
+      class="-mx-4 flex snap-x snap-proximity items-stretch gap-4 overflow-x-auto scroll-smooth px-[10%] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden tablet-lg:mx-0 tablet-lg:grid tablet-lg:grid-cols-4 tablet-lg:gap-6 tablet-lg:overflow-visible tablet-lg:px-0 tablet-lg:pb-0"
       data-pricing-track
     >
       {
@@ -99,7 +99,7 @@ const tabs = [
             data-card-tab={card.tab}
             data-desktop-only={card.desktopOnly ? "true" : undefined}
             class:list={[
-              "flex w-[80%] max-w-md shrink-0 snap-center transition-[transform,opacity] duration-300 ease-out max-tablet-lg:[&:not([data-active=true])]:opacity-60 max-tablet-lg:[&:not([data-active=true])]:scale-95 tablet-lg:w-auto tablet-lg:max-w-none",
+              "flex w-[80%] max-w-md shrink-0 snap-center will-change-transform tablet-lg:w-auto tablet-lg:max-w-none",
               card.desktopOnly && "hidden tablet-lg:flex",
             ]}
           >
@@ -215,10 +215,36 @@ const tabs = [
     )
 
     let scrollFrame = 0
+    const updateCardStyles = () => {
+      if (window.innerWidth >= 1180) {
+        cards.forEach((card) => {
+          card.style.opacity = ""
+          card.style.transform = ""
+        })
+        return
+      }
+      const trackRect = track.getBoundingClientRect()
+      const center = trackRect.left + trackRect.width / 2
+      cards.forEach((card) => {
+        const cardRect = card.getBoundingClientRect()
+        const cardCenter = cardRect.left + cardRect.width / 2
+        const distance = Math.abs(cardCenter - center)
+        const ratio = Math.min(distance / cardRect.width, 1)
+        const opacity = 1 - ratio * 0.4
+        const scale = 1 - ratio * 0.05
+        card.style.opacity = String(opacity)
+        card.style.transform = `scale(${scale})`
+      })
+    }
+
+    updateCardStyles()
+    window.addEventListener("resize", updateCardStyles)
+
     track.addEventListener("scroll", () => {
       if (scrollFrame) return
       scrollFrame = requestAnimationFrame(() => {
         scrollFrame = 0
+        updateCardStyles()
         const trackRect = track.getBoundingClientRect()
         const center = trackRect.left + trackRect.width / 2
         let closestIndex = 0
